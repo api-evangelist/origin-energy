@@ -1,0 +1,523 @@
+aid: origin-energy
+name: Origin Energy
+review:
+  question: >-
+    Australia extended the Consumer Data Right — the same statute, the same
+    regulator (ACCC) and the same Data Standards Body that produced the
+    byte-for-byte identical banking APIs — into the energy sector. Did that
+    transplant actually produce a working API at Origin Energy, or only an
+    obligation on paper?
+  answer: >-
+    It produced a working API. Origin Energy is a designated CDR energy data
+    holder, it is listed on the public CDR Register with its own public base
+    URI, its unauthenticated Consumer Data Standards discovery endpoints answer
+    anonymously with conformant payloads, and its consumer-data resource host
+    presents a TLS certificate issued by the ACCC's own CDR Certificate
+    Authority and refuses connections without a client certificate. That is an
+    implementation, not a claim. What the mandate did NOT produce is anything a
+    developer can simply sign up for.
+  date: '2026-07-27'
+  reviewer: API Evangelist
+  method: >-
+    Direct anonymous HTTP probing, TLS certificate chain inspection, DNS
+    resolution, CDR Register query, and retrieval of published machine-readable
+    contracts. Every URL probed is recorded below with its HTTP status.
+
+mandate:
+  homeMarket: Australia
+  regime: cdr-energy
+  regimeName: >-
+    Consumer Data Right (Competition and Consumer Act 2010 Part IVD), extended
+    to the energy sector by the Consumer Data Right (Energy Sector) Designation
+    2020; regulated by the ACCC and OAIC, standards set by the Data Standards
+    Body within Treasury.
+  status: live-implemented
+  statusReasoning: >-
+    Recorded as live-implemented — not live-claimed-unverified — because the
+    evidence is technical rather than promotional. No Origin press release,
+    compliance page or regulator listing was relied on. Three independent
+    verifications were obtained: (1) a CDR Register entry naming Origin Energy
+    with a real publicBaseUri; (2) HTTP 200 anonymous responses from two
+    Consumer Data Standards conformant endpoints on that base URI; (3) a TLS
+    certificate on the resource host issued by the ACCC's CDR Intermediate CA.
+    Origin's own consumer-facing CDR help pages could not be read because they
+    render entirely client-side and served no text to a non-JavaScript client —
+    which is precisely why marketing copy was not used as evidence.
+  verification:
+  - evidence: CDR Register entry
+    url: https://api.cdr.gov.au/cdr-register/v1/energy/data-holders/brands/summary
+    httpStatus: 200
+    fetched: '2026-07-27'
+    headers: 'x-v: 1'
+    note: >-
+      Public, unauthenticated, no API key. Returned 84 energy data holder
+      brands. Origin's entry verbatim - dataHolderBrandId
+      244d8a80-3828-ed11-a832-000d3a8830d6, interimId
+      37aebb2d-d96c-419f-8be4-f42cdffdb238, brandName "Origin Energy",
+      industries ["energy"], publicBaseUri
+      https://public.mydata.cdr.originenergy.com.au, abn 30000051696, acn
+      000051696, lastUpdated 2026-07-01T12:15:14Z.
+  - evidence: Standards-conformant public endpoint (status)
+    url: https://public.mydata.cdr.originenergy.com.au/cds-au/v1/discovery/status
+    httpStatus: 200
+    fetched: '2026-07-27'
+    headers: 'x-v: 1'
+    note: >-
+      Returned {"data":{"status":"OK","updateTime":"2026-07-27T12:07:07.996Z","explanation":"All
+      services operational"},"links":{...},"meta":{}} — the exact Consumer Data
+      Standards Get Status response shape.
+  - evidence: Standards-conformant public endpoint (outages)
+    url: https://public.mydata.cdr.originenergy.com.au/cds-au/v1/discovery/outages
+    httpStatus: 200
+    fetched: '2026-07-27'
+    note: Returned {"data":{"outages":[]},...}.
+  - evidence: mTLS resource endpoint with ACCC-issued certificate
+    url: https://api.mydata.cdr.originenergy.com.au
+    httpStatus: '000 (TLS handshake completes, connection reset without client certificate)'
+    fetched: '2026-07-27'
+    note: >-
+      openssl s_client returned subject "OU=Consumer Data Right, O=Origin
+      Energy, CN=api.mydata.cdr.originenergy.com.au, C=AU" issued by "C=AU,
+      O=Australian Competition and Consumer Commission, OU=Consumer Data Right,
+      CN=CDR Intermediate CA 2025", chaining to "CDR Root CA". Validity
+      2025-11-19 to 2026-12-20. curl -k to any path returned "Recv failure:
+      Connection reset by peer" — the server requires a client certificate.
+      This is the strongest single piece of evidence: the ACCC does not issue
+      certificates to hosts that are not participating in the regime.
+  - evidence: Origin consumer CDR help pages (could not be read)
+    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    httpStatus: 200
+    fetched: '2026-07-27'
+    note: >-
+      Listed in the site sitemap along with /stop-sharing-data-cdr and
+      /report-an-issue-with-data-sharing-cdr, but the returned HTML is a
+      client-rendered shell containing none of the strings "Consumer Data
+      Right", "accredited", "data holder", "ACCC" or "AEMO". No claim was taken
+      from it. Its existence is noted only as corroboration that consumer-facing
+      CDR consent management exists.
+  notLive:
+  - endpoint: GET /cds-au/v1/energy/plans on Origin's own public base URI
+    httpStatus: 404
+    note: >-
+      Origin does not serve the Consumer Data Standards Get Generic Plans
+      endpoint from its own public base URI. This is not a compliance gap — it
+      is the sector's architecture. Control-tested against peers on 2026-07-27:
+      AGL (https://public.cdr.agl.com.au) 404, Amber (https://public.cdr.amber.com.au)
+      404, but Ampol on the AER-hosted gateway
+      (https://cdr.energymadeeasy.gov.au/ampol) 200. Large retailers keep their
+      own CDR infrastructure and lodge plan data with the regulator; roughly 50
+      of the 84 registered energy brands do not run any infrastructure at all
+      and point their publicBaseUri straight at cdr.energymadeeasy.gov.au.
+
+dataStandard:
+  name: Consumer Data Standards Australia — CDR Energy API
+  version: 1.36.0 (as published by the Data Standards Body at time of harvest)
+  publisher: Data Standards Body, Australian Treasury
+  note: >-
+    Origin implements the CDR energy schemas. The contract is published by the
+    standards body, not by Origin — Origin publishes no OpenAPI of its own for
+    its CDR surface, and does not need to, because the whole point of the regime
+    is that every data holder implements the identical document. That is the
+    same mechanic that produced the identical fifty-bank banking contract.
+  otherStandards:
+  - name: OpenID Connect Discovery 1.0
+    where: https://auth.origin-kraken.energy/.well-known/openid-configuration
+    note: Verified live, harvested.
+  - name: OpenAPI 3.0.3
+    where: https://api.origin-kraken.energy/v1/schema (and two further namespaces)
+    note: Kraken platform contracts, proprietary shape, verified and harvested.
+  notFound:
+  - Green Button / ESPI — no reference found; not applicable outside North America.
+  - OpenADR — no reference found.
+  - IEEE 2030.5 — no reference found.
+  - IEC CIM 61968/61970 — no reference found.
+  - OCPP / OCPI — no reference found, despite Origin selling EV charging products.
+
+split:
+  consumerDataApi: true
+  consumerDataDetail: >-
+    Yes, but only through the mandate and only to accredited recipients. An
+    individual customer's usage, billing, invoices, balances, concessions,
+    payment schedules, electricity service points and DER data are all
+    obtainable through the CDR energy APIs at
+    api.mydata.cdr.originenergy.com.au, with the consumer's consent, by an
+    accredited data recipient. There is no non-CDR path — Origin publishes no
+    consumer data API of its own.
+  marketDataOpen: false
+  marketDataDetail: >-
+    No. Origin publishes no open grid, market, generation or system data. It is
+    a large generator (Eraring, gas peakers, renewables) and a NEM participant,
+    but all NEM system and market data is published by AEMO, not by Origin.
+    Nothing on any originenergy.com.au host serves anonymous data.
+  nuance: >-
+    The one thing anyone can retrieve anonymously about Origin is its retail
+    plan reference data — 3,595 electricity and gas plans — and it is served
+    from a .gov.au host (cdr.energymadeeasy.gov.au/origin), by the Australian
+    Energy Regulator, under Origin's CDR obligation. Origin's own anonymous
+    surface carries operational metadata and nothing else. Deliberately recorded
+    as marketDataOpen=false: the openness is the regulator's, not the company's,
+    and tariff reference data is not grid/market/system data.
+  openProbes:
+  - url: https://cdr.energymadeeasy.gov.au/origin/cds-au/v1/energy/plans
+    httpStatus: 200
+    headers: 'x-v: 1'
+    fetched: '2026-07-27'
+    note: >-
+      meta.totalRecords 3595. First record planId ORI724759MRE14@EME, fuelType
+      ELECTRICITY, brandName "Origin Energy", distributor SA Power Networks. No
+      key, no signup, no consent.
+  - url: https://cdr.energymadeeasy.gov.au/origin/cds-au/v1/energy/plans/ORI724759MRE14@EME
+    httpStatus: 200
+    headers: 'x-v: 3'
+    fetched: '2026-07-27'
+    note: >-
+      With x-v:1 the same URL returns HTTP 406
+      urn:au-cds:error:cds-all:Header/UnsupportedVersion "Header x-v lower than
+      minimum supported [x-v=1, min=3]" — a correct Consumer Data Standards
+      version negotiation error.
+
+accessGate:
+  gate: accredited-only
+  whatADeveloperMustActuallyDo:
+    consumerData: >-
+      To read a single Origin customer's usage or billing data you must become
+      an accredited person under the Consumer Data Right — apply to the ACCC,
+      meet the information security controls of CDR Rule Schedule 2, obtain
+      client certificates from the CDR Certificate Authority, be listed on the
+      CDR Register, then collect the consumer's explicit consent and complete a
+      consent authorisation flow with Origin. There is no lighter path, no
+      sandbox key, and no self-serve tier. Verified by the mTLS refusal above.
+    krakenPlatform: >-
+      To call the Kraken REST or GraphQL API you must be an Origin customer or a
+      partner organisation with credentials issued by Origin. The documentation
+      is publicly readable and the OpenAPI documents are downloadable without
+      authentication, but the authorisation server advertises no dynamic client
+      registration endpoint, so clients are provisioned by Origin out of band.
+    openData: >-
+      To read Origin's retail plans you do nothing at all — send an anonymous
+      GET with an x-v header to the AER gateway.
+  secondaryGate: customer-account-required
+  selfServeAvailable: false
+
+authModel:
+  cdr:
+    scheme: mutual TLS + OAuth 2.0 / OpenID Connect via the CDR consent flow
+    evidence: >-
+      TLS client certificate required at api.mydata.cdr.originenergy.com.au
+      (connection reset without one); certificate chain issued by the ACCC CDR
+      CA. Token issuance is via the data holder's InfoSec endpoints reached
+      through the CDR Register; no anonymously reachable OIDC discovery document
+      was found on any *.mydata.cdr.originenergy.com.au host
+      (public.mydata.../.well-known/openid-configuration returned 404;
+      idp./infosec./secure. subdomains do not resolve;
+      auth.mydata.cdr.originenergy.com.au resolves to 32.237.28.113 but serves
+      no anonymous discovery document).
+  kraken:
+    scheme: OAuth 2.0 / OpenID Connect bearer tokens, one token for both REST and GraphQL
+    discoveryDocument: https://auth.origin-kraken.energy/.well-known/openid-configuration
+    httpStatus: 200
+    fetched: '2026-07-27'
+    issuer: https://auth.origin-kraken.energy/token/
+    endpoints:
+      authorization: https://auth.origin-kraken.energy/authorize/
+      token: https://auth.origin-kraken.energy/token/
+      userinfo: https://auth.origin-kraken.energy/userinfo/
+      revocation: https://auth.origin-kraken.energy/revoke-token/
+      endSession: https://auth.origin-kraken.energy/logout/
+      jwks: https://auth.origin-kraken.energy/.well-known/jwks.json
+    tokenEndpointAuthMethods:
+    - client_secret_post
+    - client_secret_basic
+    dynamicClientRegistration: false
+    pkceMethodsAdvertised: false
+    responseTypesSupported: 7
+    scopesSupported: 113
+    notableScopes:
+    - openid
+    - full-customer-access
+    - view:detailed-usage
+    - request:consumption-data
+    - query:electricity-meter-point-details
+    - submit:meter-readings
+    - update:smart-meter-data-preferences
+    - update:reading-consent-granularity
+    - view:ev-data
+    - view:smartflex-data
+    - book:smart-meter-appointments
+    - query:devices
+    - register:smartflex-devices
+    scopeNote: >-
+      Harvested verbatim from the discovery document; not invented. The scope
+      list is the clearest signal that the real consumer energy data model at
+      Origin lives in Kraken, and the CDR surface is a regulated projection of
+      it.
+  corporate:
+    scheme: Auth0 tenant used for the Origin customer web login
+    discoveryDocument: https://originenergy.au.auth0.com/.well-known/openid-configuration
+    httpStatus: 200
+    fetched: '2026-07-27'
+    note: >-
+      Discovered from the Content-Security-Policy header of
+      www.originenergy.com.au, which whitelists
+      originenergy.au.auth0.com/.well-known/jwks.json. This is the retail
+      customer login, not a developer surface.
+
+developerPortal:
+  url: https://developer.origin-kraken.energy/
+  httpStatus: 200
+  fetched: '2026-07-27'
+  confirmed: true
+  title: Retailer API Documentation
+  note: >-
+    A genuine, publicly readable developer portal — no login wall — Origin
+    branded (it loads /static/clients/origin/styling.css) and running Kraken's
+    "Tako" documentation stack. Sections - GraphQL (guides, reference,
+    changelog), REST (guides, reference), Events (reference), API
+    Announcements. docs.origin-kraken.energy 301-redirects to it. It is a
+    partner portal, not a self-serve one: nowhere on it can a developer obtain
+    credentials.
+  notFoundOnOriginDomains: >-
+    Nothing developer-facing exists on originenergy.com.au itself. The portal
+    only surfaced because the platform vendor's hostnames were derived from the
+    Content-Security-Policy header of the Origin homepage.
+
+probes:
+- url: https://www.originenergy.com.au/
+  httpStatus: 200
+  note: >-
+    Returns 404 to a default curl user agent and 200 to a browser user agent.
+    The CSP header is the single most informative artifact on the site — it
+    whitelists *.origin-kraken.energy, originenergy.au.auth0.com,
+    *.originrx-pac.com.au, *.zuora.com and api.quickstream.westpac.com.au, which
+    is how the Kraken tenancy was found.
+- url: https://www.originenergy.com.au/sitemap.xml
+  httpStatus: 200
+  note: Single-line sitemap; contains three consumer-data-right-cdr help URLs and no developer or API URLs.
+- url: https://www.originenergy.com.au/robots.txt
+  httpStatus: 200
+- url: https://www.originenergy.com.au/developers
+  httpStatus: 404
+- url: https://www.originenergy.com.au/api
+  httpStatus: 404
+- url: https://www.originenergy.com.au/docs
+  httpStatus: 404
+- url: https://www.originenergy.com.au/data
+  httpStatus: 404
+- url: https://www.originenergy.com.au/openapi.json
+  httpStatus: 404
+- url: https://www.originenergy.com.au/swagger.json
+  httpStatus: 404
+- url: https://www.originenergy.com.au/api-docs
+  httpStatus: 404
+- url: https://www.originenergy.com.au/.well-known/openid-configuration
+  httpStatus: 404
+- url: https://developer.originenergy.com.au/
+  httpStatus: '000'
+  note: DNS NXDOMAIN.
+- url: https://developers.originenergy.com.au/
+  httpStatus: '000'
+  note: DNS NXDOMAIN.
+- url: https://data.originenergy.com.au/
+  httpStatus: '000'
+  note: DNS NXDOMAIN.
+- url: https://docs.originenergy.com.au/
+  httpStatus: '000'
+  note: Connection timed out after 25s.
+- url: https://api.originenergy.com.au/
+  httpStatus: 403
+  note: CloudFront "Request blocked" (WAF). An internal gateway, not a developer surface. No documentation anywhere references it.
+- url: https://developer.origin-kraken.energy/
+  httpStatus: 200
+- url: https://docs.origin-kraken.energy/
+  httpStatus: 301
+  note: Redirects to https://developer.origin-kraken.energy/.
+- url: https://developer.origin-kraken.energy/graphql/
+  httpStatus: 200
+- url: https://developer.origin-kraken.energy/graphql/reference/
+  httpStatus: 200
+  note: Links to queries, mutations, objects, interfaces, enums, unions, input-objects, scalars and error-codes reference pages.
+- url: https://developer.origin-kraken.energy/graphql/guides/basics/
+  httpStatus: 200
+  note: >-
+    Documents base URL https://api.origin-kraken.energy/v1/graphql/, the
+    auth server auth.origin-kraken.energy, complexity limit 550, hourly points
+    allowances, cursor pagination with first<=100, and error code KT-CT-1112 for
+    a missing Authorization header.
+- url: https://developer.origin-kraken.energy/rest/
+  httpStatus: 200
+- url: https://developer.origin-kraken.energy/rest/reference/
+  httpStatus: 200
+  note: >-
+    Redoc element with spec-url
+    https://api.origin-kraken.energy/v1/schema?namespaces=default — this is how
+    the machine-readable contracts were located.
+- url: https://developer.origin-kraken.energy/rest/guides/api-basics/
+  httpStatus: 200
+  note: Documents base URL https://api.origin-kraken.energy/v1/ and that the GraphQL bearer token also authenticates REST.
+- url: https://developer.origin-kraken.energy/events/reference/
+  httpStatus: 200
+  note: 1.25 MB event catalogue, several hundred versioned event types.
+- url: https://developer.origin-kraken.energy/announcements/
+  httpStatus: 200
+- url: https://developer.origin-kraken.energy/openapi.json
+  httpStatus: 404
+- url: https://developer.origin-kraken.energy/swagger.json
+  httpStatus: 404
+- url: https://developer.origin-kraken.energy/api-docs
+  httpStatus: 404
+- url: https://api.origin-kraken.energy/
+  httpStatus: 404
+  note: JSON body {"detail":"Not found."}; response carries x-kraken-correlation-id header.
+- url: https://api.origin-kraken.energy/v1/graphql/
+  httpStatus: 400
+  note: >-
+    GET returned {"errors":[{"message":"Must provide query string."}]}. An
+    anonymous POST of {__schema{queryType{name}}} returned HTTP 200 with
+    {"data":{"__schema":{"queryType":{"name":"Query"}}}} — introspection is
+    enabled without authentication. No schema dump was taken or stored.
+- url: https://api.origin-kraken.energy/external-events/schema/
+  httpStatus: 403
+  note: The event contract is not anonymously harvestable, so none is stored.
+- url: https://github.com/origin-energy
+  httpStatus: 200
+  note: >-
+    Real org, created 2010-05-30, 2 public repos
+    (aws-workspaces-ansible-dynamic-inventory, react-native-intercom), both
+    archived, neither API-related. github.com/originenergy and
+    github.com/OriginEnergy are not organisations (GitHub API 404).
+- url: https://www.linkedin.com/company/origin-energy
+  httpStatus: 200
+
+harvested:
+- path: openapi/origin-energy-kraken-default-openapi.yml
+  sourceURL: https://api.origin-kraken.energy/v1/schema?namespaces=default
+  httpStatus: 200
+  contentType: application/yaml
+  fetched: '2026-07-27'
+  format: OpenAPI 3.0.3
+  title: Kraken
+  version: v1
+  paths: 9
+  parses: true
+  note: >-
+    Verbatim. Paths - /data-import/schema/, /external-client-healthcheck/,
+    /external-events/schema/, /v1/accounts/{account_number}/payments/ad-hoc/,
+    /v1/energetiq-public-key/, /v1/unbundled-network-charges/energetiq-public-key/,
+    /v1/voice/twilio/enqueue-audio/, /v1/voice/twilio/voice-announcement/,
+    /v2/orders/schema/. No servers block is declared in the document; the base
+    URL comes from the REST guide.
+- path: openapi/origin-energy-kraken-data-import-openapi.yml
+  sourceURL: https://api.origin-kraken.energy/data-import/schema/
+  httpStatus: 200
+  contentType: application/yaml
+  fetched: '2026-07-27'
+  format: OpenAPI 3.0.3
+  title: Kraken
+  paths: 16
+  parses: true
+  note: >-
+    Verbatim, 837 KB. The customer migration surface — account import processes,
+    account transfer status, historical statements, transactions, payment
+    instructions, business accounts, and v2 account import and validation.
+- path: openapi/origin-energy-kraken-orders-openapi.yml
+  sourceURL: https://api.origin-kraken.energy/v2/orders/schema/
+  httpStatus: 200
+  contentType: application/yaml
+  fetched: '2026-07-27'
+  format: OpenAPI 3.0.3
+  title: Kraken
+  paths: 2
+  parses: true
+  note: Verbatim, 186 KB. /v2/orders/ and /v2/orders/{external_order_id}/.
+- path: openapi/consumer-data-standards-energy-api-openapi.json
+  sourceURL: https://consumerdatastandardsaustralia.github.io/standards/includes/swagger/cds_energy.json
+  httpStatus: 200
+  fetched: '2026-07-27'
+  format: OpenAPI 3.0.3
+  title: CDR Energy API
+  version: 1.36.0
+  paths: 18
+  parses: true
+  publishedBy: Data Standards Body (not Origin Energy)
+  note: >-
+    Stored deliberately and labelled deliberately. This is the contract Origin's
+    CDR endpoints implement, published by the standards body — it is NOT an
+    Origin artifact and must never be presented as one. Paths cover
+    /energy/plans, /energy/electricity/servicepoints (+ usage, + der) and
+    /energy/accounts (+ balance, invoices, billing, concessions,
+    payment-schedule). The document's only declared server is the placeholder
+    https://mtls.dh.example.com/cds-au/v1, described as "MTLS" — the standard
+    itself assumes mutual TLS.
+- path: openapi/consumer-data-standards-common-api-openapi.json
+  sourceURL: https://consumerdatastandardsaustralia.github.io/standards/includes/swagger/cds_common.json
+  httpStatus: 200
+  fetched: '2026-07-27'
+  format: OpenAPI 3.0.3
+  title: CDR Common API
+  version: 1.36.0
+  paths: 4
+  parses: true
+  publishedBy: Data Standards Body (not Origin Energy)
+  note: >-
+    /common/customer, /common/customer/detail, /discovery/status,
+    /discovery/outages. The last two are the endpoints verified live and
+    anonymous on Origin's own public base URI, which is what makes this document
+    the matching contract for a surface actually observed working.
+- path: well-known/origin-energy-kraken-openid-configuration.json
+  sourceURL: https://auth.origin-kraken.energy/.well-known/openid-configuration
+  httpStatus: 200
+  contentType: application/json
+  fetched: '2026-07-27'
+  parses: true
+  note: >-
+    Verbatim, anonymous. Note the URL 301-redirects to the trailing-slash form.
+    113 scopes, 7 response types, no registration endpoint.
+
+notFabricated:
+  statement: >-
+    Nothing in this profile was inferred, generated or assumed. Every host was
+    resolved, every URL was requested, every status code above was observed, and
+    every stored document was fetched and parsed. Where something could not be
+    verified it is recorded as not verified rather than asserted.
+  explicitlyNotFound:
+  - A self-serve developer signup of any kind, on any Origin or Kraken host.
+  - Any Origin-published OpenAPI, AsyncAPI, GraphQL SDL file or Postman collection.
+  - Any open data portal, dataset catalogue or data licence page on an Origin domain.
+  - Any documented public API for the Origin Loop virtual power plant.
+  - Any documented public API for Origin's EV charging or solar products.
+  - Any Green Button, ESPI, OpenADR, IEEE 2030.5, IEC CIM, OCPP or OCPI reference.
+  - >-
+    Any anonymously readable OIDC discovery document for the CDR InfoSec
+    endpoints; the InfoSec base URI is not published in the public CDR Register
+    summary and was not guessed.
+
+context:
+  sectorArchitecture: >-
+    The CDR energy sector is a two-holder design and this matters when reading
+    Origin. The retailer is the primary data holder for accounts, billing,
+    invoices and plans; AEMO is the designated secondary data holder for
+    metering and NMI standing data and acts as the gateway for standardised
+    retailer data. AEMO does not appear in the energy data-holder brands
+    summary, which is consistent with it being a secondary holder rather than a
+    brand.
+  registerShape: >-
+    The register lists 84 energy brands. Roughly 50 of them do not run any CDR
+    infrastructure at all and point their publicBaseUri at
+    cdr.energymadeeasy.gov.au/<brand>, the AER's hosted gateway. The large
+    retailers — Origin, AGL, EnergyAustralia, ENGIE, Alinta, Red, Momentum,
+    Amber — run their own. The mandate was replicable, but the cost of the
+    implementation was not, and the regulator ended up hosting the long tail.
+  platformDependency: >-
+    Origin runs its retail business on Kraken, Octopus Energy's platform, and
+    holds an equity stake in Octopus Energy and in Kraken Technologies. The
+    Kraken tenancy at origin-kraken.energy is therefore both Origin's operating
+    system and the reason Origin has any readable developer documentation at
+    all. The API a developer can actually read at Origin is not Origin's — it is
+    its vendor's, wearing Origin's stylesheet.
+  theFinding: >-
+    Australia proved a statutory data mandate is transplantable between sectors.
+    At Origin the transplant took: the register entry, the certificate authority
+    and the conformant endpoints are all real. What the transplant did not carry
+    across is any notion of developer access. Sixteen years of API practice would
+    call this a compliance surface, not a product — mandated, verified, working,
+    and reachable by almost nobody.

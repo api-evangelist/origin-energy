@@ -1,0 +1,5099 @@
+openapi: 3.0.3
+info:
+  title: Kraken
+  version: v1
+paths:
+  /v2/orders/:
+    post:
+      operationId: V2 Schedule Order
+      description: Use this endpoint to schedule the placement of an order in Kraken.
+        It accepts a request containing the necessary information for order placement,
+        validates the data, and creates an order management task to be executed asynchronously.
+      summary: Schedule the placement of an order in Kraken
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleOrder'
+            examples:
+              ExamplePayload:
+                value:
+                  external_order_id: ORD-12345678
+                  accounts:
+                  - type: EXISTING
+                    account_identifier: acc-ref-001
+                    account_number: A-12345678
+                  businesses:
+                  - type: EXISTING
+                    business_identifier: biz-ref-001
+                    company_name: Tentacle Corp
+                    company_number: '12345678'
+                    business_type: LTD
+                  order_lines:
+                  - type: CONTRACT_RENEWAL
+                    target_type: BUSINESS
+                    target_reference: biz-ref-001
+                    contract:
+                      identifier: contract-001
+                      valid_from_date: '2026-01-01'
+                      signed_at_date: '2025-12-15'
+                      valid_to_date: '2027-01-01'
+                      versions: []
+                      subjects:
+                      - type: ACCOUNT
+                        identifier: acc-ref-001
+                summary: Example payload
+        required: true
+      security:
+      - DataImportViewerAPIKeyAuthentication: []
+      - DRFKrakenTokenAuthentication: []
+      responses:
+        '201':
+          description: The payload has been successfully scheduled.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardizedValidationErrorResponse'
+              examples:
+                ScheduleOrderValidationErrorResponse:
+                  value:
+                    code: order_process_failed_validation
+                    detail: Order payload validation failed.
+                    domain: order_process
+                  summary: Schedule order validation error response
+                  description: If there are validation errors, a 400 Bad Request response
+                    will be returned detailing the errors. To resolve these errors,
+                    refer to the field definitions and validation rules.
+                ScheduleOrderErrorResponse:
+                  value:
+                    non_field_errors:
+                      detail: The order with external order ID ORD-12345678 has already
+                        been processed.
+                      code: order_process_already_processed
+                  summary: Schedule order error response
+                  description: If an order has already been processed, a 400 Bad Request
+                    response will be returned.
+          description: Validation errors occurred while processing the request.
+      x-doc-alerts: []
+  /v2/orders/{external_order_id}/:
+    get:
+      operationId: V2 Order Status
+      description: Use this endpoint to retrieve the current status of an order. The
+        order is identified by its external_order_id.
+      summary: Return the status of an order process
+      parameters:
+      - in: path
+        name: external_order_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - orders
+      security:
+      - DataImportViewerAPIKeyAuthentication: []
+      - DRFKrakenTokenAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportStatusResponse'
+              examples:
+                OrderStatusSuccessResponse(processed):
+                  value:
+                    status: PROCESSED
+                    created_at: '2025-04-17T00:00:00Z'
+                    modified_at: '2025-04-17T01:00:00Z'
+                    latest_error: null
+                    latest_event:
+                      event: ORDER_PROCESS_SUCCEEDED
+                      occurred_at: '2025-04-17T01:00:00Z'
+                      data: null
+                  summary: Order status success response (processed)
+                  description: A successful response for an order that has been processed.
+                OrderStatusSuccessResponse(errored):
+                  value:
+                    status: ERRORED
+                    created_at: '2025-04-17T00:00:00Z'
+                    modified_at: '2025-04-17T01:30:00Z'
+                    latest_error:
+                      code: validation_error
+                      detail: Account number is invalid
+                      domain: accounts
+                    latest_event:
+                      event: ORDER_PROCESS_ERRORED
+                      occurred_at: '2025-04-17T01:30:00Z'
+                      data:
+                        code: validation_error
+                        detail: Account number is invalid
+                        domain: accounts
+                  summary: Order status success response (errored)
+                  description: A successful response for an order that has errored
+                    during processing.
+          description: The status of the order.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                OrderNotFoundResponse:
+                  value:
+                    detail: The requested resource was not found.
+                    code: not_found
+                  summary: Order not found response
+                  description: Returned when no order process exists for the given
+                    external_order_id.
+          description: Order not found for the given external_order_id.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                InvalidOrderProcessStatusResponse:
+                  value:
+                    detail: 'Order process has no status set for external_order_id:
+                      example-order-id'
+                    code: invalid_status_for_order_process
+                  summary: Invalid order process status response
+                  description: Returned when the order process has an invalid or missing
+                    status.
+          description: The order process has an invalid or missing status.
+      x-doc-alerts: []
+components:
+  schemas:
+    AccountReference:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: <p>The namespace refers to the particular context the reference
+            exists in. For example, <code>tentacle-energy.allpay-client-reference-numbers</code>.</p>
+          maxLength: 50
+          x-validators:
+          - name: Validate account reference namespace
+            description: Validate that the account reference namespace matches an
+              available account reference namespace in Kraken.
+            possible_errors:
+            - invalid_reference_namespace
+        value:
+          type: string
+          description: <p>The unique identifier for the account.</p>
+          maxLength: 100
+      required:
+      - namespace
+      - value
+      x-validators:
+      - name: Validate account reference does not already exist
+        description: Validate that the account reference does not already exist for
+          any account in Kraken.
+        possible_errors:
+        - reference_already_exists
+    Address:
+      type: object
+      properties:
+        administrative_area:
+          type: string
+          default: ''
+          description: <p>The top-level administrative subdivision. For example a
+            US state, Australian state/territory, Italian region, UK constituent nation
+            or Japanese prefecture.</p>
+          maxLength: 512
+        country:
+          type: string
+          description: <p>The ISO 3166-1-alpha-2 code of the country that this address
+            belongs to, for example AU (Australia) or GB (Great Britain).</p>
+          maxLength: 2
+        delivery_point_identifier:
+          type: string
+          description: <p>The unique country specific identifier for an address. For
+            example the UPRN in the UK or G-NAF ID in Australia.</p>
+          maxLength: 11
+          x-validators:
+          - name: Validate delivery point identifier
+            description: Validate that the delivery point identifier contains only
+              capital letters and numbers.
+            possible_errors:
+            - invalid_delivery_point_identifier
+        dependent_locality:
+          type: string
+          default: ''
+          description: <p>Dependent localities, neighbourhoods or boroughs. These
+            are sometimes included in an address when the delivery point is outside
+            the boundary of the main postal town that serves it.</p>
+          maxLength: 512
+        locality:
+          type: string
+          default: ''
+          description: <p>The city/town portion of an address. For example a US city,
+            Australian suburb/town, Italian comune or UK postal town.</p>
+          maxLength: 512
+        name:
+          type: string
+          default: ''
+          description: <p>The recipient's name.</p>
+          deprecated: true
+        organization:
+          type: string
+          default: ''
+          description: <p>The company or organization to which the address belongs.</p>
+          deprecated: true
+        postal_code:
+          type: string
+          default: ''
+          description: <p>The code assigned to a geographical area representing a
+            group of addresses. For example a US ZIP code, Australian postcode, Italian
+            CAP code or UK postcode.</p>
+          maxLength: 512
+        sorting_code:
+          type: string
+          default: ''
+          description: <p>This is a non-geographic code used for recipients of large
+            quantities of post, such as companies or government departments. An example
+            is the French CEDEX code.</p>
+          maxLength: 512
+        street_address:
+          type: string
+          default: ''
+          description: <p>Free text field for the address. Either this field or the
+            <code>structured_address</code> field should be provided, not both.</p>
+        structured_street_address:
+          type: object
+          nullable: true
+          description: <p>Structured address object. Fields for this object are territory
+            dependent. Please speak to the tech team about uses of this field. Either
+            this field or the <code>street_address</code> should be provided, not
+            both.</p>
+      required:
+      - country
+      x-validators:
+      - name: Validate and normalize postcode
+        description: Validate the postal code and normalize it to a standard format.
+        possible_errors:
+        - invalid_postcode
+      - name: Validate address
+        description: Validate that the address is in the correct format.
+        possible_errors:
+        - invalid_address
+    AgreementIntermediaryDetails:
+      type: object
+      properties:
+        external_id:
+          type: string
+          nullable: true
+          description: <p>An external identifier for the intermediary relationship.
+            This can be used to store a reference to this relationship in an external
+            system (e.g., the source system during migration).</p>
+          maxLength: 255
+        portfolio_number:
+          type: string
+          description: <p>The number of the intermediary portfolio to link this agreement
+            to. The portfolio must exist before creating the agreement.</p>
+          x-validators:
+          - name: Validate the portfolio number
+            description: Validate that the portfolio number matches the expected format
+              (P- followed by 8 uppercase alphanumeric characters).
+            possible_errors:
+            - invalid_portfolio_number
+      required:
+      - portfolio_number
+    AusAgreementAddOn:
+      type: object
+      properties:
+        code:
+          type: string
+          description: <p>Code for addon that must have been configured for the product
+            in kraken.</p>
+          x-validators:
+          - name: data-import--validation--contract-addon-has-valid-code--display-name
+            description: data-import--validation--contract-addon-has-valid-code--help-text
+            possible_errors:
+            - addon_code_not_found
+      required:
+      - code
+    AusEEPAExportContractedVolumeConfiguration:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/AusEEPAExportContractedVolumePeriod'
+          description: <p>A list of EEPA export contracted volume periods.</p>
+          minItems: 1
+          x-validators:
+          - name: Validate EEPA export contracted volume periods
+            description: 'Validate that the EEPA export contracted volume periods
+              form a valid term: no overlapping general periods, and no supply point
+              repeated across overlapping periods.'
+            possible_errors:
+            - invalid_eepa_export_contracted_volume
+      required:
+      - periods
+      - term_type
+    AusEEPAExportContractedVolumePeriod:
+      type: object
+      properties:
+        supply_point_external_identifiers:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: <p>The external identifiers (NMIs) of the supply points this
+            period applies to. Leave null to apply to all supply points not covered
+            by a more specific period; when provided the list must not be empty.</p>
+          minItems: 1
+        unit:
+          type: string
+          description: <p>The unit for the contracted export volume (e.g. kWh).</p>
+        valid_from_date:
+          type: string
+          format: date
+          description: <p>The date the period is valid from (inclusive).</p>
+        valid_to_date:
+          type: string
+          format: date
+          description: <p>The date the period is valid to (exclusive; the period ends
+            before this date).</p>
+        value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,4})?$
+          description: <p>The contracted export volume cap for the period.</p>
+      required:
+      - supply_point_external_identifiers
+      - unit
+      - valid_from_date
+      - valid_to_date
+      - value
+      x-validators:
+      - name: Convert supply point external identifiers to IDs
+        description: Convert each supply point external identifier (NMI) to the internal
+          supply point ID by looking up the supply point in the database. A null value
+          is left unchanged and applies the period to all supply points.
+        possible_errors:
+        - supply_point_not_found
+      - name: Validate <code>⁨valid_to⁩</code> not before <code>⁨valid_from⁩</code>
+        description: Validates that <code>⁨valid_to⁩</code>, if given, is on or later
+          than <code>⁨valid_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+    AusElectricityAgreement:
+      type: object
+      properties:
+        market_name:
+          enum:
+          - AUS_ELECTRICITY
+          type: string
+          x-spec-enum-id: 497cd6e4782e8889
+          description: <p>The market name of the supply point.</p>
+          x-enum-descriptions:
+            AUS_ELECTRICITY: AUS_ELECTRICITY
+        account_reference:
+          type: string
+          description: <p>The identifier of the account that owns this supply point.
+            Must match one of the contract's subject accounts.</p>
+        agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the agreement was agreed at.</p>
+        business_contract_identifier:
+          type: string
+          nullable: true
+          description: <p>The identifier of the business contract this agreement should
+            be linked to.</p>
+        characteristics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCharacteristic'
+          nullable: true
+          description: <p>Characteristics of the agreed product that the customer
+            has chosen.</p>
+          x-validators:
+          - name: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field
+            description: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field.
+            possible_errors:
+            - children_with_duplicate_values
+        effective_from:
+          type: string
+          format: date
+          description: <p>The date from which the agreement is effective (inclusive),
+            i.e. the agreement starts on the midnight of this date, such that this
+            date becomes the first day covered by this agreement.</p>
+        effective_to:
+          type: string
+          format: date
+          nullable: true
+          description: <p>The date to which the agreement is effective (exclusive),
+            i.e. the agreement will end on the midnight of this date, such that the
+            previous day is the last day covered by this agreement.</p>
+        intermediary:
+          allOf:
+          - $ref: '#/components/schemas/AgreementIntermediaryDetails'
+          nullable: true
+          description: <p>Details about the intermediary relationship for this agreement.
+            When provided, an intermediary link will be created between the agreement
+            and the portfolio, establishing a business intermediary relationship.</p>
+        product_addons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AusAgreementAddOn'
+          nullable: true
+          description: <p>A list of product addons that apply to the specific agreement.</p>
+        rate_overrides:
+          type: object
+          additionalProperties:
+            type: string
+            format: decimal
+            pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
+          description: <p>Agreement rate overrides.</p>
+        rates_agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the rates were agreed at.</p>
+        supply_point_identifier:
+          type: string
+          description: <p>The identifier of the supply point to add the agreement
+            to.</p>
+        tariff_code:
+          type: string
+          description: <p>The code for the agreement tariff. Must match an existing
+            tariff code of an active product.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+      required:
+      - account_reference
+      - effective_from
+      - market_name
+      - supply_point_identifier
+      - tariff_code
+      x-validators:
+      - name: Validate <code>⁨effective_to⁩</code> not before <code>⁨effective_from⁩</code>
+        description: Validates that <code>⁨effective_to⁩</code>, if given, is on or
+          later than <code>⁨effective_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+    AusEmbeddedElectricityAgreement:
+      type: object
+      properties:
+        market_name:
+          enum:
+          - AUS_EMBEDDED_ELECTRICITY
+          type: string
+          x-spec-enum-id: eaeb85db1513ab66
+          description: <p>The market name of the supply point.</p>
+          x-enum-descriptions:
+            AUS_EMBEDDED_ELECTRICITY: AUS_EMBEDDED_ELECTRICITY
+        account_reference:
+          type: string
+          description: <p>The identifier of the account that owns this supply point.
+            Must match one of the contract's subject accounts.</p>
+        agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the agreement was agreed at.</p>
+        business_contract_identifier:
+          type: string
+          nullable: true
+          description: <p>The identifier of the business contract this agreement should
+            be linked to.</p>
+        characteristics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCharacteristic'
+          nullable: true
+          description: <p>Characteristics of the agreed product that the customer
+            has chosen.</p>
+          x-validators:
+          - name: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field
+            description: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field.
+            possible_errors:
+            - children_with_duplicate_values
+        effective_from:
+          type: string
+          format: date
+          description: <p>The date from which the agreement is effective (inclusive),
+            i.e. the agreement starts on the midnight of this date, such that this
+            date becomes the first day covered by this agreement.</p>
+        effective_to:
+          type: string
+          format: date
+          nullable: true
+          description: <p>The date to which the agreement is effective (exclusive),
+            i.e. the agreement will end on the midnight of this date, such that the
+            previous day is the last day covered by this agreement.</p>
+        intermediary:
+          allOf:
+          - $ref: '#/components/schemas/AgreementIntermediaryDetails'
+          nullable: true
+          description: <p>Details about the intermediary relationship for this agreement.
+            When provided, an intermediary link will be created between the agreement
+            and the portfolio, establishing a business intermediary relationship.</p>
+        product_addons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AusAgreementAddOn'
+          nullable: true
+          description: <p>A list of product addons that apply to the specific agreement.</p>
+        rate_overrides:
+          type: object
+          additionalProperties:
+            type: string
+            format: decimal
+            pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
+          description: <p>Agreement rate overrides.</p>
+        rates_agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the rates were agreed at.</p>
+        supply_point_identifier:
+          type: string
+          description: <p>The identifier of the supply point to add the agreement
+            to.</p>
+        tariff_code:
+          type: string
+          description: <p>The code for the agreement tariff. Must match an existing
+            tariff code of an active product.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+      required:
+      - account_reference
+      - effective_from
+      - market_name
+      - supply_point_identifier
+      - tariff_code
+      x-validators:
+      - name: Validate <code>⁨effective_to⁩</code> not before <code>⁨effective_from⁩</code>
+        description: Validates that <code>⁨effective_to⁩</code>, if given, is on or
+          later than <code>⁨effective_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+    AusEmbeddedGasAgreement:
+      type: object
+      properties:
+        market_name:
+          enum:
+          - AUS_EMBEDDED_GAS
+          type: string
+          x-spec-enum-id: 474da700104b555f
+          description: <p>The market name of the supply point.</p>
+          x-enum-descriptions:
+            AUS_EMBEDDED_GAS: AUS_EMBEDDED_GAS
+        account_reference:
+          type: string
+          description: <p>The identifier of the account that owns this supply point.
+            Must match one of the contract's subject accounts.</p>
+        agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the agreement was agreed at.</p>
+        business_contract_identifier:
+          type: string
+          nullable: true
+          description: <p>The identifier of the business contract this agreement should
+            be linked to.</p>
+        characteristics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCharacteristic'
+          nullable: true
+          description: <p>Characteristics of the agreed product that the customer
+            has chosen.</p>
+          x-validators:
+          - name: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field
+            description: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field.
+            possible_errors:
+            - children_with_duplicate_values
+        effective_from:
+          type: string
+          format: date
+          description: <p>The date from which the agreement is effective (inclusive),
+            i.e. the agreement starts on the midnight of this date, such that this
+            date becomes the first day covered by this agreement.</p>
+        effective_to:
+          type: string
+          format: date
+          nullable: true
+          description: <p>The date to which the agreement is effective (exclusive),
+            i.e. the agreement will end on the midnight of this date, such that the
+            previous day is the last day covered by this agreement.</p>
+        intermediary:
+          allOf:
+          - $ref: '#/components/schemas/AgreementIntermediaryDetails'
+          nullable: true
+          description: <p>Details about the intermediary relationship for this agreement.
+            When provided, an intermediary link will be created between the agreement
+            and the portfolio, establishing a business intermediary relationship.</p>
+        product_addons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AusAgreementAddOn'
+          nullable: true
+          description: <p>A list of product addons that apply to the specific agreement.</p>
+        rate_overrides:
+          type: object
+          additionalProperties:
+            type: string
+            format: decimal
+            pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
+          description: <p>Agreement rate overrides.</p>
+        rates_agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the rates were agreed at.</p>
+        supply_point_identifier:
+          type: string
+          description: <p>The identifier of the supply point to add the agreement
+            to.</p>
+        tariff_code:
+          type: string
+          description: <p>The code for the agreement tariff. Must match an existing
+            tariff code of an active product.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+      required:
+      - account_reference
+      - effective_from
+      - market_name
+      - supply_point_identifier
+      - tariff_code
+      x-validators:
+      - name: Validate <code>⁨effective_to⁩</code> not before <code>⁨effective_from⁩</code>
+        description: Validates that <code>⁨effective_to⁩</code>, if given, is on or
+          later than <code>⁨effective_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+    AusEmbeddedUnmeteredElectricityAgreement:
+      type: object
+      properties:
+        market_name:
+          enum:
+          - AUS_EMBEDDED_UNMETERED_ELECTRICITY
+          type: string
+          x-spec-enum-id: f42813c05e71afe0
+          description: <p>The market name of the supply point.</p>
+          x-enum-descriptions:
+            AUS_EMBEDDED_UNMETERED_ELECTRICITY: AUS_EMBEDDED_UNMETERED_ELECTRICITY
+        account_reference:
+          type: string
+          description: <p>The identifier of the account that owns this supply point.
+            Must match one of the contract's subject accounts.</p>
+        agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the agreement was agreed at.</p>
+        business_contract_identifier:
+          type: string
+          nullable: true
+          description: <p>The identifier of the business contract this agreement should
+            be linked to.</p>
+        characteristics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCharacteristic'
+          nullable: true
+          description: <p>Characteristics of the agreed product that the customer
+            has chosen.</p>
+          x-validators:
+          - name: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field
+            description: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field.
+            possible_errors:
+            - children_with_duplicate_values
+        effective_from:
+          type: string
+          format: date
+          description: <p>The date from which the agreement is effective (inclusive),
+            i.e. the agreement starts on the midnight of this date, such that this
+            date becomes the first day covered by this agreement.</p>
+        effective_to:
+          type: string
+          format: date
+          nullable: true
+          description: <p>The date to which the agreement is effective (exclusive),
+            i.e. the agreement will end on the midnight of this date, such that the
+            previous day is the last day covered by this agreement.</p>
+        intermediary:
+          allOf:
+          - $ref: '#/components/schemas/AgreementIntermediaryDetails'
+          nullable: true
+          description: <p>Details about the intermediary relationship for this agreement.
+            When provided, an intermediary link will be created between the agreement
+            and the portfolio, establishing a business intermediary relationship.</p>
+        product_addons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AusAgreementAddOn'
+          nullable: true
+          description: <p>A list of product addons that apply to the specific agreement.</p>
+        rate_overrides:
+          type: object
+          additionalProperties:
+            type: string
+            format: decimal
+            pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
+          description: <p>Agreement rate overrides.</p>
+        rates_agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the rates were agreed at.</p>
+        supply_point_identifier:
+          type: string
+          description: <p>The identifier of the supply point to add the agreement
+            to.</p>
+        tariff_code:
+          type: string
+          description: <p>The code for the agreement tariff. Must match an existing
+            tariff code of an active product.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+      required:
+      - account_reference
+      - effective_from
+      - market_name
+      - supply_point_identifier
+      - tariff_code
+      x-validators:
+      - name: Validate <code>⁨effective_to⁩</code> not before <code>⁨effective_from⁩</code>
+        description: Validates that <code>⁨effective_to⁩</code>, if given, is on or
+          later than <code>⁨effective_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+    AusEmbeddedUnmeteredGasAgreement:
+      type: object
+      properties:
+        market_name:
+          enum:
+          - AUS_EMBEDDED_UNMETERED_GAS
+          type: string
+          x-spec-enum-id: 2908a0235ee48f24
+          description: <p>The market name of the supply point.</p>
+          x-enum-descriptions:
+            AUS_EMBEDDED_UNMETERED_GAS: AUS_EMBEDDED_UNMETERED_GAS
+        account_reference:
+          type: string
+          description: <p>The identifier of the account that owns this supply point.
+            Must match one of the contract's subject accounts.</p>
+        agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the agreement was agreed at.</p>
+        business_contract_identifier:
+          type: string
+          nullable: true
+          description: <p>The identifier of the business contract this agreement should
+            be linked to.</p>
+        characteristics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCharacteristic'
+          nullable: true
+          description: <p>Characteristics of the agreed product that the customer
+            has chosen.</p>
+          x-validators:
+          - name: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field
+            description: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field.
+            possible_errors:
+            - children_with_duplicate_values
+        effective_from:
+          type: string
+          format: date
+          description: <p>The date from which the agreement is effective (inclusive),
+            i.e. the agreement starts on the midnight of this date, such that this
+            date becomes the first day covered by this agreement.</p>
+        effective_to:
+          type: string
+          format: date
+          nullable: true
+          description: <p>The date to which the agreement is effective (exclusive),
+            i.e. the agreement will end on the midnight of this date, such that the
+            previous day is the last day covered by this agreement.</p>
+        intermediary:
+          allOf:
+          - $ref: '#/components/schemas/AgreementIntermediaryDetails'
+          nullable: true
+          description: <p>Details about the intermediary relationship for this agreement.
+            When provided, an intermediary link will be created between the agreement
+            and the portfolio, establishing a business intermediary relationship.</p>
+        product_addons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AusAgreementAddOn'
+          nullable: true
+          description: <p>A list of product addons that apply to the specific agreement.</p>
+        rate_overrides:
+          type: object
+          additionalProperties:
+            type: string
+            format: decimal
+            pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
+          description: <p>Agreement rate overrides.</p>
+        rates_agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the rates were agreed at.</p>
+        supply_point_identifier:
+          type: string
+          description: <p>The identifier of the supply point to add the agreement
+            to.</p>
+        tariff_code:
+          type: string
+          description: <p>The code for the agreement tariff. Must match an existing
+            tariff code of an active product.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+      required:
+      - account_reference
+      - effective_from
+      - market_name
+      - supply_point_identifier
+      - tariff_code
+      x-validators:
+      - name: Validate <code>⁨effective_to⁩</code> not before <code>⁨effective_from⁩</code>
+        description: Validates that <code>⁨effective_to⁩</code>, if given, is on or
+          later than <code>⁨effective_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+    AusEmbeddedWaterAgreement:
+      type: object
+      properties:
+        market_name:
+          enum:
+          - AUS_EMBEDDED_WATER
+          type: string
+          x-spec-enum-id: 3fdb89ad8943b7b7
+          description: <p>The market name of the supply point.</p>
+          x-enum-descriptions:
+            AUS_EMBEDDED_WATER: AUS_EMBEDDED_WATER
+        account_reference:
+          type: string
+          description: <p>The identifier of the account that owns this supply point.
+            Must match one of the contract's subject accounts.</p>
+        agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the agreement was agreed at.</p>
+        business_contract_identifier:
+          type: string
+          nullable: true
+          description: <p>The identifier of the business contract this agreement should
+            be linked to.</p>
+        characteristics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCharacteristic'
+          nullable: true
+          description: <p>Characteristics of the agreed product that the customer
+            has chosen.</p>
+          x-validators:
+          - name: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field
+            description: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field.
+            possible_errors:
+            - children_with_duplicate_values
+        effective_from:
+          type: string
+          format: date
+          description: <p>The date from which the agreement is effective (inclusive),
+            i.e. the agreement starts on the midnight of this date, such that this
+            date becomes the first day covered by this agreement.</p>
+        effective_to:
+          type: string
+          format: date
+          nullable: true
+          description: <p>The date to which the agreement is effective (exclusive),
+            i.e. the agreement will end on the midnight of this date, such that the
+            previous day is the last day covered by this agreement.</p>
+        intermediary:
+          allOf:
+          - $ref: '#/components/schemas/AgreementIntermediaryDetails'
+          nullable: true
+          description: <p>Details about the intermediary relationship for this agreement.
+            When provided, an intermediary link will be created between the agreement
+            and the portfolio, establishing a business intermediary relationship.</p>
+        product_addons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AusAgreementAddOn'
+          nullable: true
+          description: <p>A list of product addons that apply to the specific agreement.</p>
+        rate_overrides:
+          type: object
+          additionalProperties:
+            type: string
+            format: decimal
+            pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
+          description: <p>Agreement rate overrides.</p>
+        rates_agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the rates were agreed at.</p>
+        supply_point_identifier:
+          type: string
+          description: <p>The identifier of the supply point to add the agreement
+            to.</p>
+        tariff_code:
+          type: string
+          description: <p>The code for the agreement tariff. Must match an existing
+            tariff code of an active product.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+      required:
+      - account_reference
+      - effective_from
+      - market_name
+      - supply_point_identifier
+      - tariff_code
+      x-validators:
+      - name: Validate <code>⁨effective_to⁩</code> not before <code>⁨effective_from⁩</code>
+        description: Validates that <code>⁨effective_to⁩</code>, if given, is on or
+          later than <code>⁨effective_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+    AusGasAgreement:
+      type: object
+      properties:
+        market_name:
+          enum:
+          - AUS_GAS
+          type: string
+          x-spec-enum-id: 0c099a1ab65e563b
+          description: <p>The market name of the supply point.</p>
+          x-enum-descriptions:
+            AUS_GAS: AUS_GAS
+        account_reference:
+          type: string
+          description: <p>The identifier of the account that owns this supply point.
+            Must match one of the contract's subject accounts.</p>
+        agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the agreement was agreed at.</p>
+        business_contract_identifier:
+          type: string
+          nullable: true
+          description: <p>The identifier of the business contract this agreement should
+            be linked to.</p>
+        characteristics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCharacteristic'
+          nullable: true
+          description: <p>Characteristics of the agreed product that the customer
+            has chosen.</p>
+          x-validators:
+          - name: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field
+            description: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field.
+            possible_errors:
+            - children_with_duplicate_values
+        effective_from:
+          type: string
+          format: date
+          description: <p>The date from which the agreement is effective (inclusive),
+            i.e. the agreement starts on the midnight of this date, such that this
+            date becomes the first day covered by this agreement.</p>
+        effective_to:
+          type: string
+          format: date
+          nullable: true
+          description: <p>The date to which the agreement is effective (exclusive),
+            i.e. the agreement will end on the midnight of this date, such that the
+            previous day is the last day covered by this agreement.</p>
+        intermediary:
+          allOf:
+          - $ref: '#/components/schemas/AgreementIntermediaryDetails'
+          nullable: true
+          description: <p>Details about the intermediary relationship for this agreement.
+            When provided, an intermediary link will be created between the agreement
+            and the portfolio, establishing a business intermediary relationship.</p>
+        product_addons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AusAgreementAddOn'
+          nullable: true
+          description: <p>A list of product addons that apply to the specific agreement.</p>
+        rate_overrides:
+          type: object
+          additionalProperties:
+            type: string
+            format: decimal
+            pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
+          description: <p>Agreement rate overrides.</p>
+        rates_agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the rates were agreed at.</p>
+        supply_point_identifier:
+          type: string
+          description: <p>The identifier of the supply point to add the agreement
+            to.</p>
+        tariff_code:
+          type: string
+          description: <p>The code for the agreement tariff. Must match an existing
+            tariff code of an active product.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+      required:
+      - account_reference
+      - effective_from
+      - market_name
+      - supply_point_identifier
+      - tariff_code
+      x-validators:
+      - name: Validate <code>⁨effective_to⁩</code> not before <code>⁨effective_from⁩</code>
+        description: Validates that <code>⁨effective_to⁩</code>, if given, is on or
+          later than <code>⁨effective_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+    AusPropertyRichAddress:
+      type: object
+      properties:
+        administrative_area:
+          enum:
+          - ACT
+          - NSW
+          - NT
+          - QLD
+          - SA
+          - TAS
+          - VIC
+          - WA
+          type: string
+          x-spec-enum-id: 0083aa6c13849f88
+          description: <p>Australian state.</p>
+          x-enum-descriptions:
+            ACT: ACT
+            NSW: NSW
+            NT: NT
+            QLD: QLD
+            SA: SA
+            TAS: TAS
+            VIC: VIC
+            WA: WA
+        country:
+          type: string
+          description: <p>The ISO 3166-1-alpha-2 code of the country that this address
+            belongs to, for example AU (Australia) or GB (Great Britain).</p>
+          maxLength: 2
+        delivery_point_identifier:
+          type: string
+          description: <p>The unique country specific identifier for an address. For
+            example the UPRN in the UK or G-NAF ID in Australia.</p>
+          maxLength: 11
+          x-validators:
+          - name: Validate delivery point identifier
+            description: Validate that the delivery point identifier contains only
+              capital letters and numbers.
+            possible_errors:
+            - invalid_delivery_point_identifier
+        dependent_locality:
+          type: string
+          default: ''
+          description: <p>Dependent localities, neighbourhoods or boroughs. These
+            are sometimes included in an address when the delivery point is outside
+            the boundary of the main postal town that serves it.</p>
+          maxLength: 512
+        locality:
+          type: string
+          description: <p>Australian suburb or town.</p>
+          maxLength: 46
+        name:
+          type: string
+          default: ''
+          description: <p>The recipient's name.</p>
+          deprecated: true
+        organization:
+          type: string
+          default: ''
+          description: <p>The company or organization to which the address belongs.</p>
+          deprecated: true
+        postal_code:
+          type: string
+          description: <p>Australian postal code.</p>
+          maxLength: 4
+          x-validators:
+          - name: Validate and normalize postcode
+            description: Validate the postal code and normalize it to a standard format.
+            possible_errors:
+            - invalid_postcode
+        sorting_code:
+          type: string
+          default: ''
+          description: <p>This is a non-geographic code used for recipients of large
+            quantities of post, such as companies or government departments. An example
+            is the French CEDEX code.</p>
+          maxLength: 512
+        street_address:
+          type: string
+          default: ''
+          description: <p>Free text field for the address. Either this field or the
+            <code>structured_address</code> field should be provided, not both.</p>
+        structured_street_address:
+          allOf:
+          - $ref: '#/components/schemas/AusStructuredStreetAddress'
+          description: <p>Structured address object. Fields for this object are territory
+            dependent. Please speak to the tech team about uses of this field. Either
+            this field or the <code>street_address</code> should be provided, not
+            both.</p>
+      required:
+      - administrative_area
+      - country
+      - locality
+      - postal_code
+      - structured_street_address
+      x-validators:
+      - name: Validate and normalize postcode
+        description: Validate the postal code and normalize it to a standard format.
+        possible_errors:
+        - invalid_postcode
+      - name: Validate address
+        description: Validate that the address is in the correct format.
+        possible_errors:
+        - invalid_address
+    AusSolarPpaAgreement:
+      type: object
+      properties:
+        market_name:
+          enum:
+          - AUS_SOLAR_PPA
+          type: string
+          x-spec-enum-id: 7489e19a68f235c9
+          description: <p>The market name of the supply point.</p>
+          x-enum-descriptions:
+            AUS_SOLAR_PPA: AUS_SOLAR_PPA
+        account_reference:
+          type: string
+          description: <p>The identifier of the account that owns this supply point.
+            Must match one of the contract's subject accounts.</p>
+        agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the agreement was agreed at.</p>
+        business_contract_identifier:
+          type: string
+          nullable: true
+          description: <p>The identifier of the business contract this agreement should
+            be linked to.</p>
+        characteristics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCharacteristic'
+          nullable: true
+          description: <p>Characteristics of the agreed product that the customer
+            has chosen.</p>
+          x-validators:
+          - name: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field
+            description: Validate that each child has unique values for the <code>⁨code⁩</code>
+              field.
+            possible_errors:
+            - children_with_duplicate_values
+        effective_from:
+          type: string
+          format: date
+          description: <p>The date from which the agreement is effective (inclusive),
+            i.e. the agreement starts on the midnight of this date, such that this
+            date becomes the first day covered by this agreement.</p>
+        effective_to:
+          type: string
+          format: date
+          nullable: true
+          description: <p>The date to which the agreement is effective (exclusive),
+            i.e. the agreement will end on the midnight of this date, such that the
+            previous day is the last day covered by this agreement.</p>
+        intermediary:
+          allOf:
+          - $ref: '#/components/schemas/AgreementIntermediaryDetails'
+          nullable: true
+          description: <p>Details about the intermediary relationship for this agreement.
+            When provided, an intermediary link will be created between the agreement
+            and the portfolio, establishing a business intermediary relationship.</p>
+        product_addons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AusAgreementAddOn'
+          nullable: true
+          description: <p>A list of product addons that apply to the specific agreement.</p>
+        rate_overrides:
+          type: object
+          additionalProperties:
+            type: string
+            format: decimal
+            pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
+          description: <p>Agreement rate overrides.</p>
+        rates_agreed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The datetime the rates were agreed at.</p>
+        supply_point_identifier:
+          type: string
+          description: <p>The identifier of the supply point to add the agreement
+            to.</p>
+        tariff_code:
+          type: string
+          description: <p>The code for the agreement tariff. Must match an existing
+            tariff code of an active product.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+      required:
+      - account_reference
+      - effective_from
+      - market_name
+      - supply_point_identifier
+      - tariff_code
+      x-validators:
+      - name: Validate <code>⁨effective_to⁩</code> not before <code>⁨effective_from⁩</code>
+        description: Validates that <code>⁨effective_to⁩</code>, if given, is on or
+          later than <code>⁨effective_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+    AusStructuredStreetAddress:
+      type: object
+      properties:
+        building_or_property_name:
+          type: string
+          description: <p>Building or property name. No longer than 60 chars as two
+            lines of 30 chars each. If more than 30 chars, there must be a <code>\n</code>
+            after 30 chars.</p>
+          maxLength: 60
+          x-validators:
+          - name: Validate multiline max length
+            description: Validates that the value has at most 2 lines and max 30 characters
+              per line.
+            possible_errors:
+            - multiline_max_length_exceeded
+        flat_or_unit_number:
+          type: string
+          description: <p>if supplied, <code>flat_or_unit_type</code> must be as well.
+            limit of 7 characters, numbers and <code>.</code> with optional alphabetical
+            prefix and suffix.</p>
+        flat_or_unit_type:
+          enum:
+          - ANT
+          - APT
+          - ATM
+          - BBQ
+          - BLCK
+          - BTSD
+          - BLDG
+          - BNGW
+          - CAGE
+          - CARP
+          - CARS
+          - CLUB
+          - COOL
+          - CTGE
+          - DUP
+          - FY
+          - F
+          - GRGE
+          - HALL
+          - HSE
+          - KSK
+          - LSE
+          - LBBY
+          - LOFT
+          - LOT
+          - MSNT
+          - MB
+          - 'OFF'
+          - PTHS
+          - REAR
+          - RESV
+          - RM
+          - SEC
+          - SHED
+          - SHOP
+          - SHRM
+          - SIGN
+          - SITE
+          - SL
+          - STOR
+          - STR
+          - STU
+          - SUBS
+          - SE
+          - TNCY
+          - TWR
+          - TNHS
+          - U
+          - VLT
+          - VLLA
+          - WARD
+          - WE
+          - WKSH
+          type: string
+          x-spec-enum-id: 9306e5734ae7a103
+          description: <p>Flat or unit type.</p>
+          x-enum-descriptions:
+            ANT: Antenna
+            APT: Apartment
+            ATM: ATM
+            BBQ: Barbeque
+            BLCK: Block
+            BTSD: Boatshed
+            BLDG: Building
+            BNGW: Bungalow
+            CAGE: Cage
+            CARP: Carpark
+            CARS: Carspace
+            CLUB: Club
+            COOL: Coolroom
+            CTGE: Cottage
+            DUP: Duplex
+            FY: Factory
+            F: Flat
+            GRGE: Garage
+            HALL: Hall
+            HSE: House
+            KSK: Kiosk
+            LSE: Lease
+            LBBY: Lobby
+            LOFT: Loft
+            LOT: Lot
+            MSNT: Maisonette
+            MB: Marine Berth
+            'OFF': Office
+            PTHS: Penthouse
+            REAR: Rear
+            RESV: Reserve
+            RM: Room
+            SEC: Section
+            SHED: Shed
+            SHOP: Shop
+            SHRM: Showroom
+            SIGN: Sign
+            SITE: Site
+            SL: Stall
+            STOR: Store
+            STR: Strata Unit
+            STU: Studio
+            SUBS: Substation
+            SE: Suite
+            TNCY: Tenancy
+            TWR: Tower
+            TNHS: Townhouse
+            U: Unit
+            VLT: Vault
+            VLLA: Villa
+            WARD: Ward
+            WE: Warehouse
+            WKSH: Workshop
+        floor_or_level_number:
+          type: string
+          description: <p>if supplied, <code>floor_or_level_type</code> must be as
+            well. limit of 5 characters, numbers and <code>.</code> with optional
+            alphabetical prefix and suffix</p>
+          maxLength: 7
+        floor_or_level_type:
+          enum:
+          - B
+          - FL
+          - G
+          - L
+          - LG
+          - M
+          - LL
+          - OD
+          - P
+          - PTHS
+          - PLF
+          - PDM
+          - RT
+          - SB
+          - UG
+          - LB
+          type: string
+          x-spec-enum-id: 9810b2a79eb3d5cf
+          description: <p>Floor or level type.</p>
+          x-enum-descriptions:
+            B: Basement
+            FL: Floor
+            G: Ground
+            L: Level
+            LG: Lower Ground
+            M: Mezzanine
+            LL: Lower Level
+            OD: Observation Deck
+            P: Parking
+            PTHS: Penthouse
+            PLF: Platform
+            PDM: Podium
+            RT: Rooftop
+            SB: Sub-Basement
+            UG: Upper Ground
+            LB: Lobby
+        house_number_1:
+          type: integer
+          description: <p>House number 1. If provided, <code>street_name</code> must
+            be as well.</p>
+        house_number_2:
+          type: integer
+          description: <p>House number 2. If provided, <code>house_number_1</code>
+            must be as well.</p>
+        house_number_suffix_1:
+          type: string
+          description: <p>House number suffix 1. If provided, <code>house_number_1</code>
+            must be as well.</p>
+          maxLength: 1
+        house_number_suffix_2:
+          type: string
+          description: <p>House number suffix 2. If provided, <code>house_number_2</code>
+            must be as well.</p>
+          maxLength: 1
+        location_descriptor:
+          type: string
+          description: <p>A description of the location.</p>
+        lot_number:
+          type: string
+          description: <p>Letters, numbers and <code>.</code>.</p>
+          maxLength: 6
+        postal_delivery_number_prefix:
+          type: string
+          description: <p>Postal delivery number prefix. Alphabetical (Uppercase).
+            If provided, <code>postal_delivery_number_value</code> must be as well.</p>
+          maxLength: 3
+          x-validators:
+          - name: Validate value contains only alphabetic capitals
+            description: Validate the value contains only capital letters A-Z.
+            possible_errors:
+            - value_must_be_alphabetic_caps
+        postal_delivery_number_suffix:
+          type: string
+          description: <p>Postal delivery number suffix. Alphabetical (Uppercase).
+            If provided, <code>postal_delivery_number_value</code> must be as well.</p>
+          maxLength: 3
+          x-validators:
+          - name: Validate value contains only alphabetic capitals
+            description: Validate the value contains only capital letters A-Z.
+            possible_errors:
+            - value_must_be_alphabetic_caps
+        postal_delivery_number_value:
+          type: integer
+          description: <p>Postal delivery number value. If provided, <code>postal_delivery_typ</code>
+            must be as well.</p>
+        postal_delivery_type:
+          enum:
+          - CARE PO
+          - CMA
+          - CMB
+          - CPA
+          - GPO BOX
+          - LOCKED BAG
+          - MS
+          - PO BOX
+          - PRIVATE BAG
+          - RSD
+          - RMB
+          - RMS
+          type: string
+          x-spec-enum-id: 4faa648b6a55c770
+          description: <p>Postal delivery type.</p>
+          x-enum-descriptions:
+            CARE PO: CARE PO
+            CMA: CMA
+            CMB: CMB
+            CPA: CPA
+            GPO BOX: GPO BOX
+            LOCKED BAG: LOCKED BAG
+            MS: MS
+            PO BOX: PO BOX
+            PRIVATE BAG: PRIVATE BAG
+            RSD: RSD
+            RMB: RMB
+            RMS: RMS
+        street_name:
+          type: string
+          description: <p>Street name.</p>
+          maxLength: 45
+        street_suffix:
+          enum:
+          - CN
+          - DE
+          - E
+          - EX
+          - IN
+          - LR
+          - ML
+          - N
+          - NE
+          - NW
+          - OF
+          - 'ON'
+          - OT
+          - OP
+          - S
+          - SE
+          - SW
+          - UP
+          - W
+          type: string
+          x-spec-enum-id: f105f3c67a4f2af4
+          description: <p>Street suffix. If provided, <code>street_name</code> must
+            be as well.</p>
+          x-enum-descriptions:
+            CN: Central
+            DE: Deviation
+            E: East
+            EX: Extension
+            IN: Inner
+            LR: Lower
+            ML: Mall
+            N: North
+            NE: North East
+            NW: North West
+            OF: 'Off'
+            'ON': 'On'
+            OT: Outer
+            OP: Overpass
+            S: South
+            SE: South East
+            SW: South West
+            UP: Upper
+            W: West
+        street_type:
+          enum:
+          - ACCS
+          - ACRE
+          - ALLY
+          - ALWY
+          - AMBL
+          - ANCG
+          - ANX
+          - APP
+          - ARC
+          - ARTL
+          - ART
+          - AVE
+          - BA
+          - BANK
+          - BASN
+          - BAY
+          - BCH
+          - BEND
+          - BLK
+          - BWLK
+          - BVD
+          - BVDE
+          - BOWL
+          - BRCE
+          - BRAE
+          - BRAN
+          - BRK
+          - BRET
+          - BDGE
+          - BDWY
+          - BROW
+          - BYPA
+          - BYWY
+          - CAUS
+          - CTR
+          - CNWY
+          - CH
+          - CIR
+          - CLT
+          - CCT
+          - CRCS
+          - CL
+          - CLR
+          - CLDE
+          - CMMN
+          - CNCD
+          - CON
+          - CNN
+          - CPS
+          - CNR
+          - CSO
+          - CRSE
+          - CT
+          - CTYD
+          - COVE
+          - CRES
+          - CRST
+          - CRF
+          - CRK
+          - CRSS
+          - CRSG
+          - CRD
+          - COWY
+          - CUWY
+          - CDS
+          - CUT
+          - CTTG
+          - DALE
+          - DASH
+          - DELL
+          - DENE
+          - DEVN
+          - DIP
+          - DSTR
+          - DIV
+          - DOCK
+          - DOM
+          - DOWN
+          - DWNS
+          - DR
+          - DRWY
+          - ESMT
+          - EDGE
+          - ELB
+          - END
+          - ENT
+          - ESP
+          - EST
+          - EXP
+          - EXTN
+          - FAWY
+          - FTRK
+          - FBRK
+          - FLNE
+          - FITR
+          - FLAT
+          - FLTS
+          - FOLW
+          - FTWY
+          - FORD
+          - FSHR
+          - FK
+          - FORM
+          - FWY
+          - FRNT
+          - FRTG
+          - GAP
+          - GDN
+          - GDNS
+          - GTE
+          - GTES
+          - GTWY
+          - GLD
+          - GLEN
+          - GRA
+          - GRN
+          - GRND
+          - GR
+          - GLY
+          - HRBR
+          - HVN
+          - HETH
+          - HTS
+          - HRD
+          - HWY
+          - HILL
+          - HLLW
+          - HUB
+          - INLT
+          - INTG
+          - INTN
+          - ISLD
+          - JNC
+          - KEY
+          - KEYS
+          - KNOL
+          - LADR
+          - LDG
+          - LANE
+          - LNWY
+          - LEAD
+          - LEDR
+          - LEES
+          - LINE
+          - LINK
+          - LT
+          - LKT
+          - LOOP
+          - LWR
+          - LYNN
+          - MALL
+          - MANR
+          - MART
+          - MEAD
+          - MNDR
+          - MEW
+          - MEWS
+          - MILE
+          - MWY
+          - MT
+          - NOOK
+          - NTH
+          - 'NULL'
+          - OTLT
+          - OTLK
+          - OVAL
+          - PLMS
+          - PDE
+          - PRDS
+          - PARK
+          - PKLD
+          - PKWY
+          - PART
+          - PASS
+          - PSGE
+          - PATH
+          - PHWY
+          - PSLA
+          - PIAZ
+          - PL
+          - PLAT
+          - PLZA
+          - PKT
+          - PNT
+          - PORT
+          - PREC
+          - PROM
+          - PRST
+          - QUAD
+          - QDGL
+          - QDRT
+          - QY
+          - QYS
+          - RMBL
+          - RAMP
+          - RNGE
+          - RCH
+          - REEF
+          - RES
+          - REST
+          - RTT
+          - RTRN
+          - RIDE
+          - RDGE
+          - RGWY
+          - ROWY
+          - RING
+          - RISE
+          - RSNG
+          - RVR
+          - RVWY
+          - RVRA
+          - RD
+          - RDS
+          - RDSD
+          - RDWY
+          - RNDE
+          - RSBL
+          - RTY
+          - RND
+          - RTE
+          - ROW
+          - ROWE
+          - RUE
+          - RUN
+          - SWY
+          - SHUN
+          - SDNG
+          - SKLN
+          - SLPE
+          - SND
+          - STH
+          - SPUR
+          - SQ
+          - STRS
+          - SHWY
+          - STPS
+          - STRT
+          - STAI
+          - STRA
+          - ST
+          - STRP
+          - SBWY
+          - TARN
+          - TCE
+          - THOR
+          - THRU
+          - TLWY
+          - TOP
+          - TOR
+          - TWRS
+          - TRK
+          - TRL
+          - TRLR
+          - TMWY
+          - TVSE
+          - TRI
+          - TKWY
+          - TUNL
+          - TURN
+          - UPAS
+          - UPR
+          - VALE
+          - VLLY
+          - VDCT
+          - VIEW
+          - VWS
+          - VLL
+          - VLGE
+          - VLLS
+          - VSTA
+          - VUE
+          - WADE
+          - WALK
+          - WKWY
+          - WTRS
+          - WTWY
+          - WAY
+          - WHRF
+          - WOOD
+          - WDS
+          - WYND
+          - YARD
+          type: string
+          x-spec-enum-id: 472734f6bfeb60b6
+          description: <p>Street type. If provided, <code>street_name</code> must
+            be as well.</p>
+          x-enum-descriptions:
+            ACCS: Access
+            ACRE: Acre
+            ALLY: Alley
+            ALWY: Alleyway
+            AMBL: Amble
+            ANCG: Anchorage
+            ANX: Annex
+            APP: Approach
+            ARC: Arcade
+            ARTL: Arterial
+            ART: Artery
+            AVE: Avenue
+            BA: Banan
+            BANK: Bank
+            BASN: Basin
+            BAY: Bay
+            BCH: Beach
+            BEND: Bend
+            BLK: Block
+            BWLK: Boardwalk
+            BVD: Boulevard
+            BVDE: Boulevarde
+            BOWL: Bowl
+            BRCE: Brace
+            BRAE: Brae
+            BRAN: Branch
+            BRK: Break
+            BRET: Brett
+            BDGE: Bridge
+            BDWY: Broadway
+            BROW: Brow
+            BYPA: Bypass
+            BYWY: Byway
+            CAUS: Causeway
+            CTR: Centre
+            CNWY: Centreway
+            CH: Chase
+            CIR: Circle
+            CLT: Circlet
+            CCT: Circuit
+            CRCS: Circus
+            CL: Close
+            CLR: Cluster
+            CLDE: Colonnade
+            CMMN: Common
+            CNCD: Concord
+            CON: Concourse
+            CNN: Connection
+            CPS: Copse
+            CNR: Corner
+            CSO: Corso
+            CRSE: Course
+            CT: Court
+            CTYD: Courtyard
+            COVE: Cove
+            CRES: Crescent
+            CRST: Crest
+            CRF: Crief
+            CRK: Crook
+            CRSS: Cross
+            CRSG: Crossing
+            CRD: Crossroad
+            COWY: Crossway
+            CUWY: Cruiseway
+            CDS: Cul-de-sac
+            CUT: Cut
+            CTTG: Cutting
+            DALE: Dale
+            DASH: Dash
+            DELL: Dell
+            DENE: Dene
+            DEVN: Deviation
+            DIP: Dip
+            DSTR: Distributor
+            DIV: Divide
+            DOCK: Dock
+            DOM: Domain
+            DOWN: Down
+            DWNS: Downs
+            DR: Drive
+            DRWY: Driveway
+            ESMT: Easement
+            EDGE: Edge
+            ELB: Elbow
+            END: End
+            ENT: Entrance
+            ESP: Esplanade
+            EST: Estate
+            EXP: Expressway
+            EXTN: Extension
+            FAWY: Fairway
+            FTRK: Fire Track
+            FBRK: Firebreak
+            FLNE: Fireline
+            FITR: Firetrail
+            FLAT: Flat
+            FLTS: Flats
+            FOLW: Follow
+            FTWY: Footway
+            FORD: Ford
+            FSHR: Foreshore
+            FK: Fork
+            FORM: Formation
+            FWY: Freeway
+            FRNT: Front
+            FRTG: Frontage
+            GAP: Gap
+            GDN: Garden
+            GDNS: Gardens
+            GTE: Gate
+            GTES: Gates
+            GTWY: Gateway
+            GLD: Glade
+            GLEN: Glen
+            GRA: Grange
+            GRN: Green
+            GRND: Ground
+            GR: Grove
+            GLY: Gully
+            HRBR: Harbour
+            HVN: Haven
+            HETH: Heath
+            HTS: Heights
+            HRD: Highroad
+            HWY: Highway
+            HILL: Hill
+            HLLW: Hollow
+            HUB: Hub
+            INLT: Inlet
+            INTG: Interchange
+            INTN: Intersection
+            ISLD: Island
+            JNC: Junction
+            KEY: Key
+            KEYS: Keys
+            KNOL: Knoll
+            LADR: Ladder
+            LDG: Landing
+            LANE: Lane
+            LNWY: Laneway
+            LEAD: Lead
+            LEDR: Leader
+            LEES: Lees
+            LINE: Line
+            LINK: Link
+            LT: Little
+            LKT: Lookout
+            LOOP: Loop
+            LWR: Lower
+            LYNN: Lynne
+            MALL: Mall
+            MANR: Manor
+            MART: Mart
+            MEAD: Mead
+            MNDR: Meander
+            MEW: Mew
+            MEWS: Mews
+            MILE: Mile
+            MWY: Motorway
+            MT: Mount
+            NOOK: Nook
+            NTH: North
+            'NULL': 'Null'
+            OTLT: Outlet
+            OTLK: Outlook
+            OVAL: Oval
+            PLMS: Palms
+            PDE: Parade
+            PRDS: Paradise
+            PARK: Park
+            PKLD: Parklands
+            PKWY: Parkway
+            PART: Part
+            PASS: Pass
+            PSGE: Passage
+            PATH: Path
+            PHWY: Pathway
+            PSLA: Peninsula
+            PIAZ: Piazza
+            PL: Place
+            PLAT: Plateau
+            PLZA: Plaza
+            PKT: Pocket
+            PNT: Point
+            PORT: Port
+            PREC: Precinct
+            PROM: Promenade
+            PRST: Pursuit
+            QUAD: Quad
+            QDGL: Quadrangle
+            QDRT: Quadrant
+            QY: Quay
+            QYS: Quays
+            RMBL: Ramble
+            RAMP: Ramp
+            RNGE: Range
+            RCH: Reach
+            REEF: Reef
+            RES: Reserve
+            REST: Rest
+            RTT: Retreat
+            RTRN: Return
+            RIDE: Ride
+            RDGE: Ridge
+            RGWY: Ridgeway
+            ROWY: Right of Way
+            RING: Ring
+            RISE: Rise
+            RSNG: Rising
+            RVR: River
+            RVWY: Riverway
+            RVRA: Riviera
+            RD: Road
+            RDS: Roads
+            RDSD: Roadside
+            RDWY: Roadway
+            RNDE: Ronde
+            RSBL: Rosebowl
+            RTY: Rotary
+            RND: Round
+            RTE: Route
+            ROW: Row
+            ROWE: Rowe
+            RUE: Rue
+            RUN: Run
+            SWY: Service Way
+            SHUN: Shun
+            SDNG: Siding
+            SKLN: Skyline
+            SLPE: Slope
+            SND: Sound
+            STH: South
+            SPUR: Spur
+            SQ: Square
+            STRS: Stairs
+            SHWY: State Highway
+            STPS: Steps
+            STRT: Straight
+            STAI: Strait
+            STRA: Strand
+            ST: Street
+            STRP: Strip
+            SBWY: Subway
+            TARN: Tarn
+            TCE: Terrace
+            THOR: Thoroughfare
+            THRU: Throughway
+            TLWY: Tollway
+            TOP: Top
+            TOR: Tor
+            TWRS: Towers
+            TRK: Track
+            TRL: Trail
+            TRLR: Trailer
+            TMWY: Tramway
+            TVSE: Traverse
+            TRI: Triangle
+            TKWY: Trunkway
+            TUNL: Tunnel
+            TURN: Turn
+            UPAS: Underpass
+            UPR: Upper
+            VALE: Vale
+            VLLY: Valley
+            VDCT: Viaduct
+            VIEW: View
+            VWS: Views
+            VLL: Villa
+            VLGE: Village
+            VLLS: Villas
+            VSTA: Vista
+            VUE: Vue
+            WADE: Wade
+            WALK: Walk
+            WKWY: Walkway
+            WTRS: Waters
+            WTWY: Waterway
+            WAY: Way
+            WHRF: Wharf
+            WOOD: Wood
+            WDS: Woods
+            WYND: Wynd
+            YARD: Yard
+    BespokeRateConfiguration:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/BespokeRateSchedule'
+          description: <p>The schedules of bespoke rates.</p>
+          minItems: 1
+          x-validators:
+          - name: Validate bespoke rates do not conflict
+            description: Validate bespoke rates for the same target and rate do not
+              conflict during the same period. The target of a bespoke rate is determined
+              by the supply point identifier and product code.
+            possible_errors:
+            - overlapping_bespoke_rate_schedules
+          - name: Validate bespoke rate schedules target consistently
+            description: Validate that bespoke rate schedules either all target supply
+              points via the supply_point_identifier field or none do.
+            possible_errors:
+            - inconsistent_bespoke_rate_schedule_targeting
+      required:
+      - schedules
+      - term_type
+    BespokeRateItem:
+      type: object
+      properties:
+        identifier:
+          type: string
+          nullable: true
+          description: <p>A unique identifier for the bespoke rate item.</p>
+        price_per_unit:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,11}(?:\.\d{0,8})?$
+          description: <p>The price per unit of the bespoke rate.</p>
+        rate_specification_code:
+          type: string
+          description: <p>The rate specification code for the bespoke rate.</p>
+        rate_specification_type:
+          enum:
+          - PRODUCT_RATE
+          - SHARED_RATE
+          - null
+          type: string
+          x-spec-enum-id: 94c4191a865cda34
+          nullable: true
+          default: PRODUCT_RATE
+          description: <p>The rate specification type for the bespoke rate.</p>
+          x-enum-descriptions:
+            PRODUCT_RATE: Product rate
+            SHARED_RATE: Shared rate
+            None: None
+        variant_profile:
+          allOf:
+          - $ref: '#/components/schemas/VariantProfile'
+          description: <p>The variant profile which the rate applies to.</p>
+      required:
+      - price_per_unit
+      - rate_specification_code
+      - variant_profile
+    BespokeRateSchedule:
+      type: object
+      properties:
+        identifier:
+          type: string
+          nullable: true
+          description: <p>A unique identifier for the bespoke rate schedule.</p>
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BespokeRateItem'
+          description: <p>A list of bespoke rates.</p>
+          minItems: 1
+          x-validators:
+          - name: Validate bespoke rate items are unique
+            description: Validate that no two bespoke rate items in a schedule share
+              the same rate specification code, rate specification type, and variant
+              profile.
+            possible_errors:
+            - duplicate_bespoke_rate_items
+        product_code:
+          type: string
+          description: <p>A product code for the schedule of bespoke rate.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+        supply_point_identifier:
+          type: string
+          nullable: true
+          description: <p>The external identifier of the supply point that this bespoke
+            rate schedule targets.</p>
+          minLength: 1
+        valid_from:
+          type: string
+          format: date-time
+          description: <p>The date the schedule of bespoke rates is valid from (inclusive).</p>
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The date the schedule of bespoke rates is valid to (exclusive).</p>
+      required:
+      - items
+      - product_code
+      - valid_from
+      x-validators:
+      - name: Validate <code>⁨valid_to⁩</code> not before or equal to <code>⁨valid_from⁩</code>
+        description: Validates that <code>⁨valid_to⁩</code>, if given, is strictly
+          later than ⁨valid_from⁩.
+        possible_errors:
+        - start_date_same_as_end_date
+      - name: Validate each item represents a possible rate for the product
+        description: Validate each item's rate specification, characteristic values,
+          and scheme labels represent a rate defned on the product.
+        possible_errors:
+        - characteristic_code_not_found
+        - invalid_characteristic_value
+        - invalid_profile_variant_for_specification
+        - product_specification_not_found_for_product
+        - rate_specification_not_found_for_product
+        - shared_rate_not_found
+        - shared_rate_not_found_for_product
+      - name: Validate that all required bespoke rates are present and no non-overridable
+          rates are supplied
+        description: Validates that bespoke rate schedules include all rate specifications
+          marked as must-be-overridden and mandatory, and do not include any rate
+          specifications marked as cannot-be-overridden.
+        possible_errors:
+        - bespoke_rate_cannot_be_overridden
+        - missing_required_bespoke_rate
+    BillDueDate:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        number_of_days:
+          type: integer
+          minimum: 0
+          description: <p>The number of days added to the issuance date to determine
+            the due date.</p>
+        type_of_days:
+          enum:
+          - WORKING
+          - CALENDAR
+          type: string
+          x-spec-enum-id: ca64884b18199022
+          description: data-import--field-definition--bill-due-date--type-of-days--html
+          x-enum-descriptions:
+            WORKING: Working days
+            CALENDAR: Calendar days
+      required:
+      - number_of_days
+      - term_type
+      - type_of_days
+    BillingDocumentIssuanceFrequencyTerm:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        frequency:
+          enum:
+          - DAILY
+          - MONTHLY
+          type: string
+          x-spec-enum-id: 74dcc34556834abd
+          description: <p>The rate at which a billing document is issued. For example,
+            this can be daily or monthly.</p>
+          x-enum-descriptions:
+            DAILY: Daily
+            MONTHLY: Monthly
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        multiplier:
+          type: integer
+          description: <p>The multiplier for the issuance frequency. For example,
+            for a frequency of monthly and a multiplier of 2, a billing document should
+            be issued every 2 months.</p>
+        period_start_day:
+          type: integer
+          description: <p>The day of the month on which the billing period starts
+            in Kraken.</p>
+        period_start_month:
+          type: integer
+          description: <p>The month of the year on which the billing period starts
+            in Kraken.</p>
+      required:
+      - frequency
+      - multiplier
+      - period_start_day
+      - period_start_month
+      - term_type
+    BillingInformation:
+      type: object
+      properties:
+        billing_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          description: <p>The billing address for the account. The payload can specify
+            an address in this format or use the the <code>billing_address1</code>
+            etc fields, but not both.</p>
+        billing_attention_of:
+          type: string
+          description: <p>Extra recipient information for when this account represents
+            a large organisation (e.g. "The Bursar" or "Accounts Payable"). If provided,
+            it will be used for producing statements.</p>
+          maxLength: 256
+        billing_customer_reference:
+          type: string
+          description: <p>Customer-specified reference to use in communications (e.g.
+            "Energy supply"). If provided, it will be used for producing statements.</p>
+          maxLength: 256
+        billing_email:
+          type: string
+          format: email
+          nullable: true
+          description: <p>If populated the bill/invoice communications will be emailed
+            to this email address.</p>
+          maxLength: 254
+        billing_name:
+          type: string
+          description: <p>Optional billing name to be used on the account. If provided,
+            it will be used for producing statements. If not, the customer names will
+            be used.</p>
+          maxLength: 510
+        billing_sub_name:
+          type: string
+          description: <p>Optional billing sub-name to be used on the account. Use
+            this field if the name needs to be split into multiple lines. If provided,
+            it will be used for producing statements.</p>
+          maxLength: 256
+    BusinessDetail:
+      type: object
+      properties:
+        key:
+          enum:
+          - abn
+          - acn
+          - frmp
+          - anzsic
+          type: string
+          x-spec-enum-id: cf8b0ced1c78b621
+          description: <p>The key for the business detail. Keys need to be registered
+            before import. If a value is provided for a key that is not registered
+            then an error will be raised.</p>
+          x-enum-descriptions:
+            abn: abn
+            acn: acn
+            frmp: frmp
+            anzsic: anzsic
+        value:
+          description: <p>The value for the business detail. This must match the type
+            the registered key is expecting.</p>
+      required:
+      - key
+      - value
+      x-validators:
+      - name: Validate that the value for the business details key has the correct
+          type
+        description: Validate that the value given has the type that matches the type
+          configured for the registered business detail key.
+        possible_errors:
+        - business_detail_incorrect_value_type
+      - name: Validate the business details value
+        description: Validate that business detail value complies with any validation
+          required by their corresponding detail key.
+        possible_errors:
+        - business_detail_failed_validation
+    BusinessPortfolio:
+      type: object
+      properties:
+        billing_name:
+          type: string
+          description: <p>Optional billing name to be used on the account. If provided,
+            it will be used for producing statements. If not, the customer names will
+            be used.</p>
+          maxLength: 510
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
+          description: <p>List of notes that should be applied at the portfolio level
+            instead of the individual account.</p>
+        portfolio_references:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioReference'
+          description: <p>List of references to the portfolio that this account belongs
+            to.</p>
+          minItems: 1
+        portfolio_settings:
+          allOf:
+          - $ref: '#/components/schemas/PortfolioSettings'
+          nullable: true
+          description: <p>This object allows for setting portfolio settings during
+            data migration. This object is only available where the <code>is_portfolio_lead</code>
+            flag is true. Any other account type will fail validation.</p>
+      required:
+      - portfolio_references
+      x-validators:
+      - name: Validate portfolio reference provided correctly
+        description: Validate that a portfolio reference is provided if portfolio
+          settings have been provided and that a portfolio reference is not provided
+          if the import supplier is set to create new portfolios.
+        possible_errors:
+        - portfolio_references_missing
+        - portfolio_references_provided
+      - name: Validate no duplicate portfolio reference namespaces
+        description: Validate that there are no duplicate portfolio reference namespaces
+          in the payload.
+        possible_errors:
+        - duplicate_portfolio_references
+    BusinessUser:
+      type: object
+      properties:
+        address:
+          allOf:
+          - $ref: '#/components/schemas/AusPropertyRichAddress'
+          description: <p>The customer's address. If provided, this will be stored
+            on the account user record.</p>
+        alternative_phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerAlternativeNumber'
+          description: <p>A list of the customer's alternative phone numbers.</p>
+        business_roles:
+          type: array
+          items:
+            enum:
+            - EZ_BROKER
+            - RECEIVES_INVOICES
+            - RECEIVES_SALES
+            - FLAGGED_LS
+            - PRIMARY_NO_COMMS
+            - TRUSTEE_BILL
+            - NOMINATED_BILL
+            - EZ_DFPP_RO
+            - BSP_USER
+            - BUSINESS_NO_COMMS
+            - MSBG_NO_COMMS
+            - MSBG_COMMS
+            - TRUSTEE_MAND
+            - MSP_USER
+            - NOMINATED_NONE
+            - CDR_REPRESENTATIVE
+            - NO_EMAIL
+            - BUSINESS_COMMS
+            - RECEIVES_DUNNING
+            - EZ_CUSTOMER
+            - EZ_ADMIN
+            - EZ_DFPP_RW
+            - RESI_SECONDARY
+            - ADMIN
+            - OUTAGE_CONTACT
+            - LIFE_SUPPORT_CONTACT
+            - TRUSTEE_NONE
+            - TRUSTEE
+            - BUSI_FINANCIALLY
+            - RECEIVES_SERVICE
+            - NOMINATED_MAND
+            type: string
+            description: |-
+              * `EZ_BROKER` - EZ_BROKER
+              * `RECEIVES_INVOICES` - RECEIVES_INVOICES
+              * `RECEIVES_SALES` - RECEIVES_SALES
+              * `FLAGGED_LS` - FLAGGED_LS
+              * `PRIMARY_NO_COMMS` - PRIMARY_NO_COMMS
+              * `TRUSTEE_BILL` - TRUSTEE_BILL
+              * `NOMINATED_BILL` - NOMINATED_BILL
+              * `EZ_DFPP_RO` - EZ_DFPP_RO
+              * `BSP_USER` - BSP_USER
+              * `BUSINESS_NO_COMMS` - BUSINESS_NO_COMMS
+              * `MSBG_NO_COMMS` - MSBG_NO_COMMS
+              * `MSBG_COMMS` - MSBG_COMMS
+              * `TRUSTEE_MAND` - TRUSTEE_MAND
+              * `MSP_USER` - MSP_USER
+              * `NOMINATED_NONE` - NOMINATED_NONE
+              * `CDR_REPRESENTATIVE` - CDR_REPRESENTATIVE
+              * `NO_EMAIL` - NO_EMAIL
+              * `BUSINESS_COMMS` - BUSINESS_COMMS
+              * `RECEIVES_DUNNING` - RECEIVES_DUNNING
+              * `EZ_CUSTOMER` - EZ_CUSTOMER
+              * `EZ_ADMIN` - EZ_ADMIN
+              * `EZ_DFPP_RW` - EZ_DFPP_RW
+              * `RESI_SECONDARY` - RESI_SECONDARY
+              * `ADMIN` - ADMIN
+              * `OUTAGE_CONTACT` - OUTAGE_CONTACT
+              * `LIFE_SUPPORT_CONTACT` - LIFE_SUPPORT_CONTACT
+              * `TRUSTEE_NONE` - TRUSTEE_NONE
+              * `TRUSTEE` - TRUSTEE
+              * `BUSI_FINANCIALLY` - BUSI_FINANCIALLY
+              * `RECEIVES_SERVICE` - RECEIVES_SERVICE
+              * `NOMINATED_MAND` - NOMINATED_MAND
+            x-spec-enum-id: a9dfece01fff4a96
+            x-enum-descriptions:
+              EZ_BROKER: EZ_BROKER
+              RECEIVES_INVOICES: RECEIVES_INVOICES
+              RECEIVES_SALES: RECEIVES_SALES
+              FLAGGED_LS: FLAGGED_LS
+              PRIMARY_NO_COMMS: PRIMARY_NO_COMMS
+              TRUSTEE_BILL: TRUSTEE_BILL
+              NOMINATED_BILL: NOMINATED_BILL
+              EZ_DFPP_RO: EZ_DFPP_RO
+              BSP_USER: BSP_USER
+              BUSINESS_NO_COMMS: BUSINESS_NO_COMMS
+              MSBG_NO_COMMS: MSBG_NO_COMMS
+              MSBG_COMMS: MSBG_COMMS
+              TRUSTEE_MAND: TRUSTEE_MAND
+              MSP_USER: MSP_USER
+              NOMINATED_NONE: NOMINATED_NONE
+              CDR_REPRESENTATIVE: CDR_REPRESENTATIVE
+              NO_EMAIL: NO_EMAIL
+              BUSINESS_COMMS: BUSINESS_COMMS
+              RECEIVES_DUNNING: RECEIVES_DUNNING
+              EZ_CUSTOMER: EZ_CUSTOMER
+              EZ_ADMIN: EZ_ADMIN
+              EZ_DFPP_RW: EZ_DFPP_RW
+              RESI_SECONDARY: RESI_SECONDARY
+              ADMIN: ADMIN
+              OUTAGE_CONTACT: OUTAGE_CONTACT
+              LIFE_SUPPORT_CONTACT: LIFE_SUPPORT_CONTACT
+              TRUSTEE_NONE: TRUSTEE_NONE
+              TRUSTEE: TRUSTEE
+              BUSI_FINANCIALLY: BUSI_FINANCIALLY
+              RECEIVES_SERVICE: RECEIVES_SERVICE
+              NOMINATED_MAND: NOMINATED_MAND
+          description: <p>A list of business roles to be assigned to the customer.
+            These apply to all accounts the business has access to.</p>
+        contact_emails:
+          type: array
+          items:
+            type: string
+            format: email
+          description: <p>A list of additional email addresses to associate with the
+            customer account. These can be used for sending communications to the
+            customer. Each email must be a valid email address.</p>
+        credit_assessment_id:
+          type: string
+          nullable: true
+          description: <p>Customers credit assessment id.</p>
+        credit_result:
+          type: string
+          nullable: true
+          description: <p>The credit result from the provider.</p>
+        credit_risk_bracket:
+          enum:
+          - LOW
+          - MID
+          - HIGH
+          - UNKNOWN
+          - ''
+          - null
+          type: string
+          x-spec-enum-id: e6b98b6c312ff7bf
+          nullable: true
+          description: <p>The deemed credit risk bracket for this customer.</p>
+          x-enum-descriptions:
+            LOW: Low
+            MID: Medium
+            HIGH: High
+            UNKNOWN: Unknown
+            '': ''
+            None: None
+        credit_score:
+          type: integer
+          maximum: 9999
+          minimum: 0
+          nullable: true
+          description: <p>Customers credit score.</p>
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+          description: <p>The customer's date of birth.</p>
+        deceased:
+          enum:
+          - Reported
+          - Confirmed
+          - ''
+          type: string
+          x-spec-enum-id: f90e7d899a971044
+          default: ''
+          description: <p>Whether the customer is deceased or not. Defaults to an
+            empty string if not provided.</p>
+          x-enum-descriptions:
+            Reported: Reported
+            Confirmed: Confirmed
+            '': ''
+        details:
+          nullable: true
+          description: <p>Generic solution for storing additional customer data that
+            is not covered by the other fields in the payload. This is often in the
+            form of market or territory specific information. For example, in much
+            of Europe it is a requirement to store the user's fiscal code. Namespaces
+            (the keys in the object) need to be registered before import. If a value
+            is provided for a namespace that is not registered then an error will
+            be raised.</p>
+          deprecated: true
+          x-use-instead: user_details
+          x-validators:
+          - name: Validate user details
+            description: Validates that the user detail namespace and value are allowed
+              for the customer. The user detail namespace (the key in the JSON object)
+              must already have been set up in Kraken. The value (the value in the
+              JSON object) must be the correct data type.
+            possible_errors:
+            - customer_detail_failed_validation
+            - customer_detail_incorrect_value_type
+            - customer_detail_not_registered
+        email:
+          type: string
+          format: email
+          nullable: true
+          description: <p>The customer's email address. This is the email address
+            they will use to log into their online portal. Defaults to an empty string
+            if not provided. Cannot be longer that 254 characters.</p>
+          maxLength: 254
+          x-validators:
+          - name: Validate email address is not test address
+            description: Validates that a customer email address is not a test email
+              address. An email address is considered a test address if it starts
+              with "test@"" or "xxx@"" or ends with "@test.com", "@test.co.uk", ".xxx"
+              or ".xx".
+            possible_errors:
+            - possible_test_email_address
+          - name: Validate email is not internal
+            description: Validates that a customer email address does not use an internal
+              Kraken handler. For example, if an instance of Kraken has registered
+              <code>info@kraken.info</code> as an internal email address, then the
+              customer email address must not match this.
+            possible_errors:
+            - internal_email_address
+        family_name:
+          type: string
+          default: ''
+          description: <p>The customer's family name.</p>
+          maxLength: 255
+        given_name:
+          type: string
+          default: ''
+          description: <p>The customer's given name.</p>
+          maxLength: 255
+        label:
+          type: string
+          nullable: true
+          description: <p>A free text field to help identify the user (e.g. a job
+            title).</p>
+        landline:
+          type: string
+          nullable: true
+          default: ''
+          description: <p>The customer's landline phone number.</p>
+          maxLength: 32
+          x-validators:
+          - name: Validate phone number
+            description: Validates that a phone number conforms to the norms of the
+              region from which the migration is taking place.
+            possible_errors:
+            - invalid_phone_number
+        mobile:
+          type: string
+          nullable: true
+          default: ''
+          description: <p>The customer's personal mobile number.</p>
+          maxLength: 32
+          x-validators:
+          - name: Validate phone number
+            description: Validates that a phone number conforms to the norms of the
+              region from which the migration is taking place.
+            possible_errors:
+            - invalid_phone_number
+        salutation:
+          type: string
+          nullable: true
+          default: ''
+          description: <p>The customer's preferred salutation.</p>
+          maxLength: 128
+        title:
+          type: string
+          nullable: true
+          default: ''
+          description: <p>The customer's preferred title.</p>
+          maxLength: 20
+        unable_to_read_meters:
+          type: boolean
+          default: false
+          description: <p>Whether the customer is unable to read their meters themselves.
+            Defaults to False.</p>
+        user_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerUserDetail'
+          description: <p>Generic solution for storing additional customer data that
+            is not covered by the other fields in the payload. This is often in the
+            form of market or territory specific information. For example, in much
+            of Europe it is a requirement to store the user's fiscal code. Namespaces
+            (the keys in the object) need to be registered before import. If a value
+            is provided for a namespace that is not registered then an error will
+            be raised.</p>
+          x-validators:
+          - name: Validate required customer details namespaces provided
+            description: No required namespaces configured. Validation skipped.
+            possible_errors:
+            - required_customer_details_namespace_missing
+      required:
+      - business_roles
+      x-validators:
+      - name: Ensures only <code>user_details</code> or <code>details</code> are provided
+        description: Ensures that only <code>user_details</code> or <code>details</code>
+          are provided, not both.
+        possible_errors:
+        - customer_details_and_user_details_both_provided
+      - name: Validate no contact details for occupier
+        description: Validates that a customer identified as "The Occupier" does not
+          have contact details. If contact details are provided it implies that the
+          identity of the customer is known, and it therefore not an unknown occupier.
+        possible_errors:
+        - contact_details_for_occupier
+      - name: Validate that the customer's name is not "The Occupier"
+        description: Validate that the customer's name is not "The Occupier". To indicate
+          an occupier account, use the <code>unknown_occupier</code> flag at the account-level.
+        possible_errors:
+        - customer_may_not_be_named_the_occupier
+    CharacteristicOverride:
+      type: object
+      properties:
+        characteristic_code:
+          type: string
+          description: <p>The code for the characteristic.</p>
+        override_value:
+          description: <p>The override value for the characteristic.</p>
+        product_code:
+          type: string
+          nullable: true
+          description: <p>Optional product code. If specified, the override applies
+            only to this product.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+      required:
+      - characteristic_code
+      - override_value
+      x-validators:
+      - name: Validate characterisctic code exist
+        description: Validate that the characterisctic code exists in Kraken.
+        possible_errors:
+        - characteristic_code_not_found
+      - name: null
+        description: null
+        possible_errors:
+        - invalid_characteristic_for_product
+    CharacteristicOverrideConfiguration:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        overrides:
+          type: array
+          items:
+            $ref: '#/components/schemas/CharacteristicOverride'
+          description: <p>The characterisctics associated with the characterisctic
+            override.</p>
+      required:
+      - overrides
+      - term_type
+    CollateralRequired:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        amount:
+          type: integer
+          minimum: 0
+          description: <p>The amount set up as collateral as condition for account
+            creation.</p>
+        interest_policy:
+          type: string
+          description: <p>The type of interest policy of required collateral.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        reason:
+          type: string
+          description: <p>The reason for setting up required collateral.</p>
+      required:
+      - amount
+      - reason
+      - term_type
+    ContractMetaData:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        metadata:
+          type: object
+          description: <p> Additional metadata about the contract.</p>
+          x-validators:
+          - name: Validate provided dictionary content types
+            description: Validates that provided dictionary contents are of the specified
+              key type and value type.
+            possible_errors: []
+      required:
+      - metadata
+      - term_type
+    ContractRenewal:
+      type: object
+      properties:
+        type:
+          enum:
+          - CONTRACT_RENEWAL
+          - ENROLLMENT
+          type: string
+          x-spec-enum-id: 478cba0b1c92d277
+          description: <p>The type of order line. Determines which order line serializer
+            is used for validation.</p>
+          x-enum-descriptions:
+            CONTRACT_RENEWAL: CONTRACT_RENEWAL
+            ENROLLMENT: ENROLLMENT
+        agreements:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContractRenewalAgreementByMarketName'
+          description: <p>List of agreements to create against pre-existing supply
+            points on the business's accounts as part of this contract renewal.</p>
+        contract:
+          allOf:
+          - $ref: '#/components/schemas/OrderManagementContractWithSubjects'
+          description: <p>The contract details for a contract renewal order line.</p>
+        target_reference:
+          type: string
+          description: <p>The <code>account_identifier</code> or <code>business_identifier</code>
+            of the target entity in the payload that this order line applies to.</p>
+        target_type:
+          enum:
+          - ACCOUNT
+          - BUSINESS
+          - SALES_INFO
+          type: string
+          x-spec-enum-id: 62f22d5e5f0f624b
+          description: <p>The type of entity that <code>target_reference</code> points
+            to.</p>
+          x-enum-descriptions:
+            ACCOUNT: ACCOUNT
+            BUSINESS: BUSINESS
+            SALES_INFO: SALES_INFO
+      required:
+      - contract
+      - target_reference
+      - target_type
+      - type
+    ContractRenewalAgreementByMarketName:
+      oneOf:
+      - $ref: '#/components/schemas/AusElectricityAgreement'
+      - $ref: '#/components/schemas/AusEmbeddedElectricityAgreement'
+      - $ref: '#/components/schemas/AusEmbeddedWaterAgreement'
+      - $ref: '#/components/schemas/AusGasAgreement'
+      - $ref: '#/components/schemas/AusEmbeddedUnmeteredGasAgreement'
+      - $ref: '#/components/schemas/AusEmbeddedGasAgreement'
+      - $ref: '#/components/schemas/AusSolarPpaAgreement'
+      - $ref: '#/components/schemas/AusEmbeddedUnmeteredElectricityAgreement'
+      discriminator:
+        propertyName: market_name
+        mapping:
+          AUS_ELECTRICITY: '#/components/schemas/AusElectricityAgreement'
+          AUS_EMBEDDED_ELECTRICITY: '#/components/schemas/AusEmbeddedElectricityAgreement'
+          AUS_EMBEDDED_WATER: '#/components/schemas/AusEmbeddedWaterAgreement'
+          AUS_GAS: '#/components/schemas/AusGasAgreement'
+          AUS_EMBEDDED_UNMETERED_GAS: '#/components/schemas/AusEmbeddedUnmeteredGasAgreement'
+          AUS_EMBEDDED_GAS: '#/components/schemas/AusEmbeddedGasAgreement'
+          AUS_SOLAR_PPA: '#/components/schemas/AusSolarPpaAgreement'
+          AUS_EMBEDDED_UNMETERED_ELECTRICITY: '#/components/schemas/AusEmbeddedUnmeteredElectricityAgreement'
+    ContractSalesRecord:
+      type: object
+      properties:
+        affiliate_organisation_name:
+          type: string
+          description: <p>The affiliate organisation name associated with the contract.</p>
+          maxLength: 128
+          x-validators:
+          - name: Validate affiliate organisation exists
+            description: Validate that an affiliate organisation exists in Kraken
+              for the given name.
+            possible_errors:
+            - affiliate_organisation_does_not_exist
+        sales_channel:
+          enum:
+          - DIRECT
+          - PRICE_COMPARISON
+          - TELESALES
+          - DIGI_TELESALES
+          - EVENTS
+          - FIELD_SALES
+          - AGGREGATOR
+          - PARTNERSHIPS
+          - NEW_TENANT
+          - MOVE_IN
+          - WORKPLACE_POP_UP
+          - BROKER
+          - PARENT_POWER
+          - PEOPLE_POWER
+          - GIFT_OF_KIT
+          - HIGH_REFERRER
+          - SUPPLIER_OF_LAST_RESORT
+          - ACQUISITION
+          - WORKS_WITH_OCTOPUS
+          - LANDLORD
+          - DEBT_COLLECTION_AGENCY
+          type: string
+          x-spec-enum-id: f4ccf4dcda60c174
+          description: <p>The sales channel associated with the contract</p>
+          x-enum-descriptions:
+            DIRECT: Direct
+            PRICE_COMPARISON: Price comparison
+            TELESALES: Telesales
+            DIGI_TELESALES: Digital telesales
+            EVENTS: Events
+            FIELD_SALES: Field sales
+            AGGREGATOR: Aggregator
+            PARTNERSHIPS: Partnerships
+            NEW_TENANT: New tenant
+            MOVE_IN: Move in
+            WORKPLACE_POP_UP: Workplace pop-up
+            BROKER: Broker
+            PARENT_POWER: Parent power
+            PEOPLE_POWER: People power
+            GIFT_OF_KIT: Gift of kit
+            HIGH_REFERRER: High referrer
+            SUPPLIER_OF_LAST_RESORT: Supplier of last resort
+            ACQUISITION: Acquisition
+            WORKS_WITH_OCTOPUS: Works with octopus
+            LANDLORD: Landlord
+            DEBT_COLLECTION_AGENCY: Debt collection agency
+      x-validators:
+      - name: Sales channel matches affiliate organisation
+        description: Validates that when an affiliate_organisation_name is provided,
+          the sales_channel is in the set of channels configured for that organisation.
+        possible_errors:
+        - sales_channel_does_not_match_affiliate_organisation
+    ContractSubject:
+      type: object
+      properties:
+        effective_from:
+          type: string
+          format: date
+          description: <p>The date from which this account is a subject of the contract.
+            If supplied, it must fall within the contract's validity period. Optional.</p>
+        effective_to:
+          type: string
+          format: date
+          nullable: true
+          description: <p>The date until which this account is a subject of the contract.
+            If supplied, it must fall within the contract's validity period. Optional.</p>
+        identifier:
+          type: string
+          description: <p>The identifier of the account in the payload to use as a
+            contract subject.</p>
+        type:
+          enum:
+          - ACCOUNT
+          type: string
+          x-spec-enum-id: 3e0122dd7c474703
+          description: <p>The type of entity that <code>identifier</code> points to.
+            Currently only <code>ACCOUNT</code> is supported.</p>
+          x-enum-descriptions:
+            ACCOUNT: Account
+      required:
+      - identifier
+      - type
+      x-validators:
+      - name: Validate <code>⁨effective_to⁩</code> not before <code>⁨effective_from⁩</code>
+        description: Validates that <code>⁨effective_to⁩</code>, if given, is on or
+          later than <code>⁨effective_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+      - name: Validate contract subject effective_from is provided when effective_to
+          is
+        description: Validates that a contract subject's effective_from is provided
+          whenever an effective_to is supplied.
+        possible_errors:
+        - required
+    ContractVersion:
+      type: object
+      properties:
+        applicable_at_date:
+          type: string
+          format: date
+          description: <p>The date on which this contract version become applicable
+            at.</p>
+        terms:
+          type: array
+          items:
+            $ref: '#/components/schemas/Terms'
+          description: <p>The terms for this version of the contract.</p>
+      required:
+      - applicable_at_date
+      - terms
+    ContractedVolumeConfiguration:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContractedVolumePeriod'
+          description: <p>A list of contracted volume periods.</p>
+          minItems: 1
+          x-validators:
+          - name: Validate periods do not overlap per market
+            description: Validate that sequential contracted volume periods for the
+              same market do not overlap
+            possible_errors:
+            - overlapping_contracted_volume_periods
+      required:
+      - periods
+      - term_type
+    ContractedVolumePeriod:
+      type: object
+      properties:
+        market_name:
+          enum:
+          - AUS_EMBEDDED_GAS
+          - AUS_EMBEDDED_UNMETERED_GAS
+          - AUS_GAS
+          - AUS_EMBEDDED_ELECTRICITY
+          - AUS_EMBEDDED_WATER
+          - AUS_EMBEDDED_UNMETERED_ELECTRICITY
+          - AUS_ELECTRICITY
+          - AUS_SOLAR_PPA
+          - SIMPLE_SERVICES
+          type: string
+          x-spec-enum-id: 2efb600dcd89ea97
+          description: <p>The market name for the contracted volume.</p>
+          x-enum-descriptions:
+            AUS_EMBEDDED_GAS: AUS_EMBEDDED_GAS
+            AUS_EMBEDDED_UNMETERED_GAS: AUS_EMBEDDED_UNMETERED_GAS
+            AUS_GAS: AUS_GAS
+            AUS_EMBEDDED_ELECTRICITY: AUS_EMBEDDED_ELECTRICITY
+            AUS_EMBEDDED_WATER: AUS_EMBEDDED_WATER
+            AUS_EMBEDDED_UNMETERED_ELECTRICITY: AUS_EMBEDDED_UNMETERED_ELECTRICITY
+            AUS_ELECTRICITY: AUS_ELECTRICITY
+            AUS_SOLAR_PPA: AUS_SOLAR_PPA
+            SIMPLE_SERVICES: SIMPLE_SERVICES
+        unit:
+          type: string
+          description: <p>The units for the contracted volume.</p>
+        valid_from_date:
+          type: string
+          format: date
+          description: <p>The datetime the contracted volume is valid from.</p>
+        valid_to_date:
+          type: string
+          format: date
+          description: <p>The datetime the contracted volume is valid to.</p>
+        value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,4})?$
+          description: <p>The value of the contracted volume.</p>
+      required:
+      - market_name
+      - unit
+      - valid_from_date
+      - valid_to_date
+      - value
+      x-validators:
+      - name: Validate <code>⁨valid_to⁩</code> not before <code>⁨valid_from⁩</code>
+        description: Validates that <code>⁨valid_to⁩</code>, if given, is on or later
+          than <code>⁨valid_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+    CorrectivePeriod:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        market_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/CorrectivePeriodMarketConfig'
+          description: <p>Market configurations for corrective periods</p>
+          minItems: 1
+      required:
+      - market_configs
+      - term_type
+    CorrectivePeriodMarketConfig:
+      type: object
+      properties:
+        length:
+          type: integer
+          minimum: 1
+          description: <p>Length of the corrective period.</p>
+        length_unit:
+          enum:
+          - DAY
+          - WEEK
+          - MONTH
+          - YEAR
+          type: string
+          x-spec-enum-id: aaeac18e78076e3b
+          description: <p>Unit of time for the corrective period length (DAY, WEEK,
+            MONTH, YEAR).</p>
+          x-enum-descriptions:
+            DAY: DAY
+            WEEK: WEEK
+            MONTH: MONTH
+            YEAR: YEAR
+        market_name:
+          enum:
+          - AUS_EMBEDDED_GAS
+          - AUS_EMBEDDED_UNMETERED_GAS
+          - AUS_GAS
+          - AUS_EMBEDDED_ELECTRICITY
+          - AUS_EMBEDDED_WATER
+          - AUS_EMBEDDED_UNMETERED_ELECTRICITY
+          - AUS_ELECTRICITY
+          - AUS_SOLAR_PPA
+          - SIMPLE_SERVICES
+          type: string
+          x-spec-enum-id: 2efb600dcd89ea97
+          description: <p>Market name (e.g., ELECTRICITY, GAS) the corrective period
+            applies to.</p>
+          x-enum-descriptions:
+            AUS_EMBEDDED_GAS: AUS_EMBEDDED_GAS
+            AUS_EMBEDDED_UNMETERED_GAS: AUS_EMBEDDED_UNMETERED_GAS
+            AUS_GAS: AUS_GAS
+            AUS_EMBEDDED_ELECTRICITY: AUS_EMBEDDED_ELECTRICITY
+            AUS_EMBEDDED_WATER: AUS_EMBEDDED_WATER
+            AUS_EMBEDDED_UNMETERED_ELECTRICITY: AUS_EMBEDDED_UNMETERED_ELECTRICITY
+            AUS_ELECTRICITY: AUS_ELECTRICITY
+            AUS_SOLAR_PPA: AUS_SOLAR_PPA
+            SIMPLE_SERVICES: SIMPLE_SERVICES
+        supply_point_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+          nullable: true
+          description: <p>Supply Point IDs the corrective period applies to.</p>
+          minItems: 1
+      required:
+      - length
+      - length_unit
+      - market_name
+    CustomerAlternativeNumber:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          nullable: true
+          default: ''
+          description: <p>A customer's alternative phone number.</p>
+          maxLength: 32
+          x-validators:
+          - name: Validate phone number
+            description: Validates that a phone number conforms to the norms of the
+              region from which the migration is taking place.
+            possible_errors:
+            - invalid_phone_number
+    CustomerUserDetail:
+      type: object
+      properties:
+        namespace:
+          enum:
+          - external_user_id
+          type: string
+          x-spec-enum-id: 6bb07f5044ea9b8a
+          description: <p>The namespace of the customer user detail.</p>
+          x-enum-descriptions:
+            external_user_id: external_user_id
+        value:
+          description: <p>The value of the customer user detail.</p>
+      required:
+      - namespace
+      - value
+      x-validators:
+      - name: Validate user details
+        description: Validates that the user detail namespace and value are allowed
+          for the customer. The user detail namespace (the key in the JSON object)
+          must already have been set up in Kraken. The value (the value in the JSON
+          object) must be the correct data type.
+        possible_errors:
+        - customer_detail_failed_validation
+        - customer_detail_incorrect_value_type
+        - customer_detail_not_registered
+    DelayerDays:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        days:
+          type: integer
+          minimum: 1
+          description: <p>The number of days between when a reactive payment is triggered
+            and when it should be taken.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        strategy:
+          enum:
+          - FIXED
+          - WORKING_DAYS
+          type: string
+          x-spec-enum-id: b62f1d43e0839f86
+          description: <p>The strategy used to count the delayer days.</p>
+          x-enum-descriptions:
+            FIXED: Calendar days
+            WORKING_DAYS: Working days
+      required:
+      - days
+      - strategy
+      - term_type
+    EffectivePeriod:
+      type: object
+      properties:
+        end_date:
+          type: string
+          format: date
+          description: <p>The effective period end date (exclusive).</p>
+        start_date:
+          type: string
+          format: date
+          description: <p>The effective period start date (inclusive).</p>
+      required:
+      - start_date
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: <p>The code for the error.</p>
+        detail:
+          type: string
+          description: <p>A description of the error.</p>
+      required:
+      - code
+      - detail
+    ExistingAccount:
+      type: object
+      properties:
+        type:
+          enum:
+          - EXISTING
+          - NEW
+          type: string
+          x-spec-enum-id: 3c90de91ea29153f
+          description: <p>The type of account target. Determines which account serializer
+            is used for validation.</p>
+          x-enum-descriptions:
+            EXISTING: EXISTING
+            NEW: NEW
+        account_identifier:
+          type: string
+          description: <p>An internal reference identifier for this account target
+            within the order payload.</p>
+        account_number:
+          type: string
+          description: <p>The account number of the existing account in Kraken.</p>
+          x-validators:
+          - name: Validate account number format
+            description: Validate that the account number matches the expected Kraken
+              account number format (A- followed by 8 hexadecimal characters).
+            possible_errors:
+            - invalid_account_number_format
+        business_reference:
+          type: string
+          description: <p>The <code>business_identifier</code> of the business target
+            in the payload that this account belongs to.</p>
+      required:
+      - account_identifier
+      - account_number
+      - type
+    ExistingBusiness:
+      type: object
+      properties:
+        type:
+          enum:
+          - EXISTING
+          - NEW
+          type: string
+          x-spec-enum-id: 3c90de91ea29153f
+          description: <p>The type of business target. Determines which business serializer
+            is used for validation.</p>
+          x-enum-descriptions:
+            EXISTING: EXISTING
+            NEW: NEW
+        business_identifier:
+          type: string
+          description: <p>An internal reference identifier for this business target
+            within the order payload.</p>
+        business_type:
+          enum:
+          - SOLE_TRADER
+          - LTD
+          - PTY_LTD
+          - PARTNERSHIP
+          - CHARITY
+          - PLC
+          - LLP
+          - TRUST
+          - TRADING_AS
+          - GOVERNMENT
+          - NON_PROFIT
+          - CHURCH
+          - HOMEOWNER_ASSOCIATION
+          - TBD
+          type: string
+          x-spec-enum-id: 8cd3a9d2ed8d5378
+          description: <p>The type of business this account related to. The business
+            type can only be provided for business accounts.</p>
+          x-enum-descriptions:
+            SOLE_TRADER: Sole trader
+            LTD: Limited
+            PTY_LTD: Proprietary Limited Company
+            PARTNERSHIP: Partnership
+            CHARITY: Charity
+            PLC: Public limited company
+            LLP: Limited liability partnership
+            TRUST: Trust
+            TRADING_AS: Trading as
+            GOVERNMENT: Government
+            NON_PROFIT: Non profit
+            CHURCH: Church
+            HOMEOWNER_ASSOCIATION: Homeowner association
+            TBD: To be determined
+        company_name:
+          type: string
+          description: <p>The company name for a business account.</p>
+          maxLength: 255
+        company_number:
+          type: string
+          description: <p>The company number for a business account.</p>
+          maxLength: 100
+          x-validators:
+          - name: Validate company number
+            description: Validate the company number and standardize its format.
+            possible_errors:
+            - invalid_company_number
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessDetail'
+          description: <p>Generic solution for storing additional business data that
+            is not covered by the other fields in the payload. This is often in the
+            form of market or territory specific information. Keys must be registered
+            in Kraken and will have a value type the value for the key must confirm
+            to.</p>
+          x-validators:
+          - name: Validate that each child has unique values for the <code>⁨key⁩</code>
+              field
+            description: Validate that each child has unique values for the <code>⁨key⁩</code>
+              field.
+            possible_errors:
+            - children_with_duplicate_values
+        parent_business_reference:
+          type: string
+          description: <p>The <code>business_identifier</code> of another business
+            target in the payload that is the parent of this business, used to express
+            business hierarchies.</p>
+        portfolios:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessPortfolio'
+          description: <p>Information about the portfolios associated with this business.</p>
+        segment_name:
+          x-spec-enum-id: 4f53cda18c2baa0c
+          description: <p>The segment to which the business belongs.</p>
+          x-comment: Choices for this field are dynamic, once appropriate values have
+            been configured they will be rendered here.
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessUser'
+          description: <p>List of the business users associated with the business.</p>
+      required:
+      - business_identifier
+      - type
+      x-validators:
+      - name: Validate that lookup identifiers are provided for an existing business
+        description: 'Validate that at least one viable lookup mechanism is provided
+          for an existing business: either all core fields (<code>company_name</code>,
+          <code>company_number</code>, <code>business_type</code>) or at least one
+          entry in <code>details</code>.'
+        possible_errors:
+        - business_lookup_identifier_required
+    GuaranteeOfOriginConfiguration:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        guarantee_of_origin_percentage:
+          enum:
+          - 0
+          - 25
+          - 50
+          - 75
+          - 100
+          type: integer
+          x-spec-enum-id: fb9427e17f642d36
+          description: data-import--field-definition--guarantee-of-origin-configuration--guarantee-of-origin-percentage-help
+          x-enum-descriptions:
+            '0': '0'
+            '25': '25'
+            '50': '50'
+            '75': '75'
+            '100': '100'
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+      required:
+      - guarantee_of_origin_percentage
+      - term_type
+    ImportEvent:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: <p>Additional data associated with the import event, such as
+            error codes and details.</p>
+        event:
+          type: string
+          description: <p>The type of import event.</p>
+        occurred_at:
+          type: string
+          format: date-time
+          description: <p>The date and time when the import event was recorded.</p>
+      required:
+      - event
+      - occurred_at
+    ImportStatusResponse:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: <p>The date and time when the import process was created.</p>
+        kraken_identifier:
+          type: string
+          nullable: true
+          description: <p>The unique identifier assigned to this import within Kraken.</p>
+        latest_error:
+          allOf:
+          - $ref: '#/components/schemas/LatestError'
+          nullable: true
+          description: <p>The most recent error that occurred during the import process,
+            if any.</p>
+        latest_event:
+          allOf:
+          - $ref: '#/components/schemas/ImportEvent'
+          description: <p>The most recent import event associated with the import
+            process, if any.</p>
+        modified_at:
+          type: string
+          format: date-time
+          description: <p>The date and time when the import process was last modified.</p>
+        status:
+          type: string
+          description: <p>The current status of the import process.</p>
+      required:
+      - created_at
+      - latest_event
+      - modified_at
+      - status
+    IndexationOption:
+      type: object
+      properties:
+        escalation_start_date:
+          type: string
+          format: date
+          description: <p>Date the indexation applies from.</p>
+        index_code:
+          type: string
+          description: <p>The code for the relevant index.</p>
+      required:
+      - escalation_start_date
+      - index_code
+    LatePaymentFees:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        flat_fee_amount:
+          type: integer
+          minimum: 0
+          description: <p>The flat amount added to each late payment fee, in the lowest
+            denomination for the currency.</p>
+        interest_policy_name:
+          enum:
+          - ''
+          - RBA
+          type: string
+          x-spec-enum-id: 755d70bd45dbabbb
+          description: <p>The interest policy to use for late payment fee calculations.</p>
+          x-enum-descriptions:
+            '': '---------'
+            RBA: RBA
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        percentage_fee:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          description: <p>The percentage fee to be applied as part of the late payment
+            fee calculations.</p>
+        percentage_interval_days:
+          type: integer
+          minimum: 0
+          description: <p>The interval the percentage fee rate represents in days
+            (365 = annual).</p>
+      required:
+      - flat_fee_amount
+      - percentage_fee
+      - percentage_interval_days
+      - term_type
+    LatestError:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+          description: <p>The error code identifying the type of error that occurred.</p>
+        detail:
+          type: string
+          nullable: true
+          description: <p>A detailed description of the error that occurred.</p>
+        domain:
+          type: string
+          nullable: true
+          description: <p>The domain or context in which the error occurred.</p>
+    Metadata:
+      type: object
+      properties:
+        key:
+          type: string
+          description: <p>The key on which the metadata will be stored on.</p>
+          maxLength: 1024
+        value:
+          description: <p>A json object containing any arbitrary piece of data to
+            store in relation to the account.</p>
+      required:
+      - key
+      - value
+    MinimumContractLength:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        contract_identifier:
+          type: string
+          description: <p>Unique identifier of the contract.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        length:
+          type: integer
+          minimum: 1
+          description: <p>Minimum length of the contract.</p>
+        unit_of_time:
+          enum:
+          - WEEK
+          - MONTH
+          - YEAR
+          type: string
+          x-spec-enum-id: 2dd8361d760ce9df
+          description: <p>Unit of time used to measure the length of the contract.</p>
+          x-enum-descriptions:
+            WEEK: Week
+            MONTH: Month
+            YEAR: Year
+      required:
+      - contract_identifier
+      - length
+      - term_type
+      - unit_of_time
+    NewAccount:
+      type: object
+      properties:
+        type:
+          enum:
+          - EXISTING
+          - NEW
+          type: string
+          x-spec-enum-id: 3c90de91ea29153f
+          description: <p>The type of account target. Determines which account serializer
+            is used for validation.</p>
+          x-enum-descriptions:
+            EXISTING: EXISTING
+            NEW: NEW
+        account_identifier:
+          type: string
+          description: <p>An internal reference identifier for this account target
+            within the order payload.</p>
+        account_type:
+          enum:
+          - Business
+          - Domestic
+          - Business Occupier
+          - Occupier
+          - Managed
+          type: string
+          x-spec-enum-id: ff3f2524baf2f6e8
+          description: data-import--field-definition--order-new-account--account-type--html
+          x-enum-descriptions:
+            Business: Business
+            Domestic: Domestic
+            Business Occupier: Business Occupier
+            Occupier: Occupier
+            Managed: Managed
+        billing_information:
+          allOf:
+          - $ref: '#/components/schemas/BillingInformation'
+          description: data-import--field-definition--base-account--billing-information--html
+        brand_code:
+          enum:
+          - ORIGIN
+          - ORIGIN_ZERO
+          - FIRST_ENERGY
+          type: string
+          x-spec-enum-id: 48b17e6cf5372987
+          description: data-import--field-definition--order-new-account--brand-code--html
+          x-enum-descriptions:
+            ORIGIN: Origin
+            ORIGIN_ZERO: Origin Zero
+            FIRST_ENERGY: 1st Energy
+        business_reference:
+          type: string
+          description: <p>The <code>business_identifier</code> of the business target
+            in the payload that this account belongs to.</p>
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/Metadata'
+          description: <p>An array of key value pairs for storing generic metadata
+            relating to an account. Metadata is externally focused and is not used
+            for any logic within Kraken. Its main motivation is to provide a simple
+            persistence mechanism for clients building their own integrations with
+            Kraken. If a customer already exists in Kraken with existing metadata
+            for the provided key, the value associated with this key will be overwritten.</p>
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountReference'
+          description: <p>List of account references for the account. An example may
+            be a secondary account number.</p>
+      required:
+      - account_identifier
+      - account_type
+      - billing_information
+      - brand_code
+      - type
+    NewBusiness:
+      type: object
+      properties:
+        type:
+          enum:
+          - EXISTING
+          - NEW
+          type: string
+          x-spec-enum-id: 3c90de91ea29153f
+          description: <p>The type of business target. Determines which business serializer
+            is used for validation.</p>
+          x-enum-descriptions:
+            EXISTING: EXISTING
+            NEW: NEW
+        business_identifier:
+          type: string
+          description: <p>An internal reference identifier for this business target
+            within the order payload.</p>
+        business_type:
+          enum:
+          - SOLE_TRADER
+          - LTD
+          - PTY_LTD
+          - PARTNERSHIP
+          - CHARITY
+          - PLC
+          - LLP
+          - TRUST
+          - TRADING_AS
+          - GOVERNMENT
+          - NON_PROFIT
+          - CHURCH
+          - HOMEOWNER_ASSOCIATION
+          - TBD
+          type: string
+          x-spec-enum-id: 8cd3a9d2ed8d5378
+          description: <p>The type of business this account related to. The business
+            type can only be provided for business accounts.</p>
+          x-enum-descriptions:
+            SOLE_TRADER: Sole trader
+            LTD: Limited
+            PTY_LTD: Proprietary Limited Company
+            PARTNERSHIP: Partnership
+            CHARITY: Charity
+            PLC: Public limited company
+            LLP: Limited liability partnership
+            TRUST: Trust
+            TRADING_AS: Trading as
+            GOVERNMENT: Government
+            NON_PROFIT: Non profit
+            CHURCH: Church
+            HOMEOWNER_ASSOCIATION: Homeowner association
+            TBD: To be determined
+        company_name:
+          type: string
+          description: <p>The company name for a business account.</p>
+          maxLength: 255
+        company_number:
+          type: string
+          description: <p>The company number for a business account.</p>
+          maxLength: 100
+          x-validators:
+          - name: Validate company number
+            description: Validate the company number and standardize its format.
+            possible_errors:
+            - invalid_company_number
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessDetail'
+          description: <p>Generic solution for storing additional business data that
+            is not covered by the other fields in the payload. This is often in the
+            form of market or territory specific information. Keys must be registered
+            in Kraken and will have a value type the value for the key must confirm
+            to.</p>
+          x-validators:
+          - name: Validate that each child has unique values for the <code>⁨key⁩</code>
+              field
+            description: Validate that each child has unique values for the <code>⁨key⁩</code>
+              field.
+            possible_errors:
+            - children_with_duplicate_values
+        parent_business_reference:
+          type: string
+          description: <p>The <code>business_identifier</code> of another business
+            target in the payload that is the parent of this business, used to express
+            business hierarchies.</p>
+        portfolios:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessPortfolio'
+          description: <p>Information about the portfolios associated with this business.</p>
+        segment_name:
+          x-spec-enum-id: 4f53cda18c2baa0c
+          description: <p>The segment to which the business belongs.</p>
+          x-comment: Choices for this field are dynamic, once appropriate values have
+            been configured they will be rendered here.
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessUser'
+          description: <p>List of the business users associated with the business.</p>
+          maxItems: 1
+      required:
+      - business_identifier
+      - type
+    Note:
+      type: object
+      properties:
+        body:
+          type: string
+          description: <p>The body of the note. Should include who/what created the
+            note if this is required.</p>
+        created_at:
+          type: string
+          format: date-time
+          description: <p>The date and time the note was created.</p>
+        document_paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/NoteDocument'
+          description: <p>A list of relative paths in S3 for documents to be attached
+            to the note.</p><p>More details on document path parameters can be found
+            <a href="/rest/guides/data-import/basics#document-paths">here</a>.</p>
+        external_id:
+          type: string
+          description: <p>Unique identifier for this note to avoid duplicate entries.</p>
+        is_archived:
+          type: boolean
+          description: <p>If set to true, this will archive the note in the Kraken
+            account support site page.</p>
+        is_pinned:
+          type: boolean
+          description: <p>If set to true, this will pin the note to the top of the
+            Kraken account support site page.</p>
+        unpin_at:
+          type: string
+          format: date-time
+          description: <p>When the pinned note should be unpinned. Has to be later
+            than <code>created_at</code> if this is provided. Has no effect if the
+            note is not pinned.</p>
+      x-validators:
+      - name: Validate note body or document paths provided
+        description: Validate that at least a note body or document paths are provided.
+        possible_errors:
+        - note_body_or_document_path_not_found
+      - name: Validate note created at is equal to or before unpin at
+        description: Validate that the note's created at date is equal to or before
+          the unpin at date if both are provided.
+        possible_errors:
+        - note_unpin_at_earlier_than_creation_date
+    NoteDocument:
+      type: object
+      properties:
+        document_path:
+          type: string
+          description: <p>The S3 relative path to the document to be attached to the
+            note.</p>
+          x-validators:
+          - name: Validate path exists in file store
+            description: Validate that the given path corresponds to a file that has
+              previously been uploaded to the migration file store. Note that this
+              validation is disabled by default and can be enabled using the relevant
+              feature flag.
+            possible_errors:
+            - path_does_not_exist_in_file_store
+      required:
+      - document_path
+    Order:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderAccount'
+          description: <p>A list of account targets for the order.</p>
+        businesses:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderBusiness'
+          description: <p>A list of business targets for the order.</p>
+        external_order_id:
+          type: string
+          description: <p>A unique identifier for the order in the external system.</p>
+        order_lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderLine'
+          description: <p>A list of order lines describing the operations to perform.</p>
+        sales_info:
+          allOf:
+          - $ref: '#/components/schemas/SalesInfo'
+          description: <p>Sales information associated with the order.</p>
+      required:
+      - accounts
+      - businesses
+      - external_order_id
+      - order_lines
+      x-validators:
+      - name: Validate that each business's parent reference resolves
+        description: Validate that every <code>parent_business_reference</code> refers
+          to another business in the payload, that no business references itself as
+          its own parent, and that no chain of parent references forms a cycle.
+        possible_errors:
+        - circular_parent_business_reference
+        - dangling_parent_business_reference
+        - self_referencing_parent_business
+      - name: Validate that all businesses are targeted by an order line
+        description: Validate that every business in the payload is either directly
+          targeted by an order line or has an ancestor (via <code>parent_business_reference</code>)
+          that is targeted by an order line.
+        possible_errors:
+        - orphaned_businesses
+      - name: Validate that contract renewal order lines target an existing business
+        description: Validate that any contract renewal order line with <code>target_type</code>
+          of <code>BUSINESS</code> references a business with <code>type</code> of
+          <code>EXISTING</code>.
+        possible_errors:
+        - contract_renewal_business_target_must_be_existing
+      - name: Validate that enrollment order lines target a new business
+        description: Validate that any enrollment order line with <code>target_type</code>
+          of <code>BUSINESS</code> references a business with <code>type</code> of
+          <code>NEW</code>.
+        possible_errors:
+        - enrollment_business_target_must_be_new
+      - name: Validate that existing account numbers are unique
+        description: Validate that each existing account number appears at most once
+          in the <code>accounts</code> list.
+        possible_errors:
+        - duplicate_existing_account_number
+      - name: Validate that contract-level sales info is not provided
+        description: When order-level sales info is required, <code>sales_info</code>
+          and the deprecated <code>sales_record</code> must not be set on any contract
+          in the order. Provide sales info at the order level instead.
+        possible_errors: []
+    OrderAccount:
+      oneOf:
+      - $ref: '#/components/schemas/ExistingAccount'
+      - $ref: '#/components/schemas/NewAccount'
+      discriminator:
+        propertyName: type
+        mapping:
+          EXISTING: '#/components/schemas/ExistingAccount'
+          NEW: '#/components/schemas/NewAccount'
+    OrderBusiness:
+      oneOf:
+      - $ref: '#/components/schemas/ExistingBusiness'
+      - $ref: '#/components/schemas/NewBusiness'
+      discriminator:
+        propertyName: type
+        mapping:
+          EXISTING: '#/components/schemas/ExistingBusiness'
+          NEW: '#/components/schemas/NewBusiness'
+    OrderLine:
+      oneOf:
+      - $ref: '#/components/schemas/ContractRenewal'
+      discriminator:
+        propertyName: type
+        mapping:
+          CONTRACT_RENEWAL: '#/components/schemas/ContractRenewal'
+    OrderManagementContractWithSubjects:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: <p>The contract's unique identifier.</p>
+        sales_record:
+          allOf:
+          - $ref: '#/components/schemas/ContractSalesRecord'
+          description: <p>Sales record details about the contract.</p>
+          deprecated: true
+          x-use-instead: sales_info
+        signed_at_date:
+          type: string
+          format: date
+          description: <p>The date on which the contract was signed.</p>
+        subjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContractSubject'
+          description: <p>A list of accounts to use as the subject of the contract.</p>
+          minItems: 1
+        valid_from_date:
+          type: string
+          format: date
+          description: '<p>The date from which the contract is valid. This is an inclusive
+            date. Example: If <code>valid_from</code> is October 1, 2024, then the
+            contract is valid on October 1, 2024 and following dates.</p>'
+        valid_to_date:
+          type: string
+          format: date
+          nullable: true
+          description: '<p>The date on which the contract expires. This is an exclusive
+            date. Example: If <code>valid_to</code> is October 1, 2025, then the contract
+            is not valid on October 1, 2025 or following dates.</p>'
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContractVersion'
+          description: <p> The versions of this contract, each version is a collection
+            of terms and the date they are applicable. Only two versions can be provided,
+            one which starts on the same date as the contract is valid from and one
+            other future dated version to be scheduled.</p>
+          maxItems: 2
+      required:
+      - identifier
+      - signed_at_date
+      - subjects
+      - valid_from_date
+      x-validators:
+      - name: Validate that contract versions include a version for the current terms
+        description: Validate that the earliest version in the list of contract versions
+          provided has an <code>applicable_at_date</code> that is equal to the contract
+          <code>valid_from_date</code>.
+        possible_errors:
+        - contract_versions_does_not_include_current
+      - name: Validate contract subject periods fall within the contract
+        description: Validates that each contract subject's supplied valid_from and
+          valid_to dates fall within the contract's own validity period.
+        possible_errors:
+        - invalid_period
+    PartnerCommission:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        configurations:
+          type: array
+          items:
+            $ref: '#/components/schemas/PartnerCommissionConfig'
+          description: <p>List of partner commission configurations to associate with
+            this contract term.</p>
+          minItems: 1
+          x-validators:
+          - name: Validate partner commission numbers exist
+            description: Validate that all partner commission numbers in the term
+              configurations exist in Kraken.
+            possible_errors:
+            - not_found
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+      required:
+      - configurations
+      - term_type
+    PartnerCommissionConfig:
+      type: object
+      properties:
+        apply_uplift:
+          type: boolean
+          default: false
+          description: <p>Whether to apply a product uplift for this partner commission.
+            Defaults to <code>false</code>.</p>
+        override_trailing_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          nullable: true
+          description: <p>Optional override for the trailing commission percentage.
+            Overrides the default percentage on the partner commission.</p>
+        override_unit_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,8})?$
+          nullable: true
+          description: <p>Optional override for the unit-based commission rate. Overrides
+            the default unit amount on the partner commission.</p>
+        partner_commission_number:
+          type: string
+          description: <p>The unique identifier of the partner commission (e.g. <code>OPC-XXXXXXXX</code>
+            or <code>TPC-XXXXXXXX</code>).</p>
+          maxLength: 20
+      required:
+      - partner_commission_number
+    PaysByDirectDebitTerm:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        pays_by_direct_debit:
+          type: boolean
+          description: <p>Whether the customer pays by direct debit.</p>
+      required:
+      - pays_by_direct_debit
+      - term_type
+    PortfolioReference:
+      type: object
+      properties:
+        namespace:
+          enum:
+          - external-portfolio-reference-id
+          - portfolio-label
+          type: string
+          x-spec-enum-id: 9c7783add2be9a67
+          description: <p>The namespace refers to the particular context the reference
+            exists in. This must be one of the following options below if a portfolio
+            reference is being provided.</p>
+          x-enum-descriptions:
+            external-portfolio-reference-id: external-portfolio-reference-id
+            portfolio-label: portfolio-label
+        value:
+          type: string
+          description: <p>The unique identifier for the portfolio.</p>
+          maxLength: 100
+      required:
+      - namespace
+      - value
+    PortfolioSettings:
+      type: object
+      properties:
+        collective_billing:
+          type: boolean
+          default: false
+          description: <p>Set all accounts on the portfolio to be billed collectively.
+            This value can only be provided if the account is the portfolio lead account.</p>
+        collective_payments:
+          type: boolean
+          default: false
+          description: <p>Set all accounts on the portfolio to pay collectively. This
+            value can only be provided if the account is the portfolio lead account.</p>
+        delegate_billing_schedule_to_children:
+          type: boolean
+          default: false
+          description: <p>When using collective billing, use the child account's billing
+            options to determine when we charge and prepare billing documents (as
+            opposed to using the lead account's options). This value can only be provided
+            if the account is the portfolio lead account.</p>
+        send_collective_bill_constituent_messages:
+          type: boolean
+          default: false
+          description: <p>When using collective billing, send collective bill constituent
+            messages to each member of the collective bill. This value can only be
+            provided if the account is the portfolio lead account.</p>
+    ProductCharacteristic:
+      oneOf:
+      - $ref: '#/components/schemas/SalesChannelCharacteristic'
+      discriminator:
+        propertyName: code
+        mapping:
+          sales_channel: '#/components/schemas/SalesChannelCharacteristic'
+      x-validators:
+      - name: Validate that <code>characteristics.code</code> and <code>characteristics.value</code>
+          are valid
+        description: Ensure that the characteristic code exists and the characteristic
+          value is valid for the given code.
+        possible_errors:
+        - characteristic_code_not_found
+        - invalid_characteristic_value
+    ProductRateOverrideConfiguration:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        indexation_options:
+          allOf:
+          - $ref: '#/components/schemas/IndexationOption'
+          description: <p>The indexation options for the product rate override.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductRateOverrideSchedule'
+          description: <p>The schedule associated with the product rate override.</p>
+      required:
+      - schedules
+      - term_type
+    ProductRateOverrideItemByRateBand:
+      type: object
+      properties:
+        price_per_unit:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
+          description: <p>The price per unit of the item.</p>
+        product_code:
+          type: string
+          description: <p>The product code of the item.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+        rate_band:
+          type: string
+          description: <p>The override rate of the item.</p>
+      required:
+      - price_per_unit
+      - product_code
+      - rate_band
+      x-validators:
+      - name: Validate that the rate band is valid for the product code
+        description: Validate that the rate band provided matches the rate band for
+          the product's rates with the provided product code.
+        possible_errors:
+        - rate_band_not_found_for_product
+    ProductRateOverrideItemByVariantProfile:
+      type: object
+      properties:
+        characteristic_values:
+          type: object
+          description: <p>The characteristic values of the product rate override item.</p>
+          x-validators:
+          - name: Validate provided dictionary content types
+            description: Validates that provided dictionary contents are of the specified
+              key type and value type.
+            possible_errors: []
+        price_per_unit:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
+          description: <p>The override rate of the item.</p>
+        product_code:
+          type: string
+          description: <p>The product code of the item.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+        rate_specification_code:
+          type: string
+          description: <p>The rate specification code of the item.</p>
+        scheme_labels:
+          type: object
+          description: <p>The scheme labels of the product rate override item.</p>
+          x-validators:
+          - name: Validate provided dictionary content types
+            description: Validates that provided dictionary contents are of the specified
+              key type and value type.
+            possible_errors: []
+      required:
+      - price_per_unit
+      - product_code
+      - rate_specification_code
+      x-validators:
+      - name: Validate that the rate band is valid for the product code
+        description: Validate that the rate band provided matches the rate band for
+          the product's rates with the provided product code.
+        possible_errors:
+        - characteristic_code_not_found
+        - invalid_characteristic_value
+        - invalid_variant_profile_for_product
+        - product_specification_not_found_for_product
+        - rate_specification_not_found_for_product
+    ProductRateOverrideSchedule:
+      type: object
+      properties:
+        effective_from:
+          type: string
+          format: date-time
+          description: '<p>The date on which the schedule goes into effect. This is
+            an inclusive date. Example: If the <code>effective_from</code> is October
+            1, 2024, then the schedule is valid on October 1, 2024 and following dates.</p>'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductRateOverrideItemByRateBand'
+          description: <p>The items specified by rate band affected by the override
+            during this schedule.</p>
+        variant_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductRateOverrideItemByVariantProfile'
+          description: <p>The items specified by characteristic values affected by
+            the override during this schedule.</p>
+      required:
+      - effective_from
+      x-validators:
+      - name: Validate that rate override schedule item must include rate overrides.
+        description: Validate that rate override schedule item must include at least
+          'items' or 'characteristic_items' values.
+        possible_errors:
+        - rate_override_items_required
+    PromotionAssignmentSchedule:
+      type: object
+      properties:
+        discount_targets:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/PromotionAssignmentTarget'
+          description: <p>Mapping of discount code to a list of targets the discount
+            applies to.</p>
+        params:
+          type: object
+          description: '<p>Optional parameters for the promotion assignment schedule.
+            Supports the following keys: <code>promotion_start_date</code> — an ISO
+            8601 datetime string (e.g. <code>2024-01-15T00:00:00+00:00</code>) that
+            overrides the date used when calculating promotion eligibility (e.g. months
+            since sign-up). If omitted, the date is derived from the customer''s agreement.</p>'
+        promotion_code:
+          type: string
+          description: <p>The promotion code to apply.</p>
+      required:
+      - discount_targets
+      - promotion_code
+      x-validators:
+      - name: Promotion assignment discount targets are valid
+        description: Validates that the promotion exists, discounts are defined in
+          the promotion, target types match the discount target type, and target identifiers
+          are valid.
+        possible_errors:
+        - discount_not_in_promotion
+        - invalid_input_data
+        - promotion_not_registered
+        - rate_source_provider_not_registered
+        - source_data_not_supported_for_fixed_rate
+        - source_data_reference_mismatch
+        - target_identifier_invalid
+        - target_type_mismatch
+        - target_type_not_registered
+      - name: Promotion assignment params are valid
+        description: Validates that the params field contains only valid values. If
+          promotion_start_date is provided, it must be a valid ISO 8601 datetime string.
+        possible_errors:
+        - invalid_promotion_start_date
+    PromotionAssignmentTarget:
+      type: object
+      properties:
+        displayed_on_bill:
+          type: boolean
+          default: true
+          description: <p>Whether this discount should be displayed as a line item
+            on customer bills. Defaults to <code>true</code>. Set to <code>false</code>
+            to hide the discount from bills while still applying it.</p>
+        identifier:
+          type: string
+          description: <p>The identifier for the target. Format is <code>&lt;product_specification_identifier&gt;:&lt;specification_code&gt;</code>
+            (e.g., for rate specifications or shared rates).</p>
+        source_data:
+          type: object
+          description: '<p>Optional configuration data used by rate providers to resolve
+            discount rates. The structure depends on the rate provider (e.g., <code>&#123;"bespoke_amount":
+            "0.05"&#125;</code> for bespoke rates).</p>'
+        target_type:
+          type: string
+          description: <p>The type of target being discounted. Use <code>rate_specification</code>
+            to target a product catalog rate specification, or <code>shared_rate</code>
+            to target a shared rate.</p>
+      required:
+      - identifier
+      - target_type
+    PromotionAssignmentTerm:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionAssignmentSchedule'
+          description: <p>The list of promotion assignment schedules.</p>
+          minItems: 1
+      required:
+      - schedules
+      - term_type
+    RateGroupEligibilityConfiguration:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/RateGroupEligibilitySchedule'
+          description: <p>Rate group eligibility schedules.</p>
+        time_series_specification_schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeSeriesSpecificationEligibilitySchedule'
+          description: <p>Shared rate eligibility schedules.</p>
+      required:
+      - schedules
+      - term_type
+      - time_series_specification_schedules
+    RateGroupEligibilitySchedule:
+      type: object
+      properties:
+        effective_period:
+          allOf:
+          - $ref: '#/components/schemas/EffectivePeriod'
+          description: <p>The effective period of the schedule.</p>
+        is_eligible:
+          type: boolean
+          description: <p>Whether the rate group is eligible for charging to the customer.</p>
+        product_code:
+          type: string
+          description: <p>Product code. </p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+        rate_group_code:
+          type: string
+          description: <p>The unique rate group code for the product.</p>
+        supply_point_identifier:
+          type: string
+          description: <p>Optional supply point identifier to restrict this schedule
+            to a specific supply point.</p>
+      required:
+      - effective_period
+      - is_eligible
+      - product_code
+      - rate_group_code
+      x-validators:
+      - name: Validate that the rate group code is valid for the product code
+        description: Validate that the rate group code provided matches the rate group
+          for the product with the provided product code.
+        possible_errors:
+        - rate_group_not_found_for_product
+    SalesChannelCharacteristic:
+      type: object
+      properties:
+        code:
+          enum:
+          - sales_channel
+          type: string
+          x-spec-enum-id: 03e433a571effc5f
+          description: <p>The code for the product's characteristic.</p>
+          x-enum-descriptions:
+            sales_channel: sales_channel
+        value:
+          enum:
+          - PARTNERSHIPS
+          - AGGREGATOR
+          - EVENTS
+          - WORKPLACE_POP_UP
+          - GIFT_OF_KIT
+          - TELESALES
+          - LANDLORD
+          - DEBT_COLLECTION_AGENCY
+          - NEW_TENANT
+          - FIELD_SALES
+          - HIGH_REFERRER
+          - PARENT_POWER
+          - WORKS_WITH_OCTOPUS
+          - SUPPLIER_OF_LAST_RESORT
+          - DIGI_TELESALES
+          - DIRECT
+          - ACQUISITION
+          - PRICE_COMPARISON
+          - BROKER
+          - MOVE_IN
+          - PEOPLE_POWER
+          type: string
+          x-spec-enum-id: 2c5347e84652fd95
+          description: <p>The value for the product's characteristic.</p>
+          x-enum-descriptions:
+            PARTNERSHIPS: PARTNERSHIPS
+            AGGREGATOR: AGGREGATOR
+            EVENTS: EVENTS
+            WORKPLACE_POP_UP: WORKPLACE_POP_UP
+            GIFT_OF_KIT: GIFT_OF_KIT
+            TELESALES: TELESALES
+            LANDLORD: LANDLORD
+            DEBT_COLLECTION_AGENCY: DEBT_COLLECTION_AGENCY
+            NEW_TENANT: NEW_TENANT
+            FIELD_SALES: FIELD_SALES
+            HIGH_REFERRER: HIGH_REFERRER
+            PARENT_POWER: PARENT_POWER
+            WORKS_WITH_OCTOPUS: WORKS_WITH_OCTOPUS
+            SUPPLIER_OF_LAST_RESORT: SUPPLIER_OF_LAST_RESORT
+            DIGI_TELESALES: DIGI_TELESALES
+            DIRECT: DIRECT
+            ACQUISITION: ACQUISITION
+            PRICE_COMPARISON: PRICE_COMPARISON
+            BROKER: BROKER
+            MOVE_IN: MOVE_IN
+            PEOPLE_POWER: PEOPLE_POWER
+      required:
+      - code
+      - value
+    SalesInfo:
+      type: object
+      properties:
+        affiliate_link_identifier:
+          type: string
+          description: <p>The affiliate link's identifier, used to attribute the sale
+            to an affiliate.</p>
+        affiliate_organisation_name:
+          type: string
+          description: <p>The name of the affiliate organisation the sale is attributed
+            to. When provided alongside <code>sales_channel</code>, the channel must
+            be valid for the organisation.</p>
+        affiliate_query_params:
+          description: <p>Arbitrary affiliate tracking parameters captured at sign-up,
+            stored as a JSON object.</p>
+        date_of_sale:
+          type: string
+          format: date
+          description: <p>The date the sale was made (ISO 8601, YYYY-MM-DD).</p>
+        offer_group_identifier:
+          type: string
+          format: uuid
+          description: <p>The identifier (UUID) of the offer group associated with
+            the sale.</p>
+        referral_code:
+          type: string
+          description: <p>The referral code the customer signed up with (the referring
+            account's code).</p>
+        sales_channel:
+          enum:
+          - DIRECT
+          - PRICE_COMPARISON
+          - TELESALES
+          - DIGI_TELESALES
+          - EVENTS
+          - FIELD_SALES
+          - AGGREGATOR
+          - PARTNERSHIPS
+          - NEW_TENANT
+          - MOVE_IN
+          - WORKPLACE_POP_UP
+          - BROKER
+          - PARENT_POWER
+          - PEOPLE_POWER
+          - GIFT_OF_KIT
+          - HIGH_REFERRER
+          - SUPPLIER_OF_LAST_RESORT
+          - ACQUISITION
+          - WORKS_WITH_OCTOPUS
+          - LANDLORD
+          - DEBT_COLLECTION_AGENCY
+          type: string
+          x-spec-enum-id: f4ccf4dcda60c174
+          description: <p>The sales channel the sale is attributed to. Must be a valid
+            configured sales channel.</p>
+          x-enum-descriptions:
+            DIRECT: Direct
+            PRICE_COMPARISON: Price comparison
+            TELESALES: Telesales
+            DIGI_TELESALES: Digital telesales
+            EVENTS: Events
+            FIELD_SALES: Field sales
+            AGGREGATOR: Aggregator
+            PARTNERSHIPS: Partnerships
+            NEW_TENANT: New tenant
+            MOVE_IN: Move in
+            WORKPLACE_POP_UP: Workplace pop-up
+            BROKER: Broker
+            PARENT_POWER: Parent power
+            PEOPLE_POWER: People power
+            GIFT_OF_KIT: Gift of kit
+            HIGH_REFERRER: High referrer
+            SUPPLIER_OF_LAST_RESORT: Supplier of last resort
+            ACQUISITION: Acquisition
+            WORKS_WITH_OCTOPUS: Works with octopus
+            LANDLORD: Landlord
+            DEBT_COLLECTION_AGENCY: Debt collection agency
+        sales_subchannel:
+          type: string
+          description: <p>An optional sub-segmentation of the sales channel. Only
+            available while self-serve sales channels are disabled.</p>
+        urn:
+          type: string
+          description: <p>Unique reference number from a 3rd party enrollment, e.g.
+            UN60031712.</p>
+      required:
+      - date_of_sale
+      - sales_channel
+      x-validators:
+      - name: Sales channel matches affiliate organisation
+        description: Validates that when an affiliate_organisation_name is provided,
+          the sales_channel is in the set of channels configured for that organisation.
+        possible_errors:
+        - sales_channel_does_not_match_affiliate_organisation
+    ScheduleOrder:
+      type: object
+      properties:
+        payload:
+          allOf:
+          - $ref: '#/components/schemas/Order'
+          description: <p>The payload to be used during creation.</p>
+        task_params:
+          allOf:
+          - $ref: '#/components/schemas/TaskParameters'
+          description: <p>The parameters that control when and how Kraken will execute
+            this task.</p>
+      required:
+      - payload
+      - task_params
+    StandardizedError:
+      type: object
+      properties:
+        attr:
+          type: string
+          description: <p>The attribute that the error relates to, if applicable.</p>
+        code:
+          type: string
+          description: <p>The code for the error.</p>
+        detail:
+          type: string
+          description: <p>A description of the error.</p>
+      required:
+      - attr
+      - code
+      - detail
+    StandardizedValidationErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: <p>The code for the error.</p>
+        detail:
+          type: string
+          description: <p>A description of the error.</p>
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandardizedError'
+          description: <p>A list of field-specific errors.</p>
+      required:
+      - code
+      - detail
+      - errors
+    SupplyPointTaxAdjustment:
+      type: object
+      properties:
+        adjustment_type:
+          enum:
+          - EXEMPTION
+          - REDUCTION
+          type: string
+          x-spec-enum-id: '7048963418647159'
+          description: <p>The type of tax adjustment (EXEMPTION or REDUCTION).</p>
+          x-enum-descriptions:
+            EXEMPTION: Exemption
+            REDUCTION: Reduction
+        effective_from_date:
+          type: string
+          format: date
+          description: <p>The date the tax adjustment is effective from.</p>
+        effective_to_date:
+          type: string
+          format: date
+          nullable: true
+          description: <p>The date the tax adjustment is effective to (inclusive,
+            optional).</p>
+        qualifying_usage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,2})?$
+          description: <p>The normalised percentage of energy use on the supply point
+            that qualifies for the tax adjustment (between 0 and 1).</p>
+        supply_point_external_identifier:
+          type: string
+          description: <p>The external identifier of the supply point this tax adjustment
+            applies to.</p>
+          maxLength: 255
+        tax_category:
+          type: string
+          description: <p>The category of tax this adjustment applies to.</p>
+          maxLength: 50
+        tax_subcategory:
+          type: string
+          default: ''
+          description: <p>The subcategory of tax this adjustment applies to (optional).</p>
+          maxLength: 50
+      required:
+      - adjustment_type
+      - effective_from_date
+      - qualifying_usage
+      - supply_point_external_identifier
+      - tax_category
+      x-validators:
+      - name: Convert supply point external identifier to ID
+        description: Convert the supply point external identifier to the internal
+          supply point ID by looking up the supply point in the database.
+        possible_errors:
+        - supply_point_not_found
+      - name: Validate <code>⁨effective_to⁩</code> not before <code>⁨effective_from⁩</code>
+        description: Validates that <code>⁨effective_to⁩</code>, if given, is on or
+          later than <code>⁨effective_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+    TaskParameters:
+      type: object
+      properties:
+        is_dry_run:
+          type: boolean
+          default: false
+          description: <p>Whether a scheduled account creation task is part of a dry
+            run.</p>
+        schedule_window_end:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The end of a window in which a scheduled account creation
+            task can be executed.</p>
+          x-validators:
+          - name: Validate that <code>schedule_window_end</code> does not exceed 4
+              days in the future
+            description: Validate that the <code>schedule_window_end</code> is not
+              more than 4 days in the future.
+            possible_errors:
+            - schedule_window_end_too_far_in_future
+        schedule_window_start:
+          type: string
+          format: date-time
+          nullable: true
+          description: <p>The start of a window in which a scheduled account creation
+            task can be executed.</p>
+          x-validators:
+          - name: Validate that <code>schedule_window_start</code> is not in the past.
+            description: Validate that the <code>schedule_window_start</code> is not
+              in the past.
+            possible_errors:
+            - schedule_window_start_in_past
+      x-validators:
+      - name: Populate start and end date times, and ensures start is before end
+        description: Populates <code>schedule_window_start</code> and <code>schedule_window_end</code>
+          with default values if necessary. Also ensures that the <code>schedule_window_start</code>
+          is before the <code>schedule_window_end</code>.
+        possible_errors:
+        - schedule_window_start__after_end
+    TaxAdjustmentConfiguration:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        adjustments:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplyPointTaxAdjustment'
+          description: <p>A list of tax adjustments for supply points.</p>
+          minItems: 0
+          x-validators:
+          - name: Validate tax adjustments do not overlap
+            description: Validate that tax adjustments for the same supply point,
+              adjustment type, tax category, and tax subcategory do not have overlapping
+              effective periods.
+            possible_errors:
+            - overlapping_tax_adjustments
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+      required:
+      - adjustments
+      - term_type
+    TerminationFee:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        amount:
+          type: integer
+          description: <p>The fee amount in the lowest currency unit. For example,
+            this amount could be represented in cents, pence, etc.</p>
+        fee_type:
+          enum:
+          - FLAT
+          - WHOLE_MONTHS_REMAINING
+          - WHOLE_DAYS_REMAINING
+          type: string
+          x-spec-enum-id: ac778cd433d63345
+          description: <p>The type, or nature, of the fee. For example, the fee can
+            be flat or pertain to the amount of time remaining in the contract.</p>
+          x-enum-descriptions:
+            FLAT: contracts--terms--termination-fee-fee-type-flat
+            WHOLE_MONTHS_REMAINING: Per month remaining
+            WHOLE_DAYS_REMAINING: Per day remaining
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        supply_type:
+          enum:
+          - ELECTRICITY
+          - GAS
+          - UNMETERED_GAS
+          - UNMETERED_ELECTRICITY
+          - EMBEDDED_WATER
+          - EMBEDDED_ELECTRICITY
+          - EMBEDDED_GAS
+          - SOLAR_PPA
+          type: string
+          x-spec-enum-id: b30233ba99cda713
+          description: <p>The supply type being terminated.</p>
+          x-enum-descriptions:
+            ELECTRICITY: Electricity
+            GAS: Gas
+            UNMETERED_GAS: Unmetered Gas
+            UNMETERED_ELECTRICITY: Unmetered Electricity
+            EMBEDDED_WATER: Embedded Water
+            EMBEDDED_ELECTRICITY: Embedded Electricity
+            EMBEDDED_GAS: Embedded Gas
+            SOLAR_PPA: Solar PPA
+      required:
+      - amount
+      - fee_type
+      - term_type
+      x-validators:
+      - name: Validate that <code>⁨supply_type⁩</code> and <code>⁨market_name⁩</code>
+          are not both provided
+        description: Validate that ⁨supply_type⁩ and ⁨market_name⁩ are not both provided.
+        possible_errors:
+        - fields_are_mutually_exclusive
+    Terms:
+      oneOf:
+      - $ref: '#/components/schemas/BespokeRateConfiguration'
+      - $ref: '#/components/schemas/BillDueDate'
+      - $ref: '#/components/schemas/BillingDocumentIssuanceFrequencyTerm'
+      - $ref: '#/components/schemas/CharacteristicOverrideConfiguration'
+      - $ref: '#/components/schemas/CollateralRequired'
+      - $ref: '#/components/schemas/ContractMetaData'
+      - $ref: '#/components/schemas/ContractedVolumeConfiguration'
+      - $ref: '#/components/schemas/CorrectivePeriod'
+      - $ref: '#/components/schemas/DelayerDays'
+      - $ref: '#/components/schemas/GuaranteeOfOriginConfiguration'
+      - $ref: '#/components/schemas/LatePaymentFees'
+      - $ref: '#/components/schemas/MinimumContractLength'
+      - $ref: '#/components/schemas/PartnerCommission'
+      - $ref: '#/components/schemas/PaysByDirectDebitTerm'
+      - $ref: '#/components/schemas/ProductRateOverrideConfiguration'
+      - $ref: '#/components/schemas/PromotionAssignmentTerm'
+      - $ref: '#/components/schemas/RateGroupEligibilityConfiguration'
+      - $ref: '#/components/schemas/TrancheTargetResidualFee'
+      - $ref: '#/components/schemas/TaxAdjustmentConfiguration'
+      - $ref: '#/components/schemas/TerminationFee'
+      - $ref: '#/components/schemas/AusEEPAExportContractedVolumeConfiguration'
+      discriminator:
+        propertyName: term_type
+        mapping:
+          BESPOKE_RATE_CONFIGURATION: '#/components/schemas/BespokeRateConfiguration'
+          BILL_DUE_DATE: '#/components/schemas/BillDueDate'
+          ISSUANCE_FREQUENCY: '#/components/schemas/BillingDocumentIssuanceFrequencyTerm'
+          CHARACTERISTIC_OVERRIDE: '#/components/schemas/CharacteristicOverrideConfiguration'
+          COLLATERAL_REQUIRED: '#/components/schemas/CollateralRequired'
+          CONTRACT_METADATA: '#/components/schemas/ContractMetaData'
+          CONTRACTED_VOLUME_CONFIGURATION: '#/components/schemas/ContractedVolumeConfiguration'
+          CORRECTIVE_PERIOD: '#/components/schemas/CorrectivePeriod'
+          DELAYER_DAYS: '#/components/schemas/DelayerDays'
+          GUARANTEE_OF_ORIGIN_CONFIGURATION: '#/components/schemas/GuaranteeOfOriginConfiguration'
+          LATE_PAYMENT_FEES: '#/components/schemas/LatePaymentFees'
+          MINIMUM_CONTRACT_LENGTH: '#/components/schemas/MinimumContractLength'
+          PARTNER_COMMISSION: '#/components/schemas/PartnerCommission'
+          PAYS_BY_DIRECT_DEBIT: '#/components/schemas/PaysByDirectDebitTerm'
+          PRODUCT_RATE_OVERRIDE_SCHEDULE: '#/components/schemas/ProductRateOverrideConfiguration'
+          PROMOTION_ASSIGNMENT: '#/components/schemas/PromotionAssignmentTerm'
+          RATE_GROUP_ELIGIBILITY: '#/components/schemas/RateGroupEligibilityConfiguration'
+          TRANCHE_TARGET_RESIDUAL_FEE: '#/components/schemas/TrancheTargetResidualFee'
+          TAX_ADJUSTMENT_CONFIGURATION: '#/components/schemas/TaxAdjustmentConfiguration'
+          TERMINATION_FEE: '#/components/schemas/TerminationFee'
+          EEPA_EXPORT_CONTRACTED_VOLUME: '#/components/schemas/AusEEPAExportContractedVolumeConfiguration'
+    TimeSeriesSpecificationEligibilitySchedule:
+      type: object
+      properties:
+        effective_period:
+          allOf:
+          - $ref: '#/components/schemas/EffectivePeriod'
+          description: <p>The effective period of the schedule.</p>
+        is_eligible:
+          type: boolean
+          description: <p>Whether the rate group is eligible for charging to the customer.</p>
+        product_code:
+          type: string
+          description: <p>Product code. </p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+        supply_point_identifier:
+          type: string
+          description: <p>Optional supply point identifier to restrict this schedule
+            to a specific supply point.</p>
+        time_series_specification_code:
+          type: string
+          description: <p>The unique shared rate code for the product.</p>
+      required:
+      - effective_period
+      - is_eligible
+      - product_code
+      - time_series_specification_code
+      x-validators:
+      - name: data-import--validation--shared-rate-exists-for-product
+        description: Validate that the shared rate code provided matches the shared
+          rate for the product with the provided product code.
+        possible_errors:
+        - product_specification_not_found_for_product
+        - time_series_not_found_for_product
+    TrancheTargetResidualFee:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        contract_identifier:
+          type: string
+          description: <p>Contract identifier</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not.
+            If not, it must be amended by a new contract.</p>
+        markets:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrancheTargetResidualFeeMarket'
+          description: <p>Markets</p>
+      required:
+      - contract_identifier
+      - markets
+      - term_type
+    TrancheTargetResidualFeeMarket:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,8})?$
+          description: <p>Residual fee amount</p>
+        market_name:
+          type: string
+          description: <p>The market the residual fee applies to</p>
+        unit:
+          type: string
+          description: <p>Residual fee unit</p>
+      required:
+      - amount
+      - market_name
+      - unit
+    VariantProfile:
+      type: object
+      properties:
+        characteristic_values:
+          type: object
+          description: <p>A dictionary of characteristic values which the rate applies
+            to.</p>
+          x-validators:
+          - name: Validate provided dictionary content types
+            description: Validates that provided dictionary contents are of the specified
+              key type and value type.
+            possible_errors: []
+        scheme_labels:
+          type: object
+          description: <p>A dictionary of scheme labels which the rate applies to.</p>
+          x-validators:
+          - name: Validate provided dictionary content types
+            description: Validates that provided dictionary contents are of the specified
+              key type and value type.
+            possible_errors: []
+          - name: Validate that scheme labels have the correct format
+            description: Validate that scheme labels have the the following format
+              'scheme-type:identifier' where 'scheme-type' is one of 'time_of_use',
+              'register'.
+            possible_errors:
+            - invalid_scheme_label_format
+  securitySchemes:
+    DRFKrakenTokenAuthentication:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: JWT-based authentication
+    DataImportViewerAPIKeyAuthentication:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token "
+tags:
+- name: orders
+  x-title: Orders
+  description: APIs for placing and managing orders.
+  x-documentation-order: 8

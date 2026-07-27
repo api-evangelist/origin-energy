@@ -1,0 +1,351 @@
+openapi: 3.0.3
+info:
+  title: Kraken
+  version: v1
+paths:
+  /data-import/schema/:
+    get:
+      operationId: Data Import Open Api Schema
+      description: |-
+        Base OpenAPI schema endpoint that filters URL patterns by namespace.
+
+        Subclasses must define ``schema_namespaces`` to control which URL
+        namespaces appear in the generated schema.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      tags:
+      - data-import
+      security:
+      - AccountUserAPIKeyAuthentication: []
+      - KeyAuthentication: []
+      - DRFKrakenTokenAuthentication: []
+      - AffiliateAuthentication: []
+      - PartnerUserOnlyAuthentication: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+            application/yaml:
+              schema:
+                type: object
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+          description: ''
+  /external-client-healthcheck/:
+    get:
+      operationId: External Client Health Check
+      description: |-
+        Healthcheck endpoint for external clients.
+
+        When called, this API will return a 200 status and increment a metric.
+
+        This endpoint allows clients to implement a healthcheck that is also supported
+        by monitoring on the Kraken side.
+      tags:
+      - external-client-healthcheck
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /external-events/schema/:
+    get:
+      operationId: Open Api Schema
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      tags:
+      - external-events
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+            application/yaml:
+              schema:
+                type: object
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+          description: ''
+  /v1/accounts/{account_number}/payments/ad-hoc/:
+    post:
+      operationId: Ad Hoc
+      description: |-
+        A view to be called by Origin's consumer-site for creating ad hoc card payments.
+
+        Note that this is deprecated and should not be used for new integrations.
+      parameters:
+      - in: path
+        name: account_number
+        schema:
+          type: string
+        description: Number of the account
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdHoc'
+            examples:
+              RequestPayload:
+                value:
+                  amount: 1000
+                  single_use_token: '6000001234567890'
+                  captcha_token: 3j4zldiaz6
+                  electronic_commerce_indicator: INTERNET
+                  supplier_business_code: RETAIL
+                summary: Request payload
+        required: true
+      security:
+      - KeyAuthentication: []
+      - DRFKrakenTokenAuthentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdHocResponse'
+              examples:
+                AdHocPaymentCreated:
+                  value:
+                    amount: 1000
+                    payment_date: '2024-07-15'
+                    reference: A-12345678
+                  summary: Ad Hoc payment created
+          description: Ad Hoc payment successfully created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentUnsuccessful'
+              examples:
+                CouldNotCreatePayment:
+                  value:
+                    detail: Payment unsuccessful
+                  summary: Could not create payment
+          description: Fixed response in case of error
+  /v1/energetiq-public-key/:
+    get:
+      operationId: Get Energetiq Public Key
+      tags:
+      - v1
+      responses:
+        '200':
+          description: No response body
+  /v1/unbundled-network-charges/energetiq-public-key/:
+    get:
+      operationId: Get Energetiq Public Key_2
+      tags:
+      - v1
+      responses:
+        '200':
+          description: No response body
+  /v1/voice/twilio/enqueue-audio/:
+    post:
+      operationId: Twilio Enqueue Audio
+      tags:
+      - v1
+      security:
+      - KeyAuthentication: []
+      - DRFKrakenTokenAuthentication: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /v1/voice/twilio/voice-announcement/:
+    get:
+      operationId: Voice Announcement
+      description: |-
+        Return TwiML that speaks a translated message to the caller.
+
+        Query parameters:
+
+        - ``translation_key``: required if ``announcement`` is not provided — the FTL message identifier to translate.
+        - ``announcement``: required if ``translation_key`` is not provided — the message to speak to the caller.
+        - ``language_code``: optional — BCP-47 / Django language code to use for
+          the translation and Twilio TTS voice. Defaults to the client's configured
+          language when omitted.
+      tags:
+      - v1
+      security:
+      - KeyAuthentication: []
+      - DRFKrakenTokenAuthentication: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /v2/orders/schema/:
+    get:
+      operationId: Order Management Open Api Schema
+      description: |-
+        Base OpenAPI schema endpoint that filters URL patterns by namespace.
+
+        Subclasses must define ``schema_namespaces`` to control which URL
+        namespaces appear in the generated schema.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      tags:
+      - v2
+      security:
+      - AccountUserAPIKeyAuthentication: []
+      - KeyAuthentication: []
+      - DRFKrakenTokenAuthentication: []
+      - AffiliateAuthentication: []
+      - PartnerUserOnlyAuthentication: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+            application/yaml:
+              schema:
+                type: object
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+          description: ''
+components:
+  schemas:
+    AdHoc:
+      type: object
+      properties:
+        amount:
+          type: integer
+          maximum: 2147483647
+          minimum: 100
+          title: The monetary amount in cents
+        single_use_token:
+          type: string
+          title: A Westpac payments single use token for authorizing the payment
+          maxLength: 255
+        captcha_token:
+          type: string
+          title: A Google reCaptcha token generated by the consumer-facing website
+          description: Can be into the thousands of characters long.
+        electronic_commerce_indicator:
+          enum:
+          - INTERNET
+          - PHONE
+          - RECURRING
+          type: string
+          x-spec-enum-id: 26c3ac14050e29cb
+          description: |-
+            'INTERNET' is used for adhoc payments, 'RECURRING' for scheduled payments and 'PHONE' for interactive voice response (IVR).
+
+            * `INTERNET` - INTERNET
+            * `PHONE` - PHONE
+            * `RECURRING` - RECURRING
+        supplier_business_code:
+          enum:
+          - LPG
+          - RETAIL
+          - RETAILX
+          - RETAILXFEE
+          type: string
+          description: |-
+            * `LPG` - LPG
+            * `RETAIL` - RETAIL
+            * `RETAILX` - RETAILX
+            * `RETAILXFEE` - RETAILXFEE
+          x-spec-enum-id: 3188a7962cb70439
+      required:
+      - amount
+      - captcha_token
+      - electronic_commerce_indicator
+      - single_use_token
+      - supplier_business_code
+    AdHocResponse:
+      type: object
+      properties:
+        amount:
+          type: integer
+          title: The monetary amount in cents
+        payment_date:
+          type: string
+          format: date
+          title: Date of the payment
+        reference:
+          type: string
+          title: Reference of the payment
+        surcharge_amount:
+          type: integer
+          title: Extra fee passed on to customers to recover the cost of accepting
+            card payments.
+      required:
+      - amount
+      - payment_date
+      - reference
+    PaymentUnsuccessful:
+      type: object
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
+  securitySchemes:
+    AccountUserAPIKeyAuthentication:
+      type: http
+      scheme: basic
+      description: Token-based authentication where token is passed as the username
+        for basic auth
+    AffiliateAuthentication:
+      type: http
+      scheme: basic
+      description: Basic authentication for affiliate organisations
+    DRFKrakenTokenAuthentication:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: JWT-based authentication
+    KeyAuthentication:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token "
+    PartnerUserOnlyAuthentication:
+      type: http
+      scheme: basic
+      description: Basic authentication for partner organisations
