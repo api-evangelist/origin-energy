@@ -1,0 +1,163 @@
+generated: '2026-07-27'
+method: derived
+source: graphql/origin-energy-kraken.graphql, openapi/consumer-data-standards-energy-api-openapi.json
+note: Two distinct data models sit behind Origin Energy. The Consumer Data Right model is fixed by the
+  Data Standards Body and is what an accredited data recipient sees. The Kraken model is the real operating
+  model and is far larger — 2,407 GraphQL types, of which 226 objects carry an id. Only the core retail
+  entities are graphed below; the full contract is in graphql/origin-energy-kraken.graphql.
+models:
+- name: Consumer Data Right energy model
+  source: openapi/consumer-data-standards-energy-api-openapi.json
+  publisher: Data Standards Body, Australian Treasury
+  root_entities:
+  - EnergyPlan
+  - EnergyUsageRead
+  - EnergyDerRecord
+  - EnergyInvoice
+  - EnergyPaymentSchedule
+  - EnergyConcession
+  relationships:
+  - from: EnergyAccount
+    to: EnergyServicePoint
+    kind: has_many
+    via: servicePointIds (plans/servicePoints)
+  - from: EnergyAccount
+    to: EnergyBalance
+    kind: has_one
+    via: /energy/accounts/{accountId}/balance
+  - from: EnergyAccount
+    to: EnergyInvoice
+    kind: has_many
+    via: /energy/accounts/{accountId}/invoices
+  - from: EnergyAccount
+    to: EnergyBillingTransaction
+    kind: has_many
+    via: /energy/accounts/{accountId}/billing
+  - from: EnergyAccount
+    to: EnergyPaymentSchedule
+    kind: has_many
+    via: /energy/accounts/{accountId}/payment-schedule
+  - from: EnergyAccount
+    to: EnergyConcession
+    kind: has_many
+    via: /energy/accounts/{accountId}/concessions
+  - from: EnergyAccount
+    to: EnergyPlanDetail
+    kind: has_one
+    via: plans[].planOverview / planDetail
+  - from: EnergyServicePoint
+    to: EnergyUsageRead
+    kind: has_many
+    via: /energy/electricity/servicepoints/{servicePointId}/usage
+  - from: EnergyServicePoint
+    to: EnergyDerRecord
+    kind: has_one
+    via: /energy/electricity/servicepoints/{servicePointId}/der
+  identifiers:
+  - entity: EnergyServicePoint
+    id: servicePointId
+    note: Tokenised NMI (National Metering Identifier).
+  - entity: EnergyAccount
+    id: accountId
+    note: Data-holder-specific, tokenised.
+  - entity: EnergyPlan
+    id: planId
+    note: Observed live at the AER gateway in the form ORI724759MRE14@EME — an Origin plan code suffixed
+      @EME for Energy Made Easy.
+- name: Kraken retail platform model
+  source: graphql/origin-energy-kraken.graphql
+  counts:
+    types: 2399
+    objects_with_id: 226
+    queries: 187
+    mutations: 374
+    connections: 94
+    interfaces: 52
+  core_entities:
+  - AccountType
+  - AccountUserType
+  - MeterPointType
+  - ElectricityMeterType
+  - GasMeterType
+  - LedgerType
+  - PropertyType
+  - StatementType
+  - Payment
+  - Refund
+  - Credit
+  - PaymentScheduleType
+  - PaymentInstructionType
+  - ElectricityAgreementType
+  - GasAgreementType
+  - InvoiceType
+  - Product
+  - SupplyProductType
+  - ElectricityRateType
+  - ElectricityRegisterType
+  - Charge
+  - PeriodBasedDocumentType
+  relationships:
+  - from: AccountType
+    to: LedgerType
+    kind: has_many
+    via: ledgers
+  - from: AccountType
+    to: PropertyType
+    kind: has_many
+    via: properties
+  - from: AccountType
+    to: PropertyType
+    kind: has_many
+    via: previousProperties
+  - from: MeterPointType
+    to: ElectricityMeterType
+    kind: has_many
+    via: meters
+  - from: ElectricityMeterType
+    to: MeterPointType
+    kind: has_one
+    via: meterPoint
+  - from: ElectricityMeterType
+    to: ElectricityRegisterType
+    kind: has_many
+    via: registers
+  - from: PropertyType
+    to: MeterPointType
+    kind: has_many
+    via: electricityMeterPoints
+  - from: ElectricityAgreementType
+    to: Product
+    kind: has_one
+    via: product
+  - from: ElectricityAgreementType
+    to: MeterPointType
+    kind: has_one
+    via: meterPoint
+  - from: ElectricityAgreementType
+    to: AccountType
+    kind: has_one
+    via: account
+  - from: GasAgreementType
+    to: Product
+    kind: has_one
+    via: product
+  - from: GasAgreementType
+    to: AccountType
+    kind: has_one
+    via: account
+  interfaces_of_note:
+  - Node
+  - AccountInterface
+  - LedgerInterface
+  - BillInterface
+  - CommonSupplyPointInterface
+  - HasReadings
+  - TransactionType
+  - ServiceOrderInterface
+  - QuoteType
+  - RateInterface
+bridge:
+  note: 'The CDR model is a regulated projection of the Kraken model: the 113 Kraken OAuth scopes (view:detailed-usage,
+    request:consumption-data, query:electricity-meter-point-details, submit:meter-readings) describe the
+    same consumer energy data that the Consumer Data Standards expose as EnergyAccount, EnergyServicePoint
+    and EnergyUsageRead.'

@@ -1,0 +1,67 @@
+generated: '2026-07-27'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts, extended 2026-07-27 with the origin-kraken.energy
+  platform hosts
+hosts:
+- host: www.originenergy.com.au
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 19 23:59:59 2026 GMT
+  hsts: null
+- host: api.mydata.cdr.originenergy.com.au
+  https: true
+  tls_cert_error: '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate
+    in certificate chain (_ssl.c:1082)'
+  hsts: null
+- host: public.mydata.cdr.originenergy.com.au
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 18 23:59:59 2026 GMT
+  hsts: null
+- host: api.origin-kraken.energy
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Dec  3 23:59:59 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: auth.origin-kraken.energy
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Dec  3 23:59:59 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: developer.origin-kraken.energy
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Dec  3 23:59:59 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+domains:
+- domain: originenergy.com.au
+  dnssec: false
+  caa:
+  - 0 issue "pki.goog"
+  - 0 issue "ssl.com"
+  - 0 issuewild "amazon.com"
+  - 0 issuewild "amazonaws.com"
+  - 0 issuewild "amazontrust.com"
+  - 0 issuewild "awstrust.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+- domain: origin-kraken.energy
+  dnssec: false
+  caa: []
+  spf: true
+  spf_record: v=spf1 -all
+  dmarc: true
+  dmarc_policy: reject
+notes:
+- 'api.mydata.cdr.originenergy.com.au fails public certificate verification by design: its chain terminates
+  at the ACCC''s private CDR Root CA, not a public trust anchor. That is the Consumer Data Right PKI working,
+  not a misconfiguration.'
+- No HSTS on any originenergy.com.au host; all three origin-kraken.energy hosts set max-age=31536000.
+- originenergy.com.au publishes CAA (pki.goog, ssl.com, Amazon wildcards); origin-kraken.energy publishes
+  none.
+- Neither domain is DNSSEC signed.
+- origin-kraken.energy publishes v=spf1 -all (send-nothing) and DMARC p=reject.

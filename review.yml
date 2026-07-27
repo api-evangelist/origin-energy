@@ -374,7 +374,13 @@ probes:
     GET returned {"errors":[{"message":"Must provide query string."}]}. An
     anonymous POST of {__schema{queryType{name}}} returned HTTP 200 with
     {"data":{"__schema":{"queryType":{"name":"Query"}}}} — introspection is
-    enabled without authentication. No schema dump was taken or stored.
+    enabled without authentication. On the 2026-07-27 enrichment pass the full
+    introspection query was run anonymously and returned HTTP 200 with a
+    complete __schema — 2,407 types, 187 queries, 374 mutations, no
+    subscriptions. The SDL is now stored verbatim at
+    graphql/origin-energy-kraken.graphql. This is the largest machine-readable
+    contract Origin exposes and it is readable by anyone; only the data behind
+    it is gated.
 - url: https://api.origin-kraken.energy/external-events/schema/
   httpStatus: 403
   note: The event contract is not anonymously harvestable, so none is stored.
@@ -481,7 +487,16 @@ notFabricated:
     verified it is recorded as not verified rather than asserted.
   explicitlyNotFound:
   - A self-serve developer signup of any kind, on any Origin or Kraken host.
-  - Any Origin-published OpenAPI, AsyncAPI, GraphQL SDL file or Postman collection.
+  - >-
+    Any Origin-published AsyncAPI document or Postman collection. (Corrected
+    2026-07-27: OpenAPI and a GraphQL SDL ARE obtainable — three OpenAPI 3.0.3
+    documents are served anonymously from the Kraken schema endpoints and the
+    full GraphQL SDL is obtainable by anonymous introspection. Origin does not
+    publish them as downloadable files, but they are machine-readable and
+    anonymously retrievable, and all four are now stored in this repo.)
+  - Any first-party SDK or client library in npm, PyPI, RubyGems or crates.io.
+  - Any MCP server on any Origin or Kraken host.
+  - Any trust centre, certification page or published compliance program.
   - Any open data portal, dataset catalogue or data licence page on an Origin domain.
   - Any documented public API for the Origin Loop virtual power plant.
   - Any documented public API for Origin's EV charging or solar products.

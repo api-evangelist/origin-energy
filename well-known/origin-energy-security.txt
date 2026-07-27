@@ -1,0 +1,10 @@
+# Please leverage our Vulnerability Disclosure Program (managed by Bugcrowd) for reporting all security issues.
+Contact: https://bugcrowd.com/engagements/originenergy-og1
+
+# Send us an email ONLY for reporting CRITICAL incidents that are not covered under VDP.
+Contact: mailto:digitalsecurity@originenergy.com.au
+Policy: https://bugcrowd.com/engagements/originenergy-og1
+
+Hiring: https://careers.originenergy.com.au
+Preferred-Languages: en
+Expires: 2027-02-15T14:00:00.000Z

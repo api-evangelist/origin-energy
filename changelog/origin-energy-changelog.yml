@@ -1,0 +1,80 @@
+generated: '2026-07-27'
+method: searched
+source: https://developer.origin-kraken.energy/graphql/changelog/
+announcements: https://developer.origin-kraken.energy/announcements/
+scheme: dated, continuous (no release numbers); URL major stays v1
+current_version: v1
+cadence: near-daily entries on the GraphQL changelog; 59 dated announcements listed on the announcements
+  feed as at 2026-07-27
+note: Recent window only — the live changelog is the source of truth. Entries below were read from the
+  published changelog and announcements pages on 2026-07-27.
+entries:
+- date: '2026-07-27'
+  type: additions
+  highlights:
+  - New role types (UserRole, PartnerRole, BusinessRole)
+  - Payment schedule enhancements with instalment options
+  - Autocomplete address field functionality
+- date: '2026-07-24'
+  type: additions
+  highlights:
+  - Charged-back payment recording
+  - Address field autocomplete query
+  - Refund eligibility analyzer type
+- date: '2026-07-23'
+  type: mixed
+  breaking: true
+  highlights:
+  - Removed AED_FILS from LineItemCurrency
+  - Standalone payment request triggering
+  - Payment notifications
+- date: '2026-07-22'
+  type: additions
+  highlights:
+  - Reply-to messaging capabilities
+  - First Energy brand support
+- date: '2026-07-21'
+  type: additions
+  highlights:
+  - Rate data expanded with validity periods and currency information
+  - Estimated supply point readings
+- date: '2026-07-20'
+  type: mixed
+  breaking: true
+  highlights:
+  - Call tagging
+  - New vendor options including Stripe Connect variants
+  - Deprecated fields in pricing structures
+  - Removed contractIdentifiers from EnrollmentInput
+- date: '2026-07-09'
+  type: breaking
+  breaking: true
+  highlights:
+  - Removed RateGroupEligibilityType / RateGroupEligibilityInput, replaced with more granular configuration
+    types
+- date: '2026-06-29'
+  type: breaking
+  breaking: true
+  highlights:
+  - Removed the possibleErrors field from more than 150 mutation response types
+announcement_entries:
+- date: '2026-07-27'
+  title: Upcoming Change to GraphQL Mutation Nullability
+- date: '2026-07-20'
+  title: 'Deprecation: termsAndConditionsTypes field on SupplyProductType'
+- date: '2026-07-01'
+  title: 'Deprecation: contract_identifiers field enrollment mutation'
+- date: '2026-06-01'
+  title: Charge point support for flexSupportedDevices via new supportedDeviceType argument
+- date: '2026-04-27'
+  title: 'Deprecation: date and time fields in contracts API'
+- date: '2026-04-24'
+  title: Deprecation of heatPumpVariants, chargePointVariants, and electricVehicles queries
+- date: '2026-04-20'
+  title: Removal of heat_pump_id from heat pump queries and mutations
+- date: '2026-04-09'
+  title: 'Deprecation: thirdPartyCompleteDeviceRegistration'
+cdr:
+  note: The Consumer Data Right surface has no Origin-published changelog; the contract is versioned by
+    the Data Standards Body and negotiated per request with the x-v header.
+  docs: https://consumerdatastandardsaustralia.github.io/standards/#versioning

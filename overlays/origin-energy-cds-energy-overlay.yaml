@@ -1,0 +1,35 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Consumer Data Standards Energy API as implemented by Origin Energy
+  version: 1.0.0
+extends: openapi/consumer-data-standards-energy-api-openapi.json
+x-generated: '2026-07-27'
+x-method: generated
+x-source: API Evangelist enrichment pipeline; every value below is evidenced by a probe or an artifact
+  in this repo.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: origin-energy
+    x-apievangelist-harvested: '2026-07-27'
+    x-apievangelist-access: gated — CDR accreditation or an Origin partner/customer account is required;
+      there is no self-serve signup
+    x-apievangelist-artifacts:
+      authentication: authentication/origin-energy-authentication.yml
+      conventions: conventions/origin-energy-conventions.yml
+      errors: errors/origin-energy-problem-types.yml
+      lifecycle: lifecycle/origin-energy-lifecycle.yml
+      rate_limits: rate-limits/origin-energy-rate-limits.yml
+      scopes: scopes/origin-energy-scopes.yml
+      conformance: conformance/origin-energy-conformance.yml
+- target: $
+  update:
+    x-apievangelist-primary-server: https://api.mydata.cdr.originenergy.com.au/cds-au/v1
+- target: $.servers
+  update:
+  - url: https://api.mydata.cdr.originenergy.com.au/cds-au/v1
+    description: Origin Energy CDR resource endpoint (mutual TLS, accredited data recipients only). Verified
+      2026-07-27.
+  - url: https://cdr.energymadeeasy.gov.au/origin/cds-au/v1
+    description: AER Energy Made Easy CDR gateway serving Origin's plan reference data anonymously. Verified
+      2026-07-27.

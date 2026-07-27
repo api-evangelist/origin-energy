@@ -1,0 +1,250 @@
+generated: '2026-07-27'
+method: derived
+source: graphql/origin-energy-kraken.graphql, openapi/*
+note: 'Origin Energy has no MCP server, so this crosswalk binds the GraphQL surface to the REST surfaces
+  instead — which is where the real divergence sits. The three surfaces are overlapping-but-non-identical
+  projections of one Kraken data core plus one regulated CDR projection. Nothing below is invented: every
+  GraphQL field name was read out of the live introspected schema and every operationId was read out of
+  a harvested OpenAPI document. Where no published binding exists, the mapping is by semantics and the
+  confidence says so.'
+surfaces:
+  graphql:
+    endpoint: https://api.origin-kraken.energy/v1/graphql/
+    sdl: graphql/origin-energy-kraken.graphql
+    introspection: open, anonymous (verified 2026-07-27)
+    gated: data queries require a bearer token (KT-CT-1112)
+  openapi_kraken:
+    specs:
+    - openapi/origin-energy-kraken-default-openapi.yml
+    - openapi/origin-energy-kraken-data-import-openapi.yml
+    - openapi/origin-energy-kraken-orders-openapi.yml
+    base: https://api.origin-kraken.energy/v1/
+    gated: bearer token from auth.origin-kraken.energy
+  openapi_cdr:
+    specs:
+    - openapi/consumer-data-standards-energy-api-openapi.json
+    - openapi/consumer-data-standards-common-api-openapi.json
+    base: https://api.mydata.cdr.originenergy.com.au/cds-au/v1
+    gated: mutual TLS with a CDR-CA client certificate plus consumer consent
+  events:
+    catalog: asyncapi/origin-energy-kraken-external-events.yml
+    gated: schema endpoint returns 403 anonymously
+  mcp:
+    url: null
+    gated: null
+    note: No MCP server exists.
+crosswalk:
+- graphql: makePaymentWithNewCard
+  graphql_kind: mutation
+  category: payments
+  rest:
+  - Ad Hoc
+  rest_spec: openapi/origin-energy-kraken-default-openapi.yml
+  binding: rest
+  confidence: medium
+  note: Both take a card token and create an ad-hoc payment against an account. The REST operation is
+    documented as deprecated for new integrations and the GraphQL mutation is marked @deprecated (legacy
+    financial system), so the live path for either is the newer collectPayment / completeStandalonePayment
+    family. Mapped by semantics, not by a published binding.
+- graphql: makePaymentWithSavedCard
+  graphql_kind: mutation
+  category: payments
+  rest:
+  - Ad Hoc
+  rest_spec: openapi/origin-energy-kraken-default-openapi.yml
+  binding: rest
+  confidence: low
+  note: Same ad-hoc payment capability with a stored instrument; the REST endpoint only accepts a Westpac
+    single-use token, so the overlap is partial.
+- graphql: legacyOrderDetails
+  graphql_kind: query
+  category: orders
+  rest:
+  - V2 Order Status
+  rest_spec: openapi/origin-energy-kraken-orders-openapi.yml
+  binding: rest
+  confidence: low
+  note: Both read the state of an order. The REST v2 order process is keyed on external_order_id and returns
+    an ImportStatusResponse; the GraphQL field is explicitly the legacy order surface. Not a like-for-like
+    binding.
+- graphql: legacyProcessOrder
+  graphql_kind: mutation
+  category: orders
+  rest:
+  - V2 Schedule Order
+  rest_spec: openapi/origin-energy-kraken-orders-openapi.yml
+  binding: rest
+  confidence: low
+  note: Both submit an order for asynchronous processing. Mapped by semantics.
+- graphql: createBusiness
+  graphql_kind: mutation
+  category: business
+  rest:
+  - V1 Create Business
+  rest_spec: openapi/origin-energy-kraken-data-import-openapi.yml
+  binding: rest
+  confidence: medium
+  note: The data-import REST operation creates a business record during migration; the GraphQL mutation
+    creates one in the live platform. Same entity, different lifecycle stage.
+- graphql: createElectricitySelfMeterReads
+  graphql_kind: mutation
+  category: metering
+  rest: []
+  binding: graphql-only
+  confidence: high
+  note: Submitting a customer meter reading exists only on the GraphQL surface (scope submit:meter-readings).
+    No REST operation is published.
+- graphql: electricityMeterReadings
+  graphql_kind: query
+  category: metering
+  rest: []
+  binding: graphql-only
+  confidence: high
+  note: Reading retrieval exists only on GraphQL; the equivalent regulated projection is the CDR getElectricityServicePointUsage
+    operation, which is a different surface with a different gate.
+graphql_only:
+- area: accounts and account users
+  examples:
+  - accountsSearch
+  - accountUser
+  - accountReference
+  - prepareAccount
+  reason: No REST equivalent is published; the entire live account surface is GraphQL.
+- area: metering and readings
+  examples:
+  - meterPoint
+  - electricityMeterReadings
+  - estimatedSupplyPointReadings
+  - createElectricitySelfMeterReads
+  - createGasSelfMeterReads
+  reason: GraphQL only.
+- area: payments, ledgers and payment schedules
+  examples:
+  - createPaymentSchedule
+  - collectPayment
+  - refundPayment
+  - offerPaymentPlan
+  - createPaymentExtension
+  reason: Only a single deprecated ad-hoc card payment REST endpoint exists.
+- area: quoting and product switching
+  examples:
+  - createElectricityQuote
+  - createGasQuote
+  - availableProducts
+  - initiateProductSwitch
+  reason: GraphQL only.
+- area: house moves and enrolment
+  examples:
+  - processHouseMoveInElectricity
+  - triggerElectricityHouseMoveOut
+  - propertyMoveOut
+  reason: GraphQL only.
+- area: concessions and hardship
+  examples:
+  - createConcession
+  - createHardshipAgreement
+  - createCentrepayDeduction
+  reason: GraphQL only; the CDR projection exposes concessions read-only.
+- area: devices, EV and SmartFlex
+  examples:
+  - query:devices scope
+  - register:smartflex-devices scope
+  - manage:ev scope
+  reason: GraphQL only; the scopes exist in the authorisation server and the fields exist in the schema.
+- area: voice and contact centre
+  examples:
+  - calls
+  - callTranscripts
+  - voiceCampaigns
+  - setCallRecordingState
+  reason: GraphQL only; the REST surface exposes only two Twilio TwiML helper endpoints.
+rest_only:
+- capability: Customer migration / data import
+  operations:
+  - V1 Create Or Update Account Import Process
+  - V1 Process Account Import Process
+  - V1 Get Account Transfer Status
+  - V1 Get All Account Import Processes
+  - V1 Create Business
+  - V1 Create Business Payment Instruction
+  - V1 Create Historical Statements
+  - V1 Get Imported Accounts
+  - V1 Create Account Notes
+  - V1 Create Payment Instruction
+  - V1 Get Pending Account Import Processes
+  - V1 Create Transactions
+  - V1 Validate Account
+  - V2 Schedule Account Creation
+  - V2 Account Import Status
+  - V2 Validate Account
+  spec: openapi/origin-energy-kraken-data-import-openapi.yml
+  reason: Bulk migration of accounts, businesses, historical statements, transactions, notes and payment
+    instructions onto the platform. No GraphQL equivalent — this is an onboarding pipeline, not a runtime
+    surface.
+- capability: Order management v2
+  operations:
+  - V2 Schedule Order
+  - V2 Order Status
+  spec: openapi/origin-energy-kraken-orders-openapi.yml
+  reason: Asynchronous order scheduling and status; the GraphQL order surface is the legacy one.
+- capability: Platform utilities
+  operations:
+  - External Client Health Check
+  - Get Energetiq Public Key
+  - Get Energetiq Public Key_2
+  - Twilio Enqueue Audio
+  - Voice Announcement
+  - Data Import Open Api Schema
+  - Open Api Schema
+  - Order Management Open Api Schema
+  spec: openapi/origin-energy-kraken-default-openapi.yml
+  reason: Healthcheck, schema discovery, public keys and Twilio voice helpers — infrastructure endpoints
+    with no GraphQL analogue.
+- capability: Consumer Data Right energy data
+  operations:
+  - listEnergyPlans
+  - getEnergyPlanDetail
+  - listElectricityServicePoints
+  - getElectricityServicePointDetail
+  - getElectricityServicePointUsage
+  - listElectricityUsageBulk
+  - listElectricityUsageForServicePoints
+  - getElectricityDERForServicePoint
+  - listElectricityDERBulk
+  - listElectricityDERForSpecificServicePoints
+  - listEnergyAccounts
+  - getEnergyAccountDetail
+  - getEnergyAccountPaymentSchedule
+  - getEnergyAccountConcessions
+  - getEnergyAccountBalance
+  - listEnergyAccountBalancesBulk
+  - listEnergyAccountBalancesSpecificAccounts
+  - getEnergyAccountInvoices
+  - listEnergyAccountInvoicesBulk
+  - listEnergyInvoicesForSpecificAccounts
+  - getBillingForEnergyAccount
+  - listEnergyAccountBillingBulk
+  - listEnergyAccountBillingForSpecificAccounts
+  - getCustomer
+  - getCustomerDetail
+  - getStatus
+  - getOutages
+  spec: openapi/consumer-data-standards-energy-api-openapi.json, openapi/consumer-data-standards-common-api-openapi.json
+  reason: 'The regulated projection. Same underlying data as the Kraken GraphQL account/metering surface,
+    but a separate host, a separate contract published by the Data Standards Body, a mutual-TLS gate and
+    a consumer-consent gate. Deliberately listed as REST-only rather than mapped field-by-field to GraphQL:
+    the two are governed differently and conflating them would misrepresent the access model.'
+coverage:
+  graphql_root_fields: 561
+  graphql_queries: 187
+  graphql_mutations: 374
+  kraken_rest_operations: 27
+  cdr_rest_operations: 27
+  rows_bound: 5
+  kraken_rest_operations_with_a_graphql_analogue: 5
+  percent_kraken_rest_bound: 18.5
+  mcp_tools: 0
+finding: 561 GraphQL root fields against 27 Kraken REST operations, of which only 5 have any GraphQL analogue
+  at all. The REST surface is not a subset of GraphQL — it is a migration pipeline plus a handful of infrastructure
+  endpoints. The consumer-facing capability lives almost entirely in GraphQL, and the regulated CDR projection
+  is a fourth, separately-governed surface.

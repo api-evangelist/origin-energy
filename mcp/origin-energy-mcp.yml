@@ -1,0 +1,304 @@
+generated: '2026-07-27'
+method: derived
+status: candidate
+source: openapi/*, graphql/origin-energy-kraken.graphql
+published: false
+search:
+  searched: '2026-07-27'
+  probes:
+  - url: https://mcp.origin-kraken.energy/
+    result: DNS NXDOMAIN
+  - url: https://api.origin-kraken.energy/mcp
+    result: '404 {"detail": "Not found."}'
+  - url: https://developer.origin-kraken.energy/mcp/
+    result: '404'
+  conclusion: Neither Origin Energy nor its Kraken tenancy publishes a hosted or remote MCP server, and
+    none is referenced anywhere on the developer portal. No MCPServer pointer is emitted in apis.yml —
+    this file is a derived candidate design, not a claim that a server exists.
+server:
+  name: origin-energy
+  transport: http
+  url: null
+note: A candidate tool surface derived mechanically from the operations Origin actually publishes. Every
+  tool below names a real operationId or a real GraphQL root field; nothing is invented. The Consumer
+  Data Right tools would additionally require a CDR client certificate and an active consumer consent,
+  and the Kraken tools require a bearer token from auth.origin-kraken.energy.
+tools:
+- name: listenergyplans
+  description: Get Generic Plans
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listEnergyPlans
+  gate: mutual TLS + CDR consent
+- name: getenergyplandetail
+  description: Get Generic Plan Detail
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#getEnergyPlanDetail
+  gate: mutual TLS + CDR consent
+- name: listelectricityservicepoints
+  description: Get Service Points
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listElectricityServicePoints
+  gate: mutual TLS + CDR consent
+- name: getelectricityservicepointdetail
+  description: Get Service Point Detail
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#getElectricityServicePointDetail
+  gate: mutual TLS + CDR consent
+- name: getelectricityservicepointusage
+  description: Get Usage For Service Point
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#getElectricityServicePointUsage
+  gate: mutual TLS + CDR consent
+- name: listelectricityusagebulk
+  description: Get Bulk Usage
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listElectricityUsageBulk
+  gate: mutual TLS + CDR consent
+- name: listelectricityusageforservicepoints
+  description: Get Usage For Specific Service Points
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listElectricityUsageForServicePoints
+  gate: mutual TLS + CDR consent
+- name: getelectricityderforservicepoint
+  description: Get DER For Service Point
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#getElectricityDERForServicePoint
+  gate: mutual TLS + CDR consent
+- name: listelectricityderbulk
+  description: Get Bulk DER
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listElectricityDERBulk
+  gate: mutual TLS + CDR consent
+- name: listelectricityderforspecificservicepoints
+  description: Get DER For Specific Service Points
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listElectricityDERForSpecificServicePoints
+  gate: mutual TLS + CDR consent
+- name: listenergyaccounts
+  description: Get Energy Accounts
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listEnergyAccounts
+  gate: mutual TLS + CDR consent
+- name: getenergyaccountdetail
+  description: Get Energy Account Detail
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#getEnergyAccountDetail
+  gate: mutual TLS + CDR consent
+- name: getenergyaccountpaymentschedule
+  description: Get Agreed Payment Schedule
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#getEnergyAccountPaymentSchedule
+  gate: mutual TLS + CDR consent
+- name: getenergyaccountconcessions
+  description: Get Concessions
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#getEnergyAccountConcessions
+  gate: mutual TLS + CDR consent
+- name: getenergyaccountbalance
+  description: Get Balance For Energy Account
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#getEnergyAccountBalance
+  gate: mutual TLS + CDR consent
+- name: listenergyaccountbalancesbulk
+  description: Get Bulk Balances for Energy
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listEnergyAccountBalancesBulk
+  gate: mutual TLS + CDR consent
+- name: listenergyaccountbalancesspecificaccounts
+  description: Get Balances For Specific Energy Accounts
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listEnergyAccountBalancesSpecificAccounts
+  gate: mutual TLS + CDR consent
+- name: getenergyaccountinvoices
+  description: Get Invoices For Account
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#getEnergyAccountInvoices
+  gate: mutual TLS + CDR consent
+- name: listenergyaccountinvoicesbulk
+  description: Get Bulk Invoices
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listEnergyAccountInvoicesBulk
+  gate: mutual TLS + CDR consent
+- name: listenergyinvoicesforspecificaccounts
+  description: Get Invoices For Specific Accounts
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listEnergyInvoicesForSpecificAccounts
+  gate: mutual TLS + CDR consent
+- name: getbillingforenergyaccount
+  description: Get Billing For Account
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#getBillingForEnergyAccount
+  gate: mutual TLS + CDR consent
+- name: listenergyaccountbillingbulk
+  description: Get Bulk Billing
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listEnergyAccountBillingBulk
+  gate: mutual TLS + CDR consent
+- name: listenergyaccountbillingforspecificaccounts
+  description: Get Billing For Specific Accounts
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listEnergyAccountBillingForSpecificAccounts
+  gate: mutual TLS + CDR consent
+- name: getcustomer
+  description: Get Customer
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-common-api-openapi.json#getCustomer
+  gate: mutual TLS + CDR consent
+- name: getcustomerdetail
+  description: Get Customer Detail
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-common-api-openapi.json#getCustomerDetail
+  gate: mutual TLS + CDR consent
+- name: getstatus
+  description: Get Status
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-common-api-openapi.json#getStatus
+  gate: mutual TLS + CDR consent
+- name: getoutages
+  description: Get Outages
+  surface: cdr-rest
+  source_operation: openapi/consumer-data-standards-common-api-openapi.json#getOutages
+  gate: mutual TLS + CDR consent
+- name: v1_create_or_update_account_import_process
+  description: Use this endpoint to stage account data before creating an account.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Create Or Update Account Import
+    Process
+  gate: Kraken bearer token
+- name: v1_process_account_import_process
+  description: Use this endpoint to process staged account data into an account in Kraken.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Process Account Import Process
+  gate: Kraken bearer token
+- name: v1_get_account_transfer_status
+  description: Find out the status of a single account import process
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Get Account Transfer Status
+  gate: Kraken bearer token
+- name: v1_get_all_account_import_processes
+  description: List all accounts for import
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Get All Account Import Processes
+  gate: Kraken bearer token
+- name: v1_create_business
+  description: Import business to Kraken
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Create Business
+  gate: Kraken bearer token
+- name: v1_create_business_payment_instruction
+  description: Create a payment instruction for a business after import.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Create Business Payment Instruction
+  gate: Kraken bearer token
+- name: v1_create_historical_statements
+  description: Use this endpoint to import historical PDF statements onto an account.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Create Historical Statements
+  gate: Kraken bearer token
+- name: v1_get_imported_accounts
+  description: List all accounts that have been imported
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Get Imported Accounts
+  gate: Kraken bearer token
+- name: v1_create_account_notes
+  description: Use this endpoint to add notes to an account.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Create Account Notes
+  gate: Kraken bearer token
+- name: v1_create_payment_instruction
+  description: Create a payment instruction.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Create Payment Instruction
+  gate: Kraken bearer token
+- name: v1_get_pending_account_import_processes
+  description: List all accounts pending import
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Get Pending Account Import
+    Processes
+  gate: Kraken bearer token
+- name: v1_create_transactions
+  description: Use this endpoint to import financial transactions to an account.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Create Transactions
+  gate: Kraken bearer token
+- name: v1_validate_account
+  description: Use this endpoint to validate account data before staging and creating an account.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V1 Validate Account
+  gate: Kraken bearer token
+- name: v2_schedule_account_creation
+  description: Schedule the creation of an account in Kraken
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V2 Schedule Account Creation
+  gate: Kraken bearer token
+- name: v2_account_import_status
+  description: Return the status of an account import process
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V2 Account Import Status
+  gate: Kraken bearer token
+- name: v2_validate_account
+  description: Validate the payload for creating an account in Kraken
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-data-import-openapi.yml#V2 Validate Account
+  gate: Kraken bearer token
+- name: data_import_open_api_schema
+  description: Base OpenAPI schema endpoint that filters URL patterns by namespace.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-default-openapi.yml#Data Import Open Api Schema
+  gate: Kraken bearer token
+- name: external_client_health_check
+  description: Healthcheck endpoint for external clients.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-default-openapi.yml#External Client Health Check
+  gate: Kraken bearer token
+- name: open_api_schema
+  description: OpenApi3 schema for this API. Format can be selected via content negotiation.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-default-openapi.yml#Open Api Schema
+  gate: Kraken bearer token
+- name: ad_hoc
+  description: A view to be called by Origin's consumer-site for creating ad hoc card payments.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-default-openapi.yml#Ad Hoc
+  gate: Kraken bearer token
+- name: get_energetiq_public_key
+  description: Get Energetiq Public Key
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-default-openapi.yml#Get Energetiq Public Key
+  gate: Kraken bearer token
+- name: get_energetiq_public_key_2
+  description: Get Energetiq Public Key_2
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-default-openapi.yml#Get Energetiq Public Key_2
+  gate: Kraken bearer token
+- name: twilio_enqueue_audio
+  description: Twilio Enqueue Audio
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-default-openapi.yml#Twilio Enqueue Audio
+  gate: Kraken bearer token
+- name: voice_announcement
+  description: Return TwiML that speaks a translated message to the caller.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-default-openapi.yml#Voice Announcement
+  gate: Kraken bearer token
+- name: order_management_open_api_schema
+  description: Base OpenAPI schema endpoint that filters URL patterns by namespace.
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-default-openapi.yml#Order Management Open Api Schema
+  gate: Kraken bearer token
+- name: v2_schedule_order
+  description: Schedule the placement of an order in Kraken
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-orders-openapi.yml#V2 Schedule Order
+  gate: Kraken bearer token
+- name: v2_order_status
+  description: Return the status of an order process
+  surface: kraken-rest
+  source_operation: openapi/origin-energy-kraken-orders-openapi.yml#V2 Order Status
+  gate: Kraken bearer token
+counts:
+  cdr_rest_tools: 27
+  kraken_rest_tools: 27
+  graphql_root_fields_not_enumerated: 561
+graphql_note: The Kraken GraphQL surface exposes 187 queries and 374 mutations; they are not enumerated
+  as candidate tools here because a GraphQL surface is better bound through the crosswalk in mcp/origin-energy-tool-crosswalk.yml.

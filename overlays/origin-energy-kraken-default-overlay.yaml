@@ -1,0 +1,32 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Origin Energy Kraken REST (default namespace)
+  version: 1.0.0
+extends: openapi/origin-energy-kraken-default-openapi.yml
+x-generated: '2026-07-27'
+x-method: generated
+x-source: API Evangelist enrichment pipeline; every value below is evidenced by a probe or an artifact
+  in this repo.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: origin-energy
+    x-apievangelist-harvested: '2026-07-27'
+    x-apievangelist-access: gated — CDR accreditation or an Origin partner/customer account is required;
+      there is no self-serve signup
+    x-apievangelist-artifacts:
+      authentication: authentication/origin-energy-authentication.yml
+      conventions: conventions/origin-energy-conventions.yml
+      errors: errors/origin-energy-problem-types.yml
+      lifecycle: lifecycle/origin-energy-lifecycle.yml
+      rate_limits: rate-limits/origin-energy-rate-limits.yml
+      scopes: scopes/origin-energy-scopes.yml
+      conformance: conformance/origin-energy-conformance.yml
+- target: $
+  update:
+    x-apievangelist-primary-server: https://api.origin-kraken.energy
+- target: $.paths['/v1/accounts/{account_number}/payments/ad-hoc/'].post
+  update:
+    deprecated: true
+    x-apievangelist-note: The operation description states this endpoint is deprecated and should not
+      be used for new integrations, but the OpenAPI deprecated flag is not set upstream.

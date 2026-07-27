@@ -1,0 +1,1796 @@
+generated: '2026-07-27'
+method: derived
+source: graphql/origin-energy-kraken.graphql (harvested by anonymous introspection of https://api.origin-kraken.energy/v1/graphql/)
+docs: https://developer.origin-kraken.energy/graphql/reference/error-codes/
+format: kraken-error-code
+envelope:
+  shape: GraphQL errors[] with an extensions object
+  fields:
+  - message
+  - extensions.errorType
+  - extensions.errorDescription
+  - extensions.errorCode
+  example_source: https://developer.origin-kraken.energy/graphql/reference/error-codes/
+code_format:
+  pattern: KT-<COUNTRY>-<NUMBER>
+  kt: Kraken prefix
+  country: Two letter ISO country code; CT means core / all tenancies
+  number: Globally unique identifier
+error_types:
+- APPLICATION
+- VALIDATION
+- NOT_FOUND
+- AUTHORIZATION
+- SERVICE_AVAILABILITY
+counts:
+  codes_captured: 878
+  by_segment:
+    CT: 800
+    AU: 77
+    GB: 1
+note: Every code below was read out of the live GraphQL schema's own field descriptions (the `possibleErrors`
+  documentation Kraken embeds per mutation/query), not transcribed from a page. The published reference
+  at developer.origin-kraken.energy lists more codes than the schema advertises; nothing has been added
+  that the schema does not state.
+errors:
+- code: KT-AU-11710
+  message: Supply abolishment verification is not enabled.
+- code: KT-AU-11711
+  message: 'Verification code is not in expected format: {job_id}_{verification_code}.'
+- code: KT-AU-11712
+  message: Supply abolishment job not found.
+- code: KT-AU-11713
+  message: Supply abolishment journey is not in a proper status.
+- code: KT-AU-11714
+  message: Job is not subject to verification.
+- code: KT-AU-11715
+  message: Job is already verified.
+- code: KT-AU-11716
+  message: Verification code does not match.
+- code: KT-AU-12604
+  message: Could not create Customer Details Request for NMI.
+- code: KT-AU-12605
+  message: There was no repsonse to your request.
+- code: KT-AU-13814
+  message: Invalid C4 request parameters.
+- code: KT-AU-13815
+  message: Unable to send C4 request.
+- code: KT-AU-13816
+  message: C4 request already in progress.
+- code: KT-AU-13817
+  message: Invalid VMD request parameters.
+- code: KT-AU-13818
+  message: Unable to send VMD request.
+- code: KT-AU-13819
+  message: VMD request precondition not met.
+- code: KT-AU-13820
+  message: No operational contact found.
+- code: KT-AU-13821
+  message: PMD request precondition not met.
+- code: KT-AU-13822
+  message: Change NMI details request precondition not met.
+- code: KT-AU-13823
+  message: Redundant NMI status update.
+- code: KT-AU-13824
+  message: Unable to verify NMI status against SDR.
+- code: KT-AU-13825
+  message: Change NMI details request blocked because the connection point has safety de-energisation
+    enabled.
+- code: KT-AU-3811
+  message: Missing or invalid mutation inputs.
+- code: KT-AU-3910
+  message: No card instruction found for the account.
+- code: KT-AU-3911
+  message: Query not supported for the current vendor.
+- code: KT-AU-3912
+  message: Cannot create a Centrepay Deduction with these details.
+- code: KT-AU-3913
+  message: Centrepay Deduction valid_from date cannot be before today.
+- code: KT-AU-3914
+  message: Centrepay Deduction valid_to date must be later than today.
+- code: KT-AU-3915
+  message: Centrepay Deduction valid_to date must be later than valid_from date.
+- code: KT-AU-3916
+  message: Centrepay Deduction amount must be greater than $10.00.
+- code: KT-AU-3917
+  message: Unable to preview payment plan.
+- code: KT-AU-3918
+  message: Unable to create payment plan.
+- code: KT-AU-3919
+  message: Unable to create payment plan.
+- code: KT-AU-3920
+  message: Cannot provide both validTo and targetAmount values.
+- code: KT-AU-3921
+  message: The specified account ledger wasn't found.
+- code: KT-AU-3922
+  message: The specified schedule type name wasn't found.
+- code: KT-AU-3923
+  message: Centrepay Deduction with provided ID does not exist.
+- code: KT-AU-3924
+  message: You do not have permission to administer this Centrepay Deduction.
+- code: KT-AU-3925
+  message: Cannot cancel this Centrepay Deduction.
+- code: KT-AU-3926
+  message: Cannot change this Centrepay Deduction.
+- code: KT-AU-3927
+  message: No change data provided.
+- code: KT-AU-3928
+  message: Cannot Cannot change validFrom date of Deduction that is already active.
+- code: KT-AU-3930
+  message: Centrepay Deduction amount cannot be greater than Target Amount.
+- code: KT-AU-3931
+  message: The payment plan had no payment components.
+- code: KT-AU-3932
+  message: The payment plan offer expiry must be before the first payment.
+- code: KT-AU-3933
+  message: The payment plan was not found.
+- code: KT-AU-3934
+  message: The ledger has an existing payment plan.
+- code: KT-AU-3935
+  message: The payment plan offer has expired.
+- code: KT-AU-3936
+  message: The payment plan could not be accepted.
+- code: KT-AU-3937
+  message: The payment plan could not be cancelled.
+- code: KT-AU-3938
+  message: The payment plan could not be broken.
+- code: KT-AU-3939
+  message: Support User ID not found.
+- code: KT-AU-4110
+  message: Either accountNumber or both supplyPointIdentifier and marketName must be provided.
+- code: KT-AU-4111
+  message: No account found for the given supply point.
+- code: KT-AU-4511
+  message: Error communicating with Chroma.
+- code: KT-AU-4512
+  message: Chroma request validation error.
+- code: KT-AU-4513
+  message: Chroma response validation error.
+- code: KT-AU-5410
+  message: This query only supports the `first` argument for pagination.
+- code: KT-AU-5412
+  message: No account found with given list of account numbers.
+- code: KT-AU-5413
+  message: The number of accounts provided exceeds the maximum allowed.
+- code: KT-AU-5415
+  message: Exactly one of accountUserId or accountUserEmail must be passed.
+- code: KT-AU-5416
+  message: Family issues flag cannot be removed through this mutation.
+- code: KT-AU-5417
+  message: Account not found for user.
+- code: KT-AU-5418
+  message: Invalid input for family issues mutation.
+- code: KT-AU-5419
+  message: Cannot set delivery preference 'EMAIL' for user without an email specified.
+- code: KT-AU-5610
+  message: Max number of meter point hazards exceeded.
+- code: KT-AU-5611
+  message: Cannot find register with the provided ID.
+- code: KT-AU-5612
+  message: Error in creating the override.
+- code: KT-AU-5613
+  message: Cannot find meter point with the provided ID.
+- code: KT-AU-5614
+  message: Cannot find register network tariff code override with the provided ID.
+- code: KT-AU-5617
+  message: Override period falls outside the register's active period.
+- code: KT-AU-6411
+  message: Cannot find reading with the provided ID.
+- code: KT-AU-6412
+  message: Missing quarantine reading reason.
+- code: KT-AU-6610
+  message: Move out process validation failed.
+- code: KT-AU-6611
+  message: Unable to move out of property.
+- code: KT-AU-7810
+  message: Missing mutation inputs.
+- code: KT-AU-8812
+  message: User has no active concession.
+- code: KT-AU-9510
+  message: No product found for the inputed code.
+- code: KT-CT-10001
+  message: Party is already under contract.
+- code: KT-CT-10003
+  message: Contract not found.
+- code: KT-CT-10005
+  message: 'Missing required parameter: either identifier or accountNumber must be provided.'
+- code: KT-CT-10006
+  message: Account not found.
+- code: KT-CT-10007
+  message: Unable to terminate contract.
+- code: KT-CT-10008
+  message: The contract is currently undergoing an active journey.
+- code: KT-CT-10011
+  message: Unable to vary contract terms.
+- code: KT-CT-10012
+  message: Contract variation implies breach.
+- code: KT-CT-10013
+  message: Requested termination date is invalid.
+- code: KT-CT-10017
+  message: The contract journey could not be found.
+- code: KT-CT-10018
+  message: The provided contract subject is invalid.
+- code: KT-CT-10019
+  message: Contract creation implies breach.
+- code: KT-CT-10020
+  message: The provided contract party payload is invalid.
+- code: KT-CT-10021
+  message: Business not found.
+- code: KT-CT-10022
+  message: Contract already terminated.
+- code: KT-CT-10023
+  message: Contract is already revoked.
+- code: KT-CT-10024
+  message: Contract already expired.
+- code: KT-CT-10025
+  message: Contract has not started yet.
+- code: KT-CT-10026
+  message: Contract actualization implies breach.
+- code: KT-CT-10029
+  message: Missing contract filters.
+- code: KT-CT-10030
+  message: Filter by subject is not implemented.
+- code: KT-CT-10031
+  message: Invalid party filter.
+- code: KT-CT-10032
+  message: Contract has already started.
+- code: KT-CT-10033
+  message: Unable to save term.
+- code: KT-CT-10034
+  message: Unknown contract journey type.
+- code: KT-CT-10035
+  message: Cannot process a non-active contract journey.
+- code: KT-CT-10036
+  message: The contract journey manager is not found.
+- code: KT-CT-10037
+  message: Contract notes feature is disabled.
+- code: KT-CT-10038
+  message: Contract note reason not found.
+- code: KT-CT-10040
+  message: Unable to rescind contract.
+- code: KT-CT-10041
+  message: Contract is already rescinded.
+- code: KT-CT-10042
+  message: One or more agreements are already attached to a different contract.
+- code: KT-CT-10043
+  message: At least one contract identifier must be provided.
+- code: KT-CT-10044
+  message: Termination date must be after the contract start date.
+- code: KT-CT-10045
+  message: Contract could not be actualized.
+- code: KT-CT-10301
+  message: Unable to instigate leave supplier process.
+- code: KT-CT-10302
+  message: Invalid data.
+- code: KT-CT-10303
+  message: Mutation not enabled in this environment.
+- code: KT-CT-10304
+  message: Mutation not enabled in this environment.
+- code: KT-CT-10305
+  message: Failed to cancel leave supplier process - market actions are no longer cancellable.
+- code: KT-CT-10306
+  message: Failed to cancel leave supplier process - the cancellation workflow has not been configured.
+- code: KT-CT-10307
+  message: Failed to cancel leave supplier process - failed to cancel market actions.
+- code: KT-CT-10308
+  message: Failed to cancel leave supplier process.
+- code: KT-CT-10309
+  message: Failed to update leave supplier process - the service is not enabled.
+- code: KT-CT-10310
+  message: Failed to update leave supplier process. The process status is not in updatable status.
+- code: KT-CT-10311
+  message: Failed to cancel leave supplier process. The process status is not in cancellable status.
+- code: KT-CT-10312
+  message: Mutation not enabled in this environment.
+- code: KT-CT-10313
+  message: Failed to enroll account.
+- code: KT-CT-10314
+  message: This supply point is already on supply.
+- code: KT-CT-10315
+  message: Unable to begin enrollment journey due to invalid data.
+- code: KT-CT-10316
+  message: Input data has invalid format.
+- code: KT-CT-10317
+  message: An error occured when trying to prepare the account.
+- code: KT-CT-10318
+  message: Enrollment process not found.
+- code: KT-CT-10319
+  message: Enrollment process failed to cancel.
+- code: KT-CT-10320
+  message: Enrollment process not cancellable.
+- code: KT-CT-10321
+  message: Enrollment cancellation workflow not defined.
+- code: KT-CT-10322
+  message: A user with this email address already exists.
+- code: KT-CT-10323
+  message: Enrollment process failed to cancel.
+- code: KT-CT-10324
+  message: Mutation not enabled in this environment.
+- code: KT-CT-10325
+  message: Input data has invalid format.
+- code: KT-CT-10326
+  message: An error occurred when trying to initialize the account.
+- code: KT-CT-10327
+  message: Mutation not enabled in this environment.
+- code: KT-CT-10328
+  message: Input data has invalid format.
+- code: KT-CT-10329
+  message: An error occurred when trying to initialize the user.
+- code: KT-CT-10330
+  message: Unsupported leave supplier type.
+- code: KT-CT-10331
+  message: Missing required process number.
+- code: KT-CT-10332
+  message: Join supplier process not found.
+- code: KT-CT-10333
+  message: Missing either number of leave supplier process id.
+- code: KT-CT-10338
+  message: Enrollment process cannot be cancelled.
+- code: KT-CT-10340
+  message: House move enrollment is not enabled.
+- code: KT-CT-10341
+  message: Leave supplier process is not reversible.
+- code: KT-CT-10342
+  message: Leave supplier process can still be cancelled.
+- code: KT-CT-10343
+  message: Leave supplier process being cancelled cannot be reversed.
+- code: KT-CT-10344
+  message: Leave supplier reversal cut-off has passed.
+- code: KT-CT-10345
+  message: Occupier leave with real join cannot be reversed.
+- code: KT-CT-10346
+  message: Market action reversal is not supported for this leave supplier process.
+- code: KT-CT-10347
+  message: Failed to reverse leave supplier process.
+- code: KT-CT-10348
+  message: Leave supplier reversal is missing required dependencies.
+- code: KT-CT-10349
+  message: Enrollment process is not reversible.
+- code: KT-CT-10350
+  message: Enrollment process can still be cancelled.
+- code: KT-CT-10351
+  message: Enrollment process being cancelled cannot be reversed.
+- code: KT-CT-10352
+  message: Market actions cannot be reversed for this enrollment process.
+- code: KT-CT-10353
+  message: Failed to reverse enrollment process.
+- code: KT-CT-10354
+  message: Enrollment reversal cut-off has passed.
+- code: KT-CT-10355
+  message: Enrollment reversal is not allowed.
+- code: KT-CT-10356
+  message: A join supplier process is already linked to the house move.
+- code: KT-CT-10357
+  message: The house move enrollment has multiple supply points for a single market.
+- code: KT-CT-10401
+  message: Task not found.
+- code: KT-CT-10801
+  message: Invalid data.
+- code: KT-CT-10820
+  message: Operations team group not found.
+- code: KT-CT-10821
+  message: No active teams in operations team group.
+- code: KT-CT-10950
+  message: Invalid date range.
+- code: KT-CT-11100
+  message: API key authentication unavailable.
+- code: KT-CT-11101
+  message: The viewer is not authorized to execute the query/mutation. Check the ownership/permissions
+    of provided data.
+- code: KT-CT-11102
+  message: Business without related account.
+- code: KT-CT-11103
+  message: Business not found.
+- code: KT-CT-11104
+  message: Business role already allocated.
+- code: KT-CT-11105
+  message: Business role already allocated.
+- code: KT-CT-11106
+  message: Unauthorized.
+- code: KT-CT-11107
+  message: Unauthorized.
+- code: KT-CT-11108
+  message: Invalid data.
+- code: KT-CT-11109
+  message: Invalid data.
+- code: KT-CT-1111
+  message: Unauthorized.
+- code: KT-CT-11110
+  message: Invalid data.
+- code: KT-CT-11111
+  message: Segment does not exist.
+- code: KT-CT-1112
+  message: '''Authorization'' header not provided.'
+- code: KT-CT-1113
+  message: Disabled GraphQL field requested.
+- code: KT-CT-1120
+  message: The Kraken Token has expired.
+- code: KT-CT-11201
+  message: No Collection Process Records associated with id.
+- code: KT-CT-11202
+  message: No External reference provided.
+- code: KT-CT-11203
+  message: No Completion reason provided.
+- code: KT-CT-11204
+  message: No Completion details provided.
+- code: KT-CT-11205
+  message: Item already associated to collection process.
+- code: KT-CT-11206
+  message: Unable to retrieve disconnection related data for collection process.
+- code: KT-CT-11207
+  message: Unsupported external source for collection process.
+- code: KT-CT-11208
+  message: Invalid billing document identifier for collection process.
+- code: KT-CT-11209
+  message: Collection process configuration does not have published version.
+- code: KT-CT-1121
+  message: Please use Kraken Token to issue long-lived refresh tokens.
+- code: KT-CT-11210
+  message: Active collection process for entity already exists.
+- code: KT-CT-11211
+  message: Too many active collection processes for config.
+- code: KT-CT-11212
+  message: Invalid collection process config code.
+- code: KT-CT-11214
+  message: Invalid pause length for collection process.
+- code: KT-CT-11215
+  message: Unable to resume, collection process is not paused.
+- code: KT-CT-11216
+  message: Invalid extra_details for associated item type.
+- code: KT-CT-11217
+  message: Invalid collection process record status for reactivation.
+- code: KT-CT-11218
+  message: External reference cannot be updated once it has been set.
+- code: KT-CT-1122
+  message: Long-lived refresh tokens can only be issued for account users.
+- code: KT-CT-1128
+  message: Unauthorized.
+- code: KT-CT-1129
+  message: Unauthorized.
+- code: KT-CT-1130
+  message: Unauthorized.
+- code: KT-CT-11301
+  message: Account not in a dunning process for the given path name.
+- code: KT-CT-11302
+  message: No active dunning process found.
+- code: KT-CT-11303
+  message: Multiple active dunning processes found.
+- code: KT-CT-11304
+  message: Dunning pause process failed verifying the dates.
+- code: KT-CT-11305
+  message: Pausing the dunning process failed.
+- code: KT-CT-11306
+  message: Withdrawing the dunning process failed.
+- code: KT-CT-11308
+  message: Previous collection process not found.
+- code: KT-CT-11309
+  message: Previous collection process does not belong to the same entity.
+- code: KT-CT-1131
+  message: Unauthorized.
+- code: KT-CT-1132
+  message: Unauthorized.
+- code: KT-CT-11331
+  message: Invalid input data.
+- code: KT-CT-11332
+  message: Invalid data.
+- code: KT-CT-1134
+  message: Invalid data.
+- code: KT-CT-1135
+  message: Invalid data.
+- code: KT-CT-1145
+  message: Account/user details do not match.
+- code: KT-CT-1150
+  message: MFA device not found.
+- code: KT-CT-11501
+  message: Voice campaign not found.
+- code: KT-CT-11502
+  message: Cannot remove items from multiple campaigns at once.
+- code: KT-CT-11503
+  message: One or more campaign items are invalid and cannot be created.
+- code: KT-CT-11504
+  message: The batch of campaign items is too large.
+- code: KT-CT-11505
+  message: Voice campaign item not found.
+- code: KT-CT-11506
+  message: Invalid campaign ID.
+- code: KT-CT-11507
+  message: Invalid campaign item ID.
+- code: KT-CT-1151
+  message: MFA device not found.
+- code: KT-CT-1152
+  message: Invalid MFA token.
+- code: KT-CT-1153
+  message: Unable to create MFA device.
+- code: KT-CT-1154
+  message: Unable to delete MFA device.
+- code: KT-CT-1155
+  message: Enabled backup device is needed.
+- code: KT-CT-11601
+  message: Cannot start collection proceeding, proceeding for this account already exists.
+- code: KT-CT-11602
+  message: Could not find DCA with that name.
+- code: KT-CT-11603
+  message: Could not stop debt collection proceeding.
+- code: KT-CT-11604
+  message: Active debt collection proceeding does not exist for account.
+- code: KT-CT-11605
+  message: Multiple active Proceeding's found for same agency and campaign on account.
+- code: KT-CT-11606
+  message: Debt Collection Agency cannot use campaign.
+- code: KT-CT-11607
+  message: Invalid ledger number for debt collection proceeding.
+- code: KT-CT-11608
+  message: Ledger does not belong to account.
+- code: KT-CT-11610
+  message: unable to edit the debt collection proceeding.
+- code: KT-CT-11611
+  message: Hardship agreement not found.
+- code: KT-CT-11612
+  message: Overlapping hardship agreement exists.
+- code: KT-CT-11613
+  message: Delinquent debt tracking is not configured for this client.
+- code: KT-CT-11801
+  message: Call recording in a confused state.
+- code: KT-CT-11802
+  message: Call not found.
+- code: KT-CT-11803
+  message: Unable to enqueue the call.
+- code: KT-CT-11804
+  message: Work schedule not found.
+- code: KT-CT-11805
+  message: Invalid input for creating an inbound call.
+- code: KT-CT-11806
+  message: Call metadata item key cannot be an empty string.
+- code: KT-CT-11807
+  message: A call metadata item with this key already exists for this call.
+- code: KT-CT-11808
+  message: Unable to associate account to call.
+- code: KT-CT-11809
+  message: Call tag not found.
+- code: KT-CT-11810
+  message: Caller is blocked.
+- code: KT-CT-11815
+  message: Unable to connect a call to an AI agent.
+- code: KT-CT-11816
+  message: Invalid routing attribute category.
+- code: KT-CT-11817
+  message: Invalid call ID.
+- code: KT-CT-11818
+  message: Invalid archived call recordings input.
+- code: KT-CT-11820
+  message: Too many recordings to associate in a single request.
+- code: KT-CT-11821
+  message: No calls found matching the given routing attributes.
+- code: KT-CT-11822
+  message: Recording detail incomplete.
+- code: KT-CT-11823
+  message: No auxiliary status found for that agent.
+- code: KT-CT-1199
+  message: Too many requests.
+- code: KT-CT-12001
+  message: Product catalogue offering with given identifier not found.
+- code: KT-CT-12003
+  message: Specified product brand does not exist.
+- code: KT-CT-12004
+  message: Invalid product tag type.
+- code: KT-CT-12005
+  message: A selection of a terms and conditions type does not exist.
+- code: KT-CT-12006
+  message: Provided product characteristic overrides are not in the correct format.
+- code: KT-CT-12007
+  message: Unable to create product.
+- code: KT-CT-12008
+  message: Unable to find the product.
+- code: KT-CT-12009
+  message: Specified product does not have a specification.
+- code: KT-CT-12010
+  message: Unable to find the product's specification.
+- code: KT-CT-12011
+  message: The list of provided prices contains validation errors.
+- code: KT-CT-12012
+  message: Product prices start date is in the past.
+- code: KT-CT-12013
+  message: Product prices would overwrite existing prices.
+- code: KT-CT-12014
+  message: Time series not found.
+- code: KT-CT-12015
+  message: Characteristics mismatch.
+- code: KT-CT-12016
+  message: Conflicting time series entries.
+- code: KT-CT-12017
+  message: Invalid time series entries period.
+- code: KT-CT-12038
+  message: Invalid time series entries granularity.
+- code: KT-CT-12040
+  message: Time series entries in use.
+- code: KT-CT-12049
+  message: Rate specification not found in the given product specification.
+- code: KT-CT-12101
+  message: Payment instruction not found.
+- code: KT-CT-12102
+  message: Payment vendor not supported.
+- code: KT-CT-12103
+  message: Missing payment metadata from vendor.
+- code: KT-CT-12104
+  message: Unable to fetch or generate payment fingerprint.
+- code: KT-CT-12105
+  message: Risk list item addition failed.
+- code: KT-CT-12106
+  message: Risk list item removal failed.
+- code: KT-CT-12301
+  message: Complaint not found.
+- code: KT-CT-12401
+  message: Unable to create offer group.
+- code: KT-CT-12402
+  message: Unable to accept offer.
+- code: KT-CT-12403
+  message: Product offering not found.
+- code: KT-CT-12404
+  message: Product offering has expired.
+- code: KT-CT-12405
+  message: Missing rates for quoting.
+- code: KT-CT-12406
+  message: Product not configured correctly for quoting.
+- code: KT-CT-12407
+  message: The offer group does not contain an accepted offer.
+- code: KT-CT-12408
+  message: Quote configuration not found.
+- code: KT-CT-12409
+  message: Term not found in quote configuration.
+- code: KT-CT-12410
+  message: Invalid extra detail field type.
+- code: KT-CT-12411
+  message: Extra detail not found in quote configuration.
+- code: KT-CT-12412
+  message: Duplicate term identifiers provided.
+- code: KT-CT-12413
+  message: Duplicate extra detail field codes provided.
+- code: KT-CT-12414
+  message: Unsupported term type.
+- code: KT-CT-12415
+  message: Schedule missing required identifier.
+- code: KT-CT-12416
+  message: Item missing required identifier.
+- code: KT-CT-12417
+  message: Schedule not found in term.
+- code: KT-CT-12418
+  message: Item not found in schedule.
+- code: KT-CT-12419
+  message: One or more terms not found.
+- code: KT-CT-12420
+  message: One or more extra details not found.
+- code: KT-CT-12421
+  message: No extra detail fields provided for update.
+- code: KT-CT-12423
+  message: Forecast consumption entry not found.
+- code: KT-CT-12424
+  message: Quote configuration cannot be edited in its current status.
+- code: KT-CT-12425
+  message: Cannot update rates request.
+- code: KT-CT-12426
+  message: Extra detail field code or type is not allowed for this client.
+- code: KT-CT-12701
+  message: Invalid sales channel code.
+- code: KT-CT-12702
+  message: Invalid datetime range.
+- code: KT-CT-12901
+  message: Account not found.
+- code: KT-CT-13002
+  message: Supply point not found.
+- code: KT-CT-13003
+  message: Supply points must belong to the same account.
+- code: KT-CT-13004
+  message: No account found for the given supply points.
+- code: KT-CT-13006
+  message: No properties found for the given supply points.
+- code: KT-CT-13007
+  message: At least one of the request checks failed.
+- code: KT-CT-13008
+  message: At least one of the request checks has warnings.
+- code: KT-CT-13009
+  message: On site jobs Request already exists.
+- code: KT-CT-13010
+  message: No booking adapter found for agent.
+- code: KT-CT-13012
+  message: Viewer is not allowed to create a request.
+- code: KT-CT-13013
+  message: Reporter post init error.
+- code: KT-CT-13014
+  message: Request reason is not supported.
+- code: KT-CT-13015
+  message: Request sub_reason is not supported.
+- code: KT-CT-13028
+  message: Agent not found.
+- code: KT-CT-13032
+  message: Request does not exist.
+- code: KT-CT-13035
+  message: Request is inactive.
+- code: KT-CT-13038
+  message: Invalid request status.
+- code: KT-CT-13041
+  message: User is not allowed to override request/appointment checks.
+- code: KT-CT-13042
+  message: Multiple supply points not supported by this booking adapter.
+- code: KT-CT-13045
+  message: Failed to update appointment assets.
+- code: KT-CT-13047
+  message: Multiple supply points found.
+- code: KT-CT-13048
+  message: Cannot provide both supply_point_identifier_to_market_name_mapping and supply_point_internal_ids.
+- code: KT-CT-13049
+  message: Neither supply_point_identifier_to_market_name_mapping nor supply_point_internal_ids provided.
+- code: KT-CT-13050
+  message: Cannot provide both supply_point_identifier_to_market_name_mapping and supply_point_internal_id
+    when creating assets.
+- code: KT-CT-13051
+  message: Supply point not found when creating assets.
+- code: KT-CT-13052
+  message: Multiple supply points found when creating assets.
+- code: KT-CT-13063
+  message: Failed to derive property for the given supply points.
+- code: KT-CT-13064
+  message: Provided supply point(s) not supported by the On-Site Jobs market manager.
+- code: KT-CT-13066
+  message: Request reason is deprecated.
+- code: KT-CT-13067
+  message: Provided sub-reason for request is invalid.
+- code: KT-CT-13068
+  message: Property required for this request.
+- code: KT-CT-13069
+  message: Account required for this request.
+- code: KT-CT-13070
+  message: Provided status for request is invalid.
+- code: KT-CT-13071
+  message: Provided reason for request is invalid.
+- code: KT-CT-13078
+  message: Account users cannot set external references on requests.
+- code: KT-CT-13101
+  message: Order not found.
+- code: KT-CT-13102
+  message: Invalid order data.
+- code: KT-CT-13103
+  message: Unprocessable order.
+- code: KT-CT-13104
+  message: Conflicting order.
+- code: KT-CT-13201
+  message: Invalid voucher type.
+- code: KT-CT-13202
+  message: Exactly one of chargeAmountInCents or chargeAmountInCentsWithTax expected.
+- code: KT-CT-13203
+  message: Multiple account numbers found in voucher batch.
+- code: KT-CT-13204
+  message: A voucher purchase with this idempotency key already exists.
+- code: KT-CT-13205
+  message: Voucher purchase not found.
+- code: KT-CT-13206
+  message: Voucher has already been redeemed and cannot be refunded.
+- code: KT-CT-13207
+  message: Voucher has already been refunded.
+- code: KT-CT-13501
+  message: Unauthorized.
+- code: KT-CT-13601
+  message: Estimation Group does not exist.
+- code: KT-CT-13602
+  message: Supply Point already has an Estimation Group.
+- code: KT-CT-13603
+  message: Supply Point does not exist.
+- code: KT-CT-13604
+  message: Supply point has no estimation group assigned.
+- code: KT-CT-13605
+  message: No estimation algorithm configured for the requested parameters.
+- code: KT-CT-13610
+  message: Supply point not found or not configured for estimation.
+- code: KT-CT-13611
+  message: No readings found for the requested period.
+- code: KT-CT-13612
+  message: PEAK reading type is not supported for estimation.
+- code: KT-CT-13613
+  message: Market not configured for supply point readings.
+- code: KT-CT-13614
+  message: Invalid timezone.
+- code: KT-CT-13615
+  message: No readings available for estimation.
+- code: KT-CT-13616
+  message: Meter readings are invalid.
+- code: KT-CT-13617
+  message: Unsupported time granularity for estimation.
+- code: KT-CT-13618
+  message: Register metadata not found for supply point.
+- code: KT-CT-13619
+  message: Multiple register metadata records found for supply point.
+- code: KT-CT-13701
+  message: An active agreement rollover already exists for this agreement.
+- code: KT-CT-13702
+  message: Expected send date cannot be in the past.
+- code: KT-CT-13703
+  message: Rollover date cannot be in the past.
+- code: KT-CT-13704
+  message: Unable to create agreement rollover.
+- code: KT-CT-13705
+  message: Agreement rollover not found.
+- code: KT-CT-13706
+  message: Agreement rollover has an invalid status for this operation.
+- code: KT-CT-13707
+  message: Agreement rollover has an invalid type for this operation.
+- code: KT-CT-13708
+  message: Agreement rollover validation error.
+- code: KT-CT-13709
+  message: Agreement rollover workflow has an invalid status for this operation.
+- code: KT-CT-13801
+  message: A meter data issue flow already exists for this issue and flow.
+- code: KT-CT-13802
+  message: Meter data issue not found.
+- code: KT-CT-13803
+  message: An active flow already exists for this issue.
+- code: KT-CT-13804
+  message: Meter data issue flow not found.
+- code: KT-CT-13805
+  message: Meter data issue is already resolved.
+- code: KT-CT-13806
+  message: Invalid market name provided.
+- code: KT-CT-13807
+  message: Invalid flow end status.
+- code: KT-CT-13808
+  message: No active flow exists for this issue.
+- code: KT-CT-1401
+  message: Invalid data.
+- code: KT-CT-1402
+  message: Unable to create account reminder.
+- code: KT-CT-1403
+  message: Missing user or team assignee.
+- code: KT-CT-1404
+  message: This reminder type is deprecated.
+- code: KT-CT-1405
+  message: Both user and team assignee provided.
+- code: KT-CT-1406
+  message: Invalid data.
+- code: KT-CT-1407
+  message: Unable to complete reminder.
+- code: KT-CT-1408
+  message: Missing account id.
+- code: KT-CT-1409
+  message: Missing business id.
+- code: KT-CT-14101
+  message: Agreement rescission not found.
+- code: KT-CT-14102
+  message: Cannot update completed agreement rescission.
+- code: KT-CT-14201
+  message: Vendor is empty.
+- code: KT-CT-14202
+  message: Vendor message ID is empty.
+- code: KT-CT-14203
+  message: Account number is empty.
+- code: KT-CT-14204
+  message: Message already exists.
+- code: KT-CT-14205
+  message: Unable to create the external message.
+- code: KT-CT-14206
+  message: An email body is missing.
+- code: KT-CT-14207
+  message: To email is empty.
+- code: KT-CT-14208
+  message: To email is not a valid email address.
+- code: KT-CT-14209
+  message: From email is empty.
+- code: KT-CT-14210
+  message: From email is an invalid format.
+- code: KT-CT-14211
+  message: A reply to email address is empty.
+- code: KT-CT-14212
+  message: A reply to email address is not a valid email address.
+- code: KT-CT-14214
+  message: An account number was provided, but no corresponding account could be found.
+- code: KT-CT-14215
+  message: Sent at datetime is in the future.
+- code: KT-CT-14216
+  message: Sent at datetime is missing timezone.
+- code: KT-CT-14217
+  message: Message not found.
+- code: KT-CT-14218
+  message: Invalid event data.
+- code: KT-CT-14219
+  message: Exactly one of emailContent or smsContent must be provided.
+- code: KT-CT-14220
+  message: SMS body is empty.
+- code: KT-CT-14221
+  message: To phone number is empty.
+- code: KT-CT-14222
+  message: From phone number is empty.
+- code: KT-CT-14401
+  message: Unauthorized.
+- code: KT-CT-14402
+  message: Duplicated internal company.
+- code: KT-CT-14403
+  message: Invalid address.
+- code: KT-CT-14602
+  message: Customer asset already exists.
+- code: KT-CT-14603
+  message: Unable to retire customer asset.
+- code: KT-CT-14701
+  message: QuoteConfiguration not found.
+- code: KT-CT-14801
+  message: Approval not found.
+- code: KT-CT-14802
+  message: Invalid input for completing approval.
+- code: KT-CT-1501
+  message: Agreement not found.
+- code: KT-CT-1502
+  message: Billed agreements cannot be revoked.
+- code: KT-CT-1503
+  message: Agreement valid_to date must be later than valid_from date.
+- code: KT-CT-1504
+  message: Account does not match with the agreement.
+- code: KT-CT-1505
+  message: Unable to edit agreement.
+- code: KT-CT-1506
+  message: Agreement period is not within the supply and property period.
+- code: KT-CT-1507
+  message: Agreement product switch date is not within the acceptable range.
+- code: KT-CT-1509
+  message: Unable to create agreement.
+- code: KT-CT-1510
+  message: Product switch process not found.
+- code: KT-CT-1511
+  message: Cannot create overlapping agreement.
+- code: KT-CT-15111
+  message: Tranche target not found.
+- code: KT-CT-15112
+  message: A tranche rate already exists for this target and calculation period.
+- code: KT-CT-15113
+  message: Invalid tranche rate input.
+- code: KT-CT-15114
+  message: The provided calculation period does not line up with the calculation period frequency for
+    this tranche target.
+- code: KT-CT-15115
+  message: Contract not found.
+- code: KT-CT-1512
+  message: Account type does not support agreements.
+- code: KT-CT-1513
+  message: Unable to terminate agreement.
+- code: KT-CT-1514
+  message: Extension valid_to date must be later than the current valid_to date.
+- code: KT-CT-1515
+  message: Agreement must have an end date to be extensible.
+- code: KT-CT-1516
+  message: Requested product switch is not valid.
+- code: KT-CT-1602
+  message: Serializer validation error.
+- code: KT-CT-1605
+  message: Invalid input.
+- code: KT-CT-1606
+  message: Query/Mutation not found.
+- code: KT-CT-1607
+  message: Value cannot be empty.
+- code: KT-CT-1609
+  message: The provided datetime ISO string is not timezone aware, please provide timezone information.
+- code: KT-CT-1701
+  message: Brand does not exist.
+- code: KT-CT-3815
+  message: No active payment schedule found for this account.
+- code: KT-CT-3820
+  message: Received both ledger ID and number.
+- code: KT-CT-3821
+  message: Received neither ledger ID nor ledger number.
+- code: KT-CT-3822
+  message: Unauthorized.
+- code: KT-CT-3823
+  message: Unauthorized.
+- code: KT-CT-3824
+  message: Unauthorized.
+- code: KT-CT-3825
+  message: Credit transfer permission not found.
+- code: KT-CT-3827
+  message: The ledger is not valid.
+- code: KT-CT-3828
+  message: At least one of the provided ledgers must be a credit storage ledger.
+- code: KT-CT-3829
+  message: The credit transfer permission already exists.
+- code: KT-CT-3830
+  message: Invalid action.
+- code: KT-CT-3831
+  message: Invalid data.
+- code: KT-CT-39100
+  message: Unable to find manual standalone method configuration to use.
+- code: KT-CT-3921
+  message: Account not found.
+- code: KT-CT-3922
+  message: Ledger not found for the account.
+- code: KT-CT-3923
+  message: Unauthorized.
+- code: KT-CT-3924
+  message: Unauthorized.
+- code: KT-CT-3926
+  message: Unauthorized.
+- code: KT-CT-3927
+  message: Invalid Amount.
+- code: KT-CT-3928
+  message: Idempotency key used for another repayment request.
+- code: KT-CT-3929
+  message: The payment is not in a refundable state.
+- code: KT-CT-3930
+  message: The repayment or refund request does not exist.
+- code: KT-CT-3931
+  message: This repayment or refund request cannot be cancelled.
+- code: KT-CT-3932
+  message: Invalid data.
+- code: KT-CT-3933
+  message: Refund amount greater than payment amount.
+- code: KT-CT-3934
+  message: Repayment request already approved.
+- code: KT-CT-3935
+  message: Repayment request cannot be paid.
+- code: KT-CT-3937
+  message: Payment not eligible for refund.
+- code: KT-CT-3938
+  message: Partial refund not allowed.
+- code: KT-CT-3940
+  message: Invalid data.
+- code: KT-CT-3941
+  message: Invalid data.
+- code: KT-CT-3942
+  message: An unexpected error occurred.
+- code: KT-CT-3943
+  message: Invalid ledger.
+- code: KT-CT-3944
+  message: Account repayment does not exist.
+- code: KT-CT-3945
+  message: Unable to allow a repayment to be submitted.
+- code: KT-CT-3946
+  message: Unable to block a repayment from being submitted.
+- code: KT-CT-3947
+  message: An unexpected error occurred.
+- code: KT-CT-3948
+  message: Could not set up direct debit instruction.
+- code: KT-CT-3950
+  message: The provided reason text is too long.
+- code: KT-CT-3953
+  message: The payment schedule is not a balance triggered schedule.
+- code: KT-CT-3954
+  message: Payment cancellation failed.
+- code: KT-CT-3955
+  message: Payment cannot be cancelled.
+- code: KT-CT-3956
+  message: Temporary error occurred.
+- code: KT-CT-3957
+  message: No collection method provided.
+- code: KT-CT-3958
+  message: Provide either ledger ID or ledger number.
+- code: KT-CT-3959
+  message: Unauthorized.
+- code: KT-CT-3960
+  message: Invalid value for payment day.
+- code: KT-CT-3961
+  message: Cannot update plan-associated payment schedule.
+- code: KT-CT-3962
+  message: No new value provided to update payment schedule.
+- code: KT-CT-3963
+  message: Could not calculate live PA data.
+- code: KT-CT-3967
+  message: Payment method is not valid.
+- code: KT-CT-3968
+  message: Preference cannot be set this soon.
+- code: KT-CT-3969
+  message: Preferences must change on a specific day of the week for weekly schedules.
+- code: KT-CT-3970
+  message: The account cannot amend payments.
+- code: KT-CT-3971
+  message: Instruction owners are not valid.
+- code: KT-CT-3973
+  message: Repayment request is not in a state to be approved.
+- code: KT-CT-3974
+  message: Unauthorized.
+- code: KT-CT-3975
+  message: Unable to complete standalone payment.
+- code: KT-CT-3976
+  message: The ledger has no configured payment preference.
+- code: KT-CT-3977
+  message: Ledger was not accepting payments at this time.
+- code: KT-CT-3979
+  message: Invalid ledger.
+- code: KT-CT-3980
+  message: Invalid ledger identifier.
+- code: KT-CT-3981
+  message: Unauthorized.
+- code: KT-CT-3982
+  message: Unauthorized.
+- code: KT-CT-3984
+  message: Could not delete conflicting future payment schedule.
+- code: KT-CT-3985
+  message: Received multiple inputs for action intent.
+- code: KT-CT-3986
+  message: Received no input for action intent.
+- code: KT-CT-3987
+  message: Invalid payment method type code.
+- code: KT-CT-3988
+  message: Number of items in list exceeds maximum value.
+- code: KT-CT-3991
+  message: Received no financial account details.
+- code: KT-CT-3992
+  message: Received multiple financial account details.
+- code: KT-CT-3993
+  message: The type of financial account details does not match the provided payment method type.
+- code: KT-CT-3994
+  message: Unauthorized.
+- code: KT-CT-3995
+  message: Unauthorized.
+- code: KT-CT-3996
+  message: Unauthorized.
+- code: KT-CT-3997
+  message: Unauthorized.
+- code: KT-CT-3998
+  message: Unauthorized.
+- code: KT-CT-3999
+  message: Multiple recipient input.
+- code: KT-CT-4011
+  message: No meter points found with the given ID.
+- code: KT-CT-4121
+  message: Invalid phone number.
+- code: KT-CT-4122
+  message: Invalid email.
+- code: KT-CT-4123
+  message: Unauthorized.
+- code: KT-CT-4124
+  message: Unauthorized.
+- code: KT-CT-4125
+  message: Unauthorized.
+- code: KT-CT-4136
+  message: Cannot set comms preference to email when account has no email.
+- code: KT-CT-4145
+  message: Invalid address.
+- code: KT-CT-4155
+  message: Invalid data.
+- code: KT-CT-4177
+  message: Unauthorized.
+- code: KT-CT-4178
+  message: No account found with given account number.
+- code: KT-CT-4179
+  message: No metadata found with given key.
+- code: KT-CT-4180
+  message: Account note must be a valid string.
+- code: KT-CT-4183
+  message: One of more search terms failed validations.
+- code: KT-CT-4184
+  message: Exactly one of phoneNumber or portfolioNumber must be provided.
+- code: KT-CT-4191
+  message: Error while verifying the customer.
+- code: KT-CT-4194
+  message: Verification type not supported yet.
+- code: KT-CT-4195
+  message: Unpin at date provided for an unpinned note.
+- code: KT-CT-4196
+  message: Unpin at date provided is in the past.
+- code: KT-CT-4231
+  message: Unauthorized.
+- code: KT-CT-4232
+  message: Status passed is not valid.
+- code: KT-CT-4233
+  message: Request does not exist.
+- code: KT-CT-4234
+  message: Terminated Request cannot be updated.
+- code: KT-CT-4323
+  message: Unauthorized.
+- code: KT-CT-4410
+  message: Invalid postcode.
+- code: KT-CT-4412
+  message: The supplied address is not valid.
+- code: KT-CT-4413
+  message: The supplied address field descriptor identifier is not recognised.
+- code: KT-CT-4414
+  message: The requested address field does not support autocomplete.
+- code: KT-CT-4501
+  message: Unauthorized.
+- code: KT-CT-4502
+  message: Market message already sent.
+- code: KT-CT-4503
+  message: Market message failed validation.
+- code: KT-CT-4616
+  message: Unable to create a quote.
+- code: KT-CT-4619
+  message: Quote with given code not found.
+- code: KT-CT-4624
+  message: Unable to accept the given product code.
+- code: KT-CT-4626
+  message: No product selected for the given quote code.
+- code: KT-CT-4627
+  message: No products are available for this quote.
+- code: KT-CT-4631
+  message: Unable to quote for the chosen market.
+- code: KT-CT-4632
+  message: Invalid recipient information.
+- code: KT-CT-4633
+  message: Mutation not enabled in this environment.
+- code: KT-CT-4634
+  message: Quoted product with given id not found.
+- code: KT-CT-4635
+  message: Missing a quoted product for at least one quoted supply point on the quote request.
+- code: KT-CT-4636
+  message: Quoted product not linked to a product.
+- code: KT-CT-4640
+  message: Unable to get market or client params from quoted product.
+- code: KT-CT-4645
+  message: No supply point found belonging to the account for the provided identifier.
+- code: KT-CT-4646
+  message: Attempted to select multiple products for the same quoted supply point.
+- code: KT-CT-4719
+  message: No supply point found for identifier provided.
+- code: KT-CT-4722
+  message: Supply point readings API not configured.
+- code: KT-CT-4723
+  message: Invalid market name provided.
+- code: KT-CT-4910
+  message: No product exists with the given input.
+- code: KT-CT-4924
+  message: Unauthorized.
+- code: KT-CT-4930
+  message: Unsupported market.
+- code: KT-CT-5211
+  message: The charge reason with the requested code is deprecated.
+- code: KT-CT-5212
+  message: The charge reason with the requested code does not exist.
+- code: KT-CT-5213
+  message: Invalid data.
+- code: KT-CT-5311
+  message: The credit reason with the requested code is deprecated.
+- code: KT-CT-5312
+  message: The credit reason with the requested code does not exist.
+- code: KT-CT-5313
+  message: An error occurred whilst posting the credit.
+- code: KT-CT-5316
+  message: Invalid data.
+- code: KT-CT-5411
+  message: Invalid token or no push notification binding found for the given account user.
+- code: KT-CT-5412
+  message: No account user exists with the given id.
+- code: KT-CT-5413
+  message: Invalid data.
+- code: KT-CT-5414
+  message: Invalid data.
+- code: KT-CT-5415
+  message: Account user not found.
+- code: KT-CT-5420
+  message: Unauthorized.
+- code: KT-CT-5421
+  message: Account user not found.
+- code: KT-CT-5422
+  message: Invalid data.
+- code: KT-CT-5450
+  message: Password is invalid.
+- code: KT-CT-5460
+  message: Old password is invalid.
+- code: KT-CT-5461
+  message: Invalid role code.
+- code: KT-CT-5462
+  message: Invalid user number format.
+- code: KT-CT-5463
+  message: Unauthorized.
+- code: KT-CT-5511
+  message: The feedback_id should be provided for feedback source.
+- code: KT-CT-5512
+  message: The feedback doesn't match the account.
+- code: KT-CT-5513
+  message: Invalid data.
+- code: KT-CT-5514
+  message: Unable to submit feedback.
+- code: KT-CT-5516
+  message: Invalid data.
+- code: KT-CT-5518
+  message: Account user not found.
+- code: KT-CT-5519
+  message: Voice call not found.
+- code: KT-CT-5520
+  message: Ink conversation not found.
+- code: KT-CT-5521
+  message: Eligibility configuration not found.
+- code: KT-CT-5522
+  message: Invalid eligibility configuration.
+- code: KT-CT-5523
+  message: Invalid account or account user.
+- code: KT-CT-5524
+  message: Account user does not have an email address.
+- code: KT-CT-5525
+  message: Unable to send the Trustpilot review invitation.
+- code: KT-CT-5711
+  message: No collection is required.
+- code: KT-CT-5712
+  message: Deposit agreement does not exist or has not been accepted.
+- code: KT-CT-5713
+  message: Payment instruction is not usable.
+- code: KT-CT-6420
+  message: Unauthorized.
+- code: KT-CT-6622
+  message: Unauthorized.
+- code: KT-CT-6623
+  message: Unauthorized.
+- code: KT-CT-6629
+  message: Invalid data.
+- code: KT-CT-6633
+  message: Property is already in the hierarchy as a child.
+- code: KT-CT-6634
+  message: Unable to add child to property.
+- code: KT-CT-6635
+  message: Unable to add parent to property.
+- code: KT-CT-6637
+  message: Unauthorized.
+- code: KT-CT-6638
+  message: Invalid data.
+- code: KT-CT-6710
+  message: Unable to create referral.
+- code: KT-CT-6711
+  message: Accounts may not self-refer.
+- code: KT-CT-6712
+  message: Invalid reference.
+- code: KT-CT-6713
+  message: Referring and referred account brands do not match.
+- code: KT-CT-6723
+  message: Unauthorized.
+- code: KT-CT-6724
+  message: Referral claim code not found.
+- code: KT-CT-6725
+  message: Referral claim code redeeming error.
+- code: KT-CT-6726
+  message: Referral claim code has already been redeemed.
+- code: KT-CT-6727
+  message: Referral claim code is not available.
+- code: KT-CT-6728
+  message: This referral scheme's usage is at capacity.
+- code: KT-CT-6729
+  message: This scheme cannot be applied to given account.
+- code: KT-CT-6730
+  message: Referral cannot be paid out.
+- code: KT-CT-6731
+  message: The account is unrelated to the referral.
+- code: KT-CT-6732
+  message: Invalid referral status transition.
+- code: KT-CT-7123
+  message: Unauthorized.
+- code: KT-CT-7424
+  message: Failed to remove campaign from account.
+- code: KT-CT-7426
+  message: The account is not part of the given campaign.
+- code: KT-CT-7427
+  message: No campaign found with given slug.
+- code: KT-CT-7428
+  message: Failed to update campaign account.
+- code: KT-CT-7429
+  message: No active campaign account found for the given account and campaign.
+- code: KT-CT-7610
+  message: No Ink conversation for account.
+- code: KT-CT-7611
+  message: The message was not found.
+- code: KT-CT-7612
+  message: The Ink conversation was not found.
+- code: KT-CT-7613
+  message: The Ink bucket was not found.
+- code: KT-CT-7614
+  message: The Ink tag was not found.
+- code: KT-CT-7616
+  message: Not yet implemented.
+- code: KT-CT-7617
+  message: Must supply account number or relay id to get a conversation.
+- code: KT-CT-7618
+  message: Unable to process message.
+- code: KT-CT-7620
+  message: Channel not supported.
+- code: KT-CT-7621
+  message: Attachment not found.
+- code: KT-CT-7622
+  message: Attachment bucket is invalid.
+- code: KT-CT-7623
+  message: Attachment path is invalid.
+- code: KT-CT-7624
+  message: Error when generating the presigned URL.
+- code: KT-CT-7625
+  message: Invalid email address.
+- code: KT-CT-7627
+  message: The 'email' object is missing from the payload.
+- code: KT-CT-7628
+  message: The 'generic' object is missing from the payload.
+- code: KT-CT-7629
+  message: The 'post' object is missing from the payload.
+- code: KT-CT-7630
+  message: Message with this message ID has already been processed.
+- code: KT-CT-7632
+  message: The text content of the Ink Inbound Generic Message is too long.
+- code: KT-CT-7638
+  message: Invalid conversation ID.
+- code: KT-CT-7641
+  message: Live Chat message with this message ID has already been processed.
+- code: KT-CT-7642
+  message: No account user was found for the given fromHandle.
+- code: KT-CT-7643
+  message: The Live Chat was not found.
+- code: KT-CT-7644
+  message: Ink Live Chat conversation not found.
+- code: KT-CT-7645
+  message: The user is not authorized to access this Live Chat.
+- code: KT-CT-7648
+  message: The comms template was not found.
+- code: KT-CT-7650
+  message: Cannot send messages to internal handles.
+- code: KT-CT-7651
+  message: Only one storyline entry can be marked as the root cause.
+- code: KT-CT-7652
+  message: Unauthorized.
+- code: KT-CT-7653
+  message: Account numbers on the message and message type must match if both are supplied.
+- code: KT-CT-7654
+  message: An account number was provided, but no corresponding account could be found.
+- code: KT-CT-7657
+  message: The provided analyzer result data is invalid.
+- code: KT-CT-7658
+  message: Unauthorized to access this conversation.
+- code: KT-CT-7659
+  message: The Ink conversation could not be escalated.
+- code: KT-CT-7670
+  message: Invalid mutation input.
+- code: KT-CT-7671
+  message: Could not send message.
+- code: KT-CT-7672
+  message: Invalid outbound handle.
+- code: KT-CT-7701
+  message: The affiliate organisation was not found.
+- code: KT-CT-7702
+  message: Either id or number must be provided.
+- code: KT-CT-7711
+  message: Invalid data.
+- code: KT-CT-7713
+  message: Invalid data.
+- code: KT-CT-7714
+  message: Invalid data.
+- code: KT-CT-7715
+  message: Invalid data.
+- code: KT-CT-7716
+  message: Invalid data.
+- code: KT-CT-7717
+  message: Invalid data.
+- code: KT-CT-7718
+  message: Affiliate link is expired.
+- code: KT-CT-7719
+  message: Session not found.
+- code: KT-CT-7720
+  message: Invalid S3 key format.
+- code: KT-CT-7721
+  message: Link not found.
+- code: KT-CT-7722
+  message: Invalid input for audio recording upload.
+- code: KT-CT-7724
+  message: Either number or email must be provided.
+- code: KT-CT-7725
+  message: Unauthorized.
+- code: KT-CT-7726
+  message: Unauthorized.
+- code: KT-CT-7727
+  message: Invalid email address.
+- code: KT-CT-7728
+  message: Unable to create partner user.
+- code: KT-CT-7729
+  message: The partner user and team must belong to the same organisation.
+- code: KT-CT-7730
+  message: The partner user is already a member of this team.
+- code: KT-CT-7731
+  message: Unauthorized.
+- code: KT-CT-7732
+  message: The supplied reference namespace is not configured for this client.
+- code: KT-CT-7733
+  message: Another partner organisation already has a reference with this value in this namespace.
+- code: KT-CT-7801
+  message: Received an invalid operationsTeamId.
+- code: KT-CT-7802
+  message: The external identifier already exists.
+- code: KT-CT-7803
+  message: Received an invalid apiExceptionId.
+- code: KT-CT-7804
+  message: No fields present in the input for updating the APIException.
+- code: KT-CT-7805
+  message: Too many tags associated with this API Exception.
+- code: KT-CT-7806
+  message: Cannot create duplicate tags for the same API exception.
+- code: KT-CT-7807
+  message: Received an invalid apiExceptionNoteId.
+- code: KT-CT-7808
+  message: Unauthorized.
+- code: KT-CT-7809
+  message: Update results in no changes to API Exception.
+- code: KT-CT-7811
+  message: Received an invalid assignedUserId.
+- code: KT-CT-7812
+  message: Support user is inactive.
+- code: KT-CT-7813
+  message: Support user not found with that username.
+- code: KT-CT-7814
+  message: Received an invalid accountNumber.
+- code: KT-CT-8001
+  message: No backend screen available.
+- code: KT-CT-8002
+  message: No event found.
+- code: KT-CT-8003
+  message: Event has no execute function.
+- code: KT-CT-8004
+  message: Error executing event in the backend.
+- code: KT-CT-8005
+  message: Backend screen does not support parameters.
+- code: KT-CT-8006
+  message: Error applying parameters to backend screen.
+- code: KT-CT-8007
+  message: Incorrect or missing parameters for backend screen event.
+- code: KT-CT-8008
+  message: Incorrect or missing data necessary to build the screen.
+- code: KT-CT-8009
+  message: Error translating screen content.
+- code: KT-CT-8010
+  message: Invalid step ID.
+- code: KT-CT-8011
+  message: Cannot rewind past a previous irreversible step.
+- code: KT-CT-8201
+  message: Received an invalid quoteId.
+- code: KT-CT-8202
+  message: Invalid data.
+- code: KT-CT-8203
+  message: Received an invalid quote code.
+- code: KT-CT-8204
+  message: Invalid arguments.
+- code: KT-CT-8205
+  message: Unable to create quote.
+- code: KT-CT-8206
+  message: Invalid data.
+- code: KT-CT-8223
+  message: Unauthorized.
+- code: KT-CT-8224
+  message: Invalid data.
+- code: KT-CT-8225
+  message: Received an invalid purchaseId.
+- code: KT-CT-8226
+  message: The provided purchase is not active.
+- code: KT-CT-8227
+  message: Available grants could not be applied.
+- code: KT-CT-8310
+  message: Invalid data.
+- code: KT-CT-8311
+  message: Invalid data.
+- code: KT-CT-8312
+  message: Invalid data.
+- code: KT-CT-8411
+  message: Invalid data.
+- code: KT-CT-8412
+  message: Invalid data.
+- code: KT-CT-8413
+  message: Invalid data.
+- code: KT-CT-8414
+  message: Invalid data.
+- code: KT-CT-8416
+  message: No metadata found with given key.
+- code: KT-CT-8501
+  message: No active terms and conditions found for product.
+- code: KT-CT-8610
+  message: Invalid data.
+- code: KT-CT-8611
+  message: Invalid data.
+- code: KT-CT-8901
+  message: Unable to create lead.
+- code: KT-CT-8902
+  message: Unable to create lead.
+- code: KT-CT-8903
+  message: Unable to update opportunity.
+- code: KT-CT-8906
+  message: Opportunity not found.
+- code: KT-CT-8907
+  message: Lead not found.
+- code: KT-CT-8910
+  message: Received opportunity current stage is not valid.
+- code: KT-CT-8912
+  message: Funnel not found.
+- code: KT-CT-8913
+  message: Organisation is not valid to be assigned.
+- code: KT-CT-8914
+  message: Stage not found.
+- code: KT-CT-8915
+  message: Stages are not in the same funnel.
+- code: KT-CT-8916
+  message: Current stage mismatch.
+- code: KT-CT-8917
+  message: Stage transition not allowed.
+- code: KT-CT-8918
+  message: Stage precondition not met.
+- code: KT-CT-8919
+  message: Funnel initial stage not set.
+- code: KT-CT-8920
+  message: Search filters are invalid.
+- code: KT-CT-8922
+  message: The opportunity does not have an accepted offer.
+- code: KT-CT-8923
+  message: The opportunity does not have a linked offer group.
+- code: KT-CT-8924
+  message: Unable to create opportunity.
+- code: KT-CT-8925
+  message: Unable to create opportunity.
+- code: KT-CT-8926
+  message: Unable to create opportunity.
+- code: KT-CT-8928
+  message: The funnel is not active and cannot be used to create this entity.
+- code: KT-CT-8930
+  message: Unable to parse address.
+- code: KT-CT-8931
+  message: Extra detail value is invalid.
+- code: KT-CT-8932
+  message: Lead contact details missing account holder.
+- code: KT-CT-8933
+  message: Opportunity file attachment not found.
+- code: KT-CT-8934
+  message: Lead contact details missing account representative.
+- code: KT-CT-8935
+  message: National ID bad input.
+- code: KT-CT-8936
+  message: Only one address is required to create an opportunity.
+- code: KT-CT-8937
+  message: One or more Supply Points cannot be validated.
+- code: KT-CT-8939
+  message: Extra detail value is required.
+- code: KT-CT-8940
+  message: Lead contact role already exists.
+- code: KT-CT-8941
+  message: Invalid language preference code.
+- code: KT-CT-8946
+  message: A team must also be provided when assigning a user.
+- code: KT-CT-8947
+  message: The team you specified was not found.
+- code: KT-CT-8948
+  message: The user you specified was not found.
+- code: KT-CT-8949
+  message: The selected team does not belong to the specified partner.
+- code: KT-CT-8950
+  message: The selected user does not belong to the specified partner.
+- code: KT-CT-8951
+  message: The selected user is not a member of the specified team.
+- code: KT-CT-8954
+  message: Unable to store payment method reference on lead.
+- code: KT-CT-8955
+  message: Payment method reference does not match.
+- code: KT-CT-8956
+  message: Conflicting address inputs.
+- code: KT-CT-8958
+  message: A lead contact must have at least one role.
+- code: KT-CT-8959
+  message: Unable to set payment details for lead.
+- code: KT-CT-8960
+  message: A lead already exists for this contact.
+- code: KT-CT-9010
+  message: Invalid data.
+- code: KT-CT-9011
+  message: Invalid data.
+- code: KT-CT-9012
+  message: Invalid data.
+- code: KT-CT-9013
+  message: Invalid data.
+- code: KT-CT-9014
+  message: Duplicate consent.
+- code: KT-CT-9016
+  message: Consent management not enabled.
+- code: KT-CT-9017
+  message: Consent type not found.
+- code: KT-CT-9018
+  message: Account not found.
+- code: KT-CT-9019
+  message: Invalid input.
+- code: KT-CT-9020
+  message: Invalid consent expiring token.
+- code: KT-CT-9021
+  message: Consent expiring token not found.
+- code: KT-CT-9022
+  message: Consent for given token already accepted.
+- code: KT-CT-9023
+  message: Consent already accepted.
+- code: KT-CT-9201
+  message: No Loyalty Point ledger found for the user.
+- code: KT-CT-9202
+  message: Loyalty Points adapter not configured.
+- code: KT-CT-9203
+  message: No ledger entries for the ledger.
+- code: KT-CT-9204
+  message: Negative or zero points set.
+- code: KT-CT-9205
+  message: Insufficient Loyalty Points.
+- code: KT-CT-9206
+  message: Indivisible points.
+- code: KT-CT-9208
+  message: Invalid posted at datetime.
+- code: KT-CT-9209
+  message: Negative Loyalty Points balance.
+- code: KT-CT-9210
+  message: Unhandled Loyalty Points exception.
+- code: KT-CT-9211
+  message: Invalid reason for loyalty points award.
+- code: KT-CT-9212
+  message: Points exceed maximum limit.
+- code: KT-CT-9213
+  message: ineligible loyalty points enrollment.
+- code: KT-CT-9214
+  message: Couldn't assign user loyalty points role.
+- code: KT-CT-9215
+  message: Loyalty points balance query disabled.
+- code: KT-CT-9216
+  message: Unauthorized.
+- code: KT-CT-9217
+  message: Unauthorized.
+- code: KT-CT-9218
+  message: Unauthorized.
+- code: KT-CT-9219
+  message: Loyalty points user not found.
+- code: KT-CT-9220
+  message: Ineligible loyalty points unenrollment.
+- code: KT-CT-9221
+  message: Idempotency key already used on ledger entry.
+- code: KT-CT-9222
+  message: Loyalty points balance query requires either accountNumber field (deprecated) or input object
+    (preferred) with account number and optional account user id.
+- code: KT-CT-9223
+  message: Loyalty points ledger entry not found.
+- code: KT-CT-9224
+  message: Duplicate idempotency keys provided in requested awards.
+- code: KT-CT-9225
+  message: Bulk award batch size exceeds the maximum limit.
+- code: KT-CT-9401
+  message: Received an invalid operationsTeamId.
+- code: KT-CT-9402
+  message: Received an invalid brandCode.
+- code: KT-CT-9403
+  message: Received an invalid portfolioId.
+- code: KT-CT-9404
+  message: Received an invalid accountUserId.
+- code: KT-CT-9407
+  message: Unauthorized.
+- code: KT-CT-9408
+  message: Invalid portfolio number format.
+- code: KT-CT-9409
+  message: Invalid portfolio reference.
+- code: KT-CT-9410
+  message: Conflicting portfolio reference.
+- code: KT-CT-9601
+  message: Invalid data.
+- code: KT-CT-9602
+  message: Unable to create contribution agreement.
+- code: KT-CT-9603
+  message: Unable to find contribution agreement.
+- code: KT-CT-9604
+  message: Unable to end contribution agreement.
+- code: KT-CT-9605
+  message: Contribution amount cannot be 0 or negative.
+- code: KT-CT-9606
+  message: Scheme is not accepting contributions at this time.
+- code: KT-CT-9701
+  message: Balance transfer to same account is not allowed.
+- code: KT-CT-9702
+  message: Balance transfer is not support for debit account with Zero balance.
+- code: KT-CT-9703
+  message: Balance transfer is not supported for debit account.
+- code: KT-CT-9704
+  message: Balance transfer amount should be non-zero.
+- code: KT-CT-9705
+  message: The billing document has not been issued.
+- code: KT-CT-9709
+  message: Billing trigger configuration only supports SupplementaryLedger type.
+- code: KT-CT-9901
+  message: Invalid trigger type code.
+- code: KT-CT-9902
+  message: Invalid trigger type params.
+- code: KT-CT-9903
+  message: Trigger type cannot be published externally.
+- code: KT-CT-9904
+  message: Trigger not found.
+- code: KT-CT-9905
+  message: Top-level context fields are missing.
+- code: KT-CT-9906
+  message: Template variables do not match the defined schema.
+- code: KT-CT-9907
+  message: Post events batch size exceeded.
+- code: KT-CT-9908
+  message: Invalid recipient information.
+- code: KT-CT-9909
+  message: Invalid recipient information.
+- code: KT-CT-9910
+  message: Invalid input field combination.
+- code: KT-CT-9911
+  message: Message not found.
+- code: KT-CT-9912
+  message: Required context entity not found.
+- code: KT-GB-9310
+  message: Account ineligible for joining Octoplus.

@@ -1,0 +1,119 @@
+generated: '2026-07-27'
+method: searched
+source: openapi/origin-energy-kraken-default-openapi.yml, openapi/origin-energy-kraken-data-import-openapi.yml,
+  openapi/origin-energy-kraken-orders-openapi.yml, well-known/origin-energy-kraken-openid-configuration.json,
+  live TLS probe of api.mydata.cdr.originenergy.com.au
+docs: https://developer.origin-kraken.energy/graphql/guides/basics/
+summary:
+  types:
+  - openIdConnect
+  - oauth2
+  - apiKey
+  - http
+  - mutualTLS
+  api_key_in:
+  - header
+  surfaces: 3
+  self_serve: false
+  note: 'Three independent auth models sit behind one company: a CDR mutual-TLS + OAuth consent gate,
+    a Kraken OpenID Connect bearer-token gate, and legacy Kraken key/basic schemes still declared in the
+    REST specs.'
+surfaces:
+- surface: Consumer Data Right resource endpoint
+  host: https://api.mydata.cdr.originenergy.com.au
+  model: mutual TLS (client certificate) + OAuth 2.0 / OpenID Connect via the CDR consent flow
+  evidence: TLS handshake completes and the connection is reset when no client certificate is presented;
+    the server certificate 'OU=Consumer Data Right, O=Origin Energy, CN=api.mydata.cdr.originenergy.com.au,
+    C=AU' is issued by 'CDR Intermediate CA 2025' under the ACCC's CDR Root CA. Probed 2026-07-27.
+  client_registration: Accreditation by the ACCC and listing on the CDR Register; certificates issued
+    by the CDR Certificate Authority.
+  docs: https://www.cdr.gov.au/for-providers/accreditation
+  scopes: CDR energy consent scopes, defined by the Data Standards Body
+- surface: Consumer Data Right public discovery endpoint
+  host: https://public.mydata.cdr.originenergy.com.au/cds-au/v1
+  model: none (anonymous)
+  evidence: 'GET /cds-au/v1/discovery/status returned HTTP 200 anonymously with an x-v: 1 header on 2026-07-27.'
+  required_headers:
+  - x-v
+- surface: Kraken GraphQL and REST
+  host: https://api.origin-kraken.energy/v1/
+  model: OAuth 2.0 / OpenID Connect bearer token, one token for both GraphQL and REST
+  evidence: well-known/origin-energy-kraken-openid-configuration.json (HTTP 200, anonymous, 2026-07-27);
+    developer.origin-kraken.energy/rest/guides/api-basics/ states the GraphQL token also authenticates
+    REST.
+  header: Authorization
+  authorization_server: https://auth.origin-kraken.energy/
+  issuer: https://auth.origin-kraken.energy/token/
+  dynamic_client_registration: false
+  pkce_methods_advertised: false
+  token_endpoint_auth_methods:
+  - client_secret_post
+  - client_secret_basic
+  id_token_signing_algs:
+  - HS256
+  - RS256
+  scopes: scopes/origin-energy-scopes.yml (113 scopes)
+  unauthenticated_error: KT-CT-1112 (missing Authorization header) / KT-CT-1111 (Unauthorized)
+  client_registration: Clients are provisioned by Origin out of band; the discovery document advertises
+    no registration endpoint.
+- surface: Kraken retail plan reference data (AER gateway)
+  host: https://cdr.energymadeeasy.gov.au/origin/cds-au/v1
+  model: none (anonymous)
+  evidence: 'GET /energy/plans returned HTTP 200 anonymously with x-v: 1 on 2026-07-27.'
+  required_headers:
+  - x-v
+schemes:
+- name: DRFKrakenTokenAuthentication
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: JWT-based authentication
+  sources:
+  - openapi/origin-energy-kraken-default-openapi.yml
+  - openapi/origin-energy-kraken-data-import-openapi.yml
+  - openapi/origin-energy-kraken-orders-openapi.yml
+- name: KeyAuthentication
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: Token-based authentication with required prefix "Token "
+  sources:
+  - openapi/origin-energy-kraken-default-openapi.yml
+- name: DataImportViewerAPIKeyAuthentication
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: Token-based authentication with required prefix "Token "
+  sources:
+  - openapi/origin-energy-kraken-data-import-openapi.yml
+  - openapi/origin-energy-kraken-orders-openapi.yml
+- name: AccountUserAPIKeyAuthentication
+  type: http
+  scheme: basic
+  description: Token-based authentication where token is passed as the username for basic auth
+  sources:
+  - openapi/origin-energy-kraken-default-openapi.yml
+- name: AffiliateAuthentication
+  type: http
+  scheme: basic
+  description: Basic authentication for affiliate organisations
+  sources:
+  - openapi/origin-energy-kraken-default-openapi.yml
+- name: PartnerUserOnlyAuthentication
+  type: http
+  scheme: basic
+  description: Basic authentication for partner organisations
+  sources:
+  - openapi/origin-energy-kraken-default-openapi.yml
+- name: Kraken OpenID Connect
+  type: openIdConnect
+  openIdConnectUrl: https://auth.origin-kraken.energy/.well-known/openid-configuration
+  description: The bearer token actually used by the GraphQL and REST APIs; not declared in any published
+    OpenAPI document.
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- name: CDR mutual TLS
+  type: mutualTLS
+  description: Client certificate issued by the ACCC CDR Certificate Authority, required at api.mydata.cdr.originenergy.com.au.
+  sources:
+  - live TLS probe 2026-07-27

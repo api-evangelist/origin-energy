@@ -1,0 +1,682 @@
+generated: '2026-07-27'
+method: searched
+source: https://developer.origin-kraken.energy/events/reference/
+spec_type: null
+surface: Kraken External Events
+note: 'Origin Energy''s Kraken tenancy documents a public External Events catalogue. The docs state verbatim:
+  "External Events are OpenAPI-spec payloads emitted by kraken to AWS Eventbridge." Delivery is therefore
+  an AWS EventBridge event bus rather than HTTP callbacks, and a subscriber is provisioned by Origin out
+  of band. No AsyncAPI document is published: the machine-readable schema endpoint https://api.origin-kraken.energy/external-events/schema/
+  returned HTTP 403 anonymously on 2026-07-27, so no event contract could be harvested and none has been
+  invented. What is recorded below is the event-type catalogue exactly as published on the reference page.'
+transport:
+  mechanism: AWS EventBridge
+  http_webhooks: false
+  evidence: https://developer.origin-kraken.energy/events/reference/ — "About Events" section
+schema_endpoint:
+  url: https://api.origin-kraken.energy/external-events/schema/
+  status: 403
+  fetched: '2026-07-27'
+  note: Gated; also declared as an operation in openapi/origin-energy-kraken-default-openapi.yml (operationId
+    'Open Api Schema').
+naming_convention:
+  pattern: <domain>[.<subdomain>].<entity>.<past-tense-action>-v<major>
+  versioning: Each event type carries an explicit -v<n> major version suffix; new majors are published
+    alongside old ones (e.g. billing.billing_document_representation.dispatched-v1/-v2/-v3).
+  market_prefixes:
+  - aus
+  - industry.aus
+counts:
+  event_types: 443
+  domains: 69
+domains:
+- domain: account
+  event_count: 5
+  events:
+  - account.communications_preferences_updated-v1
+  - account.created-v1
+  - account.occupied-v1
+  - account.reactivated-v1
+  - account.updated-v1
+- domain: account_metadata
+  event_count: 3
+  events:
+  - account_metadata.created-v1
+  - account_metadata.removed-v1
+  - account_metadata.updated-v1
+- domain: account_property_effective_period_metadata
+  event_count: 3
+  events:
+  - account_property_effective_period_metadata.created-v1
+  - account_property_effective_period_metadata.removed-v1
+  - account_property_effective_period_metadata.updated-v1
+- domain: account_user
+  event_count: 8
+  events:
+  - account_user.created-v1
+  - account_user.password_changed-v1
+  - account_user.password_reset_requested-v1
+  - account_user.psr_records_updated-v1
+  - account_user.removed-v1
+  - account_user.updated-v1
+  - account_user.verification_completed-v1
+  - account_user.verification_started-v1
+- domain: account_user_metadata
+  event_count: 3
+  events:
+  - account_user_metadata.created-v1
+  - account_user_metadata.removed-v1
+  - account_user_metadata.updated-v1
+- domain: affiliates
+  event_count: 1
+  events:
+  - affiliates.affiliate-account-contract-created-v1
+- domain: agreement
+  event_count: 4
+  events:
+  - agreement.created-v1
+  - agreement.revoked-v1
+  - agreement.terminated-v1
+  - agreement.updated-v1
+- domain: approvals
+  event_count: 6
+  events:
+  - approvals.approval.approved-v1
+  - approvals.approval.created-v1
+  - approvals.approval.rejected-v1
+  - approvals.approval_request.approved-v1
+  - approvals.approval_request.assigned-v1
+  - approvals.approval_request.rejected-v1
+- domain: aus
+  event_count: 28
+  events:
+  - aus.electricity.enrolment.override-request.created-v1
+  - aus.electricity.move-in.completed-v1
+  - aus.electricity.move-out.completed-v1
+  - aus.industry.electricity.amend_meter_route_details.accepted-v1
+  - aus.industry.electricity.amend_meter_route_details.received-v1
+  - aus.industry.electricity.cats_change_response.received-v1
+  - aus.industry.electricity.cats_notification.received-v1
+  - aus.industry.electricity.dlf_code_value.changed-v1
+  - aus.industry.electricity.life_support_confirmation_osj.requested-v1
+  - aus.industry.electricity.life_support_request.received-v1
+  - aus.industry.electricity.meter_point.de_energised-v1
+  - aus.industry.electricity.register.changed-v1
+  - aus.industry.electricity.register.network_tariff_code.change.reminder.created-v1
+  - aus.industry.electricity.register.network_tariff_code.changed-v1
+  - aus.industry.electricity.register.network_tariff_code.changed.v2-v1
+  - aus.industry.electricity.service_order.cancelled-v1
+  - aus.industry.electricity.service_order.closed-v1
+  - aus.industry.electricity.service_order.completed-v1
+  - aus.industry.electricity.service_order_request.received-v1
+  - aus.industry.electricity.site_access_request.received-v1
+  - aus.industry.marginal-loss-factor.value-changed-v1
+  - aus.industry.site-address.updated-v1
+  - aus.meter-readings.electricity.accumulation.created-v1
+  - aus.meter-readings.gas.accumulation.created-v1
+  - aus.siphon.electricity-failure.received-v1
+  - aus.siphon.electricity-message.received-v1
+  - aus.siphon.electricity-water-mrvs-message-received-v1
+  - aus.siphon.unknown-message.received-v1
+- domain: auth_server
+  event_count: 5
+  events:
+  - auth_server.account_user.generate_mfa_challenge_error-v1
+  - auth_server.account_user.logged_in-v1
+  - auth_server.account_user.login_denied-v1
+  - auth_server.account_user.login_failed-v1
+  - auth_server.account_user.login_step_completed-v1
+- domain: billing
+  event_count: 22
+  events:
+  - billing.billing_document.issued-v1
+  - billing.billing_document_representation.dispatched-v1
+  - billing.billing_document_representation.dispatched-v2
+  - billing.billing_document_representation.dispatched-v3
+  - billing.billing_options.updated-v1
+  - billing.charging-ledger.assigned-to-agreement-v1
+  - billing.charging.supply-point.triggered-v1
+  - billing.duos_invoice.cancel-v1
+  - billing.duos_invoice.new-v1
+  - billing.duos_invoice.replace-v1
+  - billing.final_bill-v1
+  - billing.issuance.external_status.created-v1
+  - billing.ledger.entry_posted-v1
+  - billing.ledger.entry_posted-v2
+  - billing.ledger.entry_removed-v1
+  - billing.ledger.entry_removed-v2
+  - billing.pathway_traversal.failed-v1
+  - billing.pathway_traversal.succeeded-v1
+  - billing.rebate.accepted-v1
+  - billing.rebate.created-v1
+  - billing.rebate.declined-v1
+  - billing.rebate.updated-v1
+- domain: business
+  event_count: 2
+  events:
+  - business.created-v1
+  - business.updated-v1
+- domain: business_operations_team
+  event_count: 1
+  events:
+  - business_operations_team.updated-v1
+- domain: campaign_account
+  event_count: 3
+  events:
+  - campaign_account.added-v1
+  - campaign_account.removed-v1
+  - campaign_account.updated-v1
+- domain: charging
+  event_count: 1
+  events:
+  - charging.priming.errored-v1
+- domain: collection_proceeding
+  event_count: 1
+  events:
+  - collection_proceeding.created-v1
+- domain: collection_process
+  event_count: 7
+  events:
+  - collection_process.paused-v1
+  - collection_process.raised-v1
+  - collection_process.reactivated-v1
+  - collection_process.run_termination_requested-v1
+  - collection_process.unpaused-v1
+  - collection_process.withdrawn-v1
+  - collection_process.withdrawn-v2
+- domain: comms
+  event_count: 3
+  events:
+  - comms.account-call.updated-v1
+  - comms.push-notification.received-unregistered-or-expired-token-v1
+  - comms.transcription.created-v1
+- domain: concession
+  event_count: 1
+  events:
+  - concession.validated-v1
+- domain: consents
+  event_count: 2
+  events:
+  - consents.consent.created-v1
+  - consents.consent.updated-v1
+- domain: contracts
+  event_count: 11
+  events:
+  - contracts.created-v1
+  - contracts.expired-v1
+  - contracts.expiry-approaching-v1
+  - contracts.journeys.creation.started-v1
+  - contracts.journeys.termination.started-v1
+  - contracts.journeys.variation.started-v1
+  - contracts.rescinded-v1
+  - contracts.revoked-v1
+  - contracts.subject-amended-v1
+  - contracts.terminated-v1
+  - contracts.terms-varied-v1
+- domain: customer_access
+  event_count: 4
+  events:
+  - customer_access.partner_roles.created-v1
+  - customer_access.partner_roles.updated-v1
+  - customer_access.partner_user_roles.created-v1
+  - customer_access.partner_user_roles.updated-v1
+- domain: data_import
+  event_count: 10
+  events:
+  - data_import.import_process.cancelled-v1
+  - data_import.import_process.complete-v1
+  - data_import.import_process.dry_run_complete-v1
+  - data_import.import_process.dry_run_error-v1
+  - data_import.import_process.error-v1
+  - data_import.import_process.post_import.completed-v1
+  - data_import.import_process.post_import.error-v1
+  - data_import.order_process.cancelled-v1
+  - data_import.order_process.complete-v1
+  - data_import.order_process.error-v1
+- domain: debt
+  event_count: 3
+  events:
+  - debt.actioning.automated_debt_write_back.completed-v1
+  - debt.actioning.automated_debt_write_back.failed-v1
+  - debt.actioning.automated_debt_write_back.skipped-v1
+- domain: delinquent_debt
+  event_count: 2
+  events:
+  - delinquent_debt.position_changed-v1
+  - delinquent_debt.position_changed-v2
+- domain: deposit_agreement
+  event_count: 5
+  events:
+  - deposit_agreement.accepted-v1
+  - deposit_agreement.fulfilled-v1
+  - deposit_agreement.instalment_returned-v1
+  - deposit_agreement.returned-v1
+  - deposit_agreement.withdrawn-v1
+- domain: electricity
+  event_count: 1
+  events:
+  - electricity.child-life-support-record.updated-v1
+- domain: fieldworks
+  event_count: 2
+  events:
+  - fieldworks.elec_supply_abolishment_so_requested-v1
+  - fieldworks.gas_supply_abolishment_so_requested-v1
+- domain: gas
+  event_count: 1
+  events:
+  - gas.child-life-support-record.updated-v1
+- domain: goods
+  event_count: 3
+  events:
+  - goods.purchase-created-v1
+  - goods.quote.created-for-account-v1
+  - goods.quote.created-without-account-v1
+- domain: group
+  event_count: 3
+  events:
+  - group.actioned-v1
+  - group.closed-v1
+  - group.completed-v1
+- domain: industry
+  event_count: 43
+  events:
+  - industry.aus.electricity.change_metering_coordinator.cancelled-v1
+  - industry.aus.electricity.change_metering_coordinator.completed-v1
+  - industry.aus.electricity.change_metering_coordinator.objection_raised-v1
+  - industry.aus.electricity.change_metering_coordinator.pending-v1
+  - industry.aus.electricity.change_metering_coordinator.pending_validation-v1
+  - industry.aus.electricity.change_metering_coordinator.rejected-v1
+  - industry.aus.electricity.change_metering_coordinator.request_failed-v1
+  - industry.aus.electricity.change_metering_coordinator.requested-v1
+  - industry.aus.electricity.change_of_supply.completed-v1
+  - industry.aus.electricity.ci_dma_sla.feature_disabled-v1
+  - industry.aus.electricity.ci_prechecks.cancelled-v1
+  - industry.aus.electricity.ci_prechecks.commence-v1
+  - industry.aus.electricity.meter_exchange_service_order.accepted-v1
+  - industry.aus.electricity.meter_exchange_service_order.cancelled-v1
+  - industry.aus.electricity.meter_exchange_service_order.completed-v1
+  - industry.aus.electricity.meter_exchange_service_order.disputed-v1
+  - industry.aus.electricity.meter_exchange_service_order.not_completed-v1
+  - industry.aus.electricity.meter_exchange_service_order.partially_completed-v1
+  - industry.aus.electricity.meter_exchange_service_order.rejected-v1
+  - industry.aus.electricity.meter_exchange_service_order.request_failed-v1
+  - industry.aus.electricity.meter_exchange_service_order.requested-v1
+  - industry.aus.electricity.meter_point.defect_changed-v1
+  - industry.aus.electricity.meter_point.standing_data_dlf_code_changed-v1
+  - industry.aus.electricity.meter_point.standing_data_sync_completed_successfully-v1
+  - industry.aus.electricity.meter_point.standing_data_tni_code_changed-v1
+  - industry.aus.electricity.service_order.not_completed.shared_fuse_scoping_request_required-v1
+  - industry.aus.electricity.site_access_notification.accepted_by_industry-v1
+  - industry.aus.electricity.site_access_notification.awaiting_delivery-v1
+  - industry.aus.electricity.site_access_notification.rejected_by_industry-v1
+  - industry.aus.electricity.site_access_notification.sent_to_industry-v1
+  - industry.aus.meter_data_quality.resolution_cancelled-v1
+  - industry.aus.meter_data_quality.resolution_cancelled-v2
+  - industry.aus.meter_data_quality.resolution_requested-v1
+  - industry.aus.outage_contact.created-v1
+  - industry.aus.outage_contact.ended-v1
+  - industry.aus.outage_contact.store.failed-v1
+  - industry.electricity.change_of_energisation.unsolicited_message-v1
+  - industry.electricity.change_of_service.meter_deactivated-v1
+  - industry.electricity.change_of_supply.gain.initiated-v1
+  - industry.electricity.change_of_supply.loss.complete-v1
+  - industry.electricity.export_installation.validated-v1
+  - industry.gas.change_of_supply.gain.initiated-v1
+  - industry.gas.change_of_supply.loss.complete-v1
+- domain: ink
+  event_count: 26
+  events:
+  - ink.actions.run-v1
+  - ink.content.inbound-message-tagged-v1
+  - ink.conversation.assigned_to_bucket-v1
+  - ink.conversation.assigned_to_timeline-v1
+  - ink.conversation.await_customer_reply-v1
+  - ink.conversation.closed-v1
+  - ink.conversation.open_status_changed-v1
+  - ink.conversation.opened-v1
+  - ink.conversation.priority.changed-v1
+  - ink.conversation.snoozed-v1
+  - ink.conversation.unassigned_from_bucket-v1
+  - ink.conversation.unassigned_from_timeline-v1
+  - ink.live-chat.closed-v1
+  - ink.live-chat.initiated-v1
+  - ink.live-chat.messages.outbound-message-created-v1
+  - ink.message_attachment.safe-v1
+  - ink.message_attachment.unsafe-v1
+  - ink.messages.inbound-email-migration-v1
+  - ink.messages.inbound-message-created-v1
+  - ink.messages.inbound-message-ingested-v1
+  - ink.messages.outbound-message-created-v1
+  - ink.messages.outbound-message-failed-v1
+  - ink.messages.phishing-report-dismissed-v1
+  - ink.messages.reported-phishing-v1
+  - ink.messages.reported-spam-v1
+  - ink.messages.spam-report-dismissed-v1
+- domain: internal_company
+  event_count: 1
+  events:
+  - internal_company.created-v1
+- domain: issues
+  event_count: 3
+  events:
+  - issues.created-v1
+  - issues.removed-v1
+  - issues.updated-v1
+- domain: leads
+  event_count: 4
+  events:
+  - leads.lead.stage-updated-v1
+  - leads.opportunity.document-attached-to-opportunity-v1
+  - leads.opportunity.offer-group.created-v2
+  - leads.opportunity.stage-updated-v1
+- domain: lifecycle
+  event_count: 37
+  events:
+  - lifecycle.enrollment.loyalty-points-qualification-reversed-v1
+  - lifecycle.enrollment.supply-status-qualifies-account-for-loyalty-point-v2
+  - lifecycle.join-supplier.activation.completed-v1
+  - lifecycle.join-supplier.activation.initiated-v1
+  - lifecycle.join-supplier.agreement.created-v1
+  - lifecycle.join-supplier.await-post-activation-flow-step.initiated-v1
+  - lifecycle.join-supplier.await-pre-activation-flow-step.initiated-v1
+  - lifecycle.join-supplier.await-pre-discovery-flow-step.initiated-v1
+  - lifecycle.join-supplier.cancellation-requested-v1
+  - lifecycle.join-supplier.cancelled-v1
+  - lifecycle.join-supplier.completed-v1
+  - lifecycle.join-supplier.requested-v1
+  - lifecycle.join-supplier.reversal-requested-v1
+  - lifecycle.join-supplier.reversed-v1
+  - lifecycle.join-supplier.supply-period.created-v1
+  - lifecycle.join-supplier.supply-point-journey-await-post-activation-flow-step.initiated-v1
+  - lifecycle.join-supplier.supply-point-journey-await-pre-activation-flow-step.initiated-v1
+  - lifecycle.join_supplier._ensure_payment_instructions.step_completed-v2
+  - lifecycle.join_supplier._ensure_payment_instructions.step_initiated-v2
+  - lifecycle.join_supplier.terms-and-conditions.accepted-v2
+  - lifecycle.leave-supplier.await-post-deactivation-flow-step.initiated-v1
+  - lifecycle.leave-supplier.await-post-termination-flow-step.initiated-v1
+  - lifecycle.leave-supplier.await-pre-termination-flow-step.initiated-v1
+  - lifecycle.leave-supplier.cancellation-requested-v2
+  - lifecycle.leave-supplier.cancelled-v2
+  - lifecycle.leave-supplier.completed-v3
+  - lifecycle.leave-supplier.requested-v2
+  - lifecycle.leave-supplier.requested-v3
+  - lifecycle.leave-supplier.reversal-requested-v2
+  - lifecycle.leave-supplier.supply-point-journey-await-post-termination-flow-step.initiated-v1
+  - lifecycle.leave-supplier.supply-point-journey-await-pre-agreement-termination-flow-step.initiated-v1
+  - lifecycle.leave-supplier.supply-point-journey-await-pre-termination-flow-step.initiated-v1
+  - lifecycle.leave-supplier.termination.confirmed-v2
+  - lifecycle.leave-supplier.termination.initiated-v1
+  - lifecycle.leave-supplier.updated-v2
+  - lifecycle.leave-supplier.updated-v3
+  - lifecycle.status-changed-v1
+- domain: messaging
+  event_count: 6
+  events:
+  - messaging.message.dispatched-v1
+  - messaging.push-notification.token-unregistered-v1
+  - messaging.trigger.failed-message-processed-v1
+  - messaging.trigger.failed-message-processing-failed-v1
+  - messaging.trigger.processed-v2
+  - messaging.trigger.processing-failed-v1
+- domain: meter_data_quality
+  event_count: 3
+  events:
+  - meter_data_quality.resolution_cancelled-v1
+  - meter_data_quality.resolution_cancelled-v2
+  - meter_data_quality.resolution_requested-v1
+- domain: meterpoint
+  event_count: 47
+  events:
+  - meterpoint.elec.cos_gain.registration.requested-v1
+  - meterpoint.gas.api_backfill-v1
+  - meterpoint.gas.appoint_mam.requested-v1
+  - meterpoint.gas.backfill-v1
+  - meterpoint.gas.change_of_cohort.requested-v1
+  - meterpoint.gas.change_of_mam.requested-v1
+  - meterpoint.gas.cos_gain.mtd_received-v1
+  - meterpoint.gas.cos_gain.registration.confirmed-v1
+  - meterpoint.gas.cos_gain.registration.requested-v1
+  - meterpoint.gas.cos_loss.confirmed-v1
+  - meterpoint.gas.deappoint_mam.requested-v1
+  - meterpoint.gas.disputed_closing_reading.accepted.by_us-v1
+  - meterpoint.gas.disputed_closing_reading.accepted.other_supplier-v1
+  - meterpoint.gas.disputed_closing_reading.alternative_proposed.by_us-v1
+  - meterpoint.gas.disputed_closing_reading.alternative_proposed.other_supplier-v1
+  - meterpoint.gas.disputed_closing_reading.queried.by_us-v1
+  - meterpoint.gas.disputed_closing_reading.started.by_us-v1
+  - meterpoint.gas.disputed_closing_reading.started.other_supplier-v1
+  - meterpoint.gas.disputed_opening_reading.accepted.by_us-v1
+  - meterpoint.gas.disputed_opening_reading.accepted.other_supplier-v1
+  - meterpoint.gas.disputed_opening_reading.alternative_proposed.by_us-v1
+  - meterpoint.gas.disputed_opening_reading.alternative_proposed.other_supplier-v1
+  - meterpoint.gas.disputed_opening_reading.queried.by_us-v1
+  - meterpoint.gas.disputed_opening_reading.started.by_us-v1
+  - meterpoint.gas.disputed_opening_reading.started.other_supplier-v1
+  - meterpoint.gas.et_gain.accepted.by_other_supplier-v1
+  - meterpoint.gas.et_gain.accepted.by_us-v1
+  - meterpoint.gas.et_gain.rejected.by_other_supplier-v1
+  - meterpoint.gas.et_gain.rejected.by_us-v1
+  - meterpoint.gas.et_gain.started.by_other_supplier-v1
+  - meterpoint.gas.et_gain.started.by_us-v1
+  - meterpoint.gas.et_loss.accepted.by_other_supplier-v1
+  - meterpoint.gas.et_loss.accepted.by_us-v1
+  - meterpoint.gas.et_loss.rejected.by_other_supplier-v1
+  - meterpoint.gas.et_loss.rejected.by_us-v1
+  - meterpoint.gas.et_loss.started.by_other_supplier-v1
+  - meterpoint.gas.et_loss.started.by_us-v1
+  - meterpoint.gas.meter-technical-details.update.requested-v1
+  - meterpoint.gas.meter_exchanged-v1
+  - meterpoint.gas.reading-v1
+  - meterpoint.reading.gap.filled-v1
+  - meterpoint.reading.gap.filling.failed-v1
+  - meterpoint.reading.gap.found-v1
+  - meterpoint.reading.manual_import_requested-v1
+  - meterpoint.reading.missing.filled-v1
+  - meterpoint.reading.missing.filling.failed-v1
+  - meterpoint.reading.missing.found-v1
+- domain: on_site_jobs
+  event_count: 11
+  events:
+  - on_site_jobs.appointment.agent_does_not_match_appointed_agent-v1
+  - on_site_jobs.appointment.booked-v1
+  - on_site_jobs.appointment.cancelled-v1
+  - on_site_jobs.appointment.completed-v1
+  - on_site_jobs.appointment.job_notes_updated-v1
+  - on_site_jobs.request.appointment_failed-v1
+  - on_site_jobs.request.approval_approved-v1
+  - on_site_jobs.request.approval_rejected-v1
+  - on_site_jobs.request.completed-v1
+  - on_site_jobs.request.created-v1
+  - on_site_jobs.vendor_complaint.event_created-v1
+- domain: partner_access
+  event_count: 3
+  events:
+  - partner_access.granted-v1
+  - partner_access.revoked-v1
+  - partner_access.updated-v1
+- domain: partner_user
+  event_count: 3
+  events:
+  - partner_user.created-v1
+  - partner_user.removed-v1
+  - partner_user.updated-v1
+- domain: partner_user_access
+  event_count: 2
+  events:
+  - partner_user_access.granted-v1
+  - partner_user_access.revoked-v1
+- domain: payment
+  event_count: 6
+  events:
+  - payment.cleared-v1
+  - payment.failed-v1
+  - payment.failed_late-v1
+  - payment.pending-v1
+  - payment.re_presented-v1
+  - payment.scheduled-v1
+- domain: payment_obligation
+  event_count: 1
+  events:
+  - payment_obligation.overdue-v1
+- domain: payment_plan
+  event_count: 1
+  events:
+  - payment_plan.status_changed-v1
+- domain: payment_promise
+  event_count: 3
+  events:
+  - payment_promise.broken-v1
+  - payment_promise.completed-v1
+  - payment_promise.created-v1
+- domain: payments
+  event_count: 10
+  events:
+  - payments.payment-preferences.manual-payments-activated-v1
+  - payments.payment-preferences.preferred-method-set-for-automatic-payments-v1
+  - payments.payment-schedule-preference-mismatch-detected-v1
+  - payments.payment_adequacy.review_wont_be_applied-v1
+  - payments.payment_method.account_user_matching.failed-v1
+  - payments.payment_method.new-v1
+  - payments.payment_method.removed-v1
+  - payments.payment_schedule.new-v1
+  - payments.payment_schedule.removed-v1
+  - payments.payment_schedule.updated-v1
+- domain: pending_nmi_status_update
+  event_count: 3
+  events:
+  - pending_nmi_status_update.record.cancelled-v1
+  - pending_nmi_status_update.record.created-v1
+  - pending_nmi_status_update.record.rejected-v1
+- domain: point
+  event_count: 2
+  events:
+  - point.gain.completed-v1
+  - point.termination.completed-v1
+- domain: points
+  event_count: 1
+  events:
+  - points.user-role-removal-v1
+- domain: property
+  event_count: 10
+  events:
+  - property.move-in.cancelled-v1
+  - property.move-in.date-updated-v1
+  - property.move-in.market-supply.requested-v1
+  - property.move-in.requested-v1
+  - property.move-in.requested-v2
+  - property.move-out.cancelled-v1
+  - property.move-out.date-updated-v1
+  - property.move-out.requested-v1
+  - property.retrospective-move-out.completed-v1
+  - property.updated-v1
+- domain: property_metadata
+  event_count: 3
+  events:
+  - property_metadata.created-v1
+  - property_metadata.removed-v1
+  - property_metadata.updated-v1
+- domain: quoting
+  event_count: 3
+  events:
+  - quoting.offer-accepted-v1
+  - quoting.rates-requested-v1
+  - quoting.rates-requested-v2
+- domain: reading
+  event_count: 1
+  events:
+  - reading.accumulation.created-v1
+- domain: referrals
+  event_count: 3
+  events:
+  - referrals.referral-created-v1
+  - referrals.referral-paid-v1
+  - referrals.reward-created-v1
+- domain: refund
+  event_count: 1
+  events:
+  - refund.requested-v1
+- domain: reminder
+  event_count: 4
+  events:
+  - reminder.cancelled-v1
+  - reminder.cancelled-v2
+  - reminder.completed-v1
+  - reminder.completed-v2
+- domain: repayment
+  event_count: 7
+  events:
+  - repayment.approved-v1
+  - repayment.failed-v1
+  - repayment.failed-v2
+  - repayment.failed_late-v1
+  - repayment.paid-v1
+  - repayment.requested-v1
+  - repayment.submitted-v1
+- domain: security
+  event_count: 2
+  events:
+  - security.account_user.denied_access-v1
+  - security.account_user.forcibly_logged_out-v1
+- domain: supplypoint
+  event_count: 1
+  events:
+  - supplypoint.gbr_electricity.gain.meter-details-received-v1
+- domain: switch
+  event_count: 2
+  events:
+  - switch.completed-v1
+  - switch.initiated-v1
+- domain: tech
+  event_count: 19
+  events:
+  - tech.kraken.flow.aus_electricity.ci_prechecks.progress.v1-v1
+  - tech.kraken.flow.aus_electricity.request_change_metering_coordinator.v1-v1
+  - tech.kraken.flow.aus_electricity.request_meter_exchange_service_order.v1-v1
+  - tech.kraken.workflow.cancelled.v1-v1
+  - tech.kraken.workflow.completed.v1-v1
+  - tech.kraken.workflow.created.v1-v1
+  - tech.kraken.workflow.errored.v1-v1
+  - tech.kraken.workflow.failed.v1-v1
+  - tech.kraken.workflow.skipped.v1-v1
+  - tech.kraken.workflow.stalled.v1-v1
+  - tech.kraken.workflow.started.v1-v1
+  - tech.kraken.workflow.step.cancelled.v1-v1
+  - tech.kraken.workflow.step.completed.v1-v1
+  - tech.kraken.workflow.step.created.v1-v1
+  - tech.kraken.workflow.step.errored.v1-v1
+  - tech.kraken.workflow.step.failed.v1-v1
+  - tech.kraken.workflow.step.skipped.v1-v1
+  - tech.kraken.workflow.step.stalled.v1-v1
+  - tech.kraken.workflow.step.started.v1-v1
+- domain: user_access
+  event_count: 2
+  events:
+  - user_access.granted-v1
+  - user_access.revoked-v1
+- domain: voice
+  event_count: 6
+  events:
+  - voice.call-participant.identity-updated-v1
+  - voice.call.wrapped-v1
+  - voice.campaign.update-item-v1
+  - voice.transcription.failed-v1
+  - voice.transcription.processed-v1
+  - voice.transcription.processed-v2
+- domain: voucher
+  event_count: 5
+  events:
+  - voucher.multiple_purchased-v1
+  - voucher.purchased-v1
+  - voucher.redeemed-v1
+  - voucher.refunded-v1
+  - voucher.transferred-v1
+- domain: watermeter
+  event_count: 2
+  events:
+  - watermeter.aus_industry.created-v1
+  - watermeter.aus_industry.updated-v1
+- domain: workflow
+  event_count: 2
+  events:
+  - workflow.cancelled.via_support_site-v1
+  - workflow.step.cancelled.via_support_site-v1

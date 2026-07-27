@@ -1,0 +1,27 @@
+generated: '2026-07-27'
+method: searched
+source: npm registry search, PyPI, RubyGems, crates.io, GitHub org listings, developer.origin-kraken.energy
+packages: []
+official_sdk_count: 0
+note: 'No first-party client library exists for any Origin Energy surface. Searched on 2026-07-27: npm
+  (queries origin-energy, origin energy, kraken-energy, kraken technologies, octopus energy kraken), PyPI
+  (origin-energy, originenergy, kraken-energy 404), RubyGems (empty), crates.io, and the GitHub orgs github.com/origin-energy
+  (2 archived repos, neither API related), github.com/krakentech (4 Go/HTML utility repos, none platform
+  related) and github.com/kraken-technologies (0 public repos). The Kraken developer portal ships no SDK
+  section. Deliberately recorded as an empty result rather than padded.'
+false_positives:
+- name: '@energyweb/origin-energy-api-client'
+  registry: npm
+  official: false
+  why: Belongs to the Energy Web Foundation's 'Origin' renewable-certificate project (github.com/energywebfoundation/origin).
+    Name collision only — unrelated to Origin Energy Limited.
+- name: '@siebly/kraken-api'
+  registry: npm
+  official: false
+  why: Client for the Kraken cryptocurrency exchange, not Kraken Technologies' utility platform.
+registries_searched:
+- npm
+- PyPI
+- RubyGems
+- crates.io
+- GitHub

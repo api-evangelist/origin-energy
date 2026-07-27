@@ -1,0 +1,106 @@
+generated: '2026-07-27'
+method: derived
+source: openapi/consumer-data-standards-energy-api-openapi.json, openapi/consumer-data-standards-common-api-openapi.json,
+  openapi/origin-energy-kraken-orders-openapi.yml, openapi/origin-energy-kraken-data-import-openapi.yml,
+  openapi/origin-energy-kraken-default-openapi.yml
+format: not-rfc9457
+note: 'Origin Energy runs two error contracts and neither is RFC 9457 problem+json. (1) The Consumer Data
+  Right surface uses the Consumer Data Standards error envelope (ResponseErrorListV2 -> errors[] of {code,
+  title, detail, meta}) with urn:au-cds: error codes, returned as application/json. (2) The Kraken REST
+  surface returns a flat JSON object with `detail`, `code` and `domain` keys. The Kraken GraphQL surface
+  uses a third shape, captured separately in errors/origin-energy-error-codes.yml.'
+envelopes:
+- surface: Consumer Data Right (CDS)
+  media_type: application/json
+  schema: '#/components/schemas/ResponseErrorListV2'
+  fields:
+  - errors[].code
+  - errors[].title
+  - errors[].detail
+  - errors[].meta
+  code_namespace: urn:au-cds:error:cds-all:<Group>/<Error>
+  observed_example:
+    url: https://cdr.energymadeeasy.gov.au/origin/cds-au/v1/energy/plans/ORI724759MRE14@EME
+    status: 406
+    code: urn:au-cds:error:cds-all:Header/UnsupportedVersion
+    detail: Header x-v lower than minimum supported [x-v=1, min=3]
+    fetched: '2026-07-27'
+  docs: https://consumerdatastandardsaustralia.github.io/standards/#error-codes
+- surface: Kraken REST
+  media_type: application/json
+  schema: '#/components/schemas/ErrorResponse / #/components/schemas/StandardizedValidationErrorResponse'
+  fields:
+  - detail
+  - code
+  - domain
+  - non_field_errors
+  observed_examples:
+  - code: order_process_failed_validation
+    detail: Order payload validation failed.
+    domain: order_process
+    source_operation: openapi/origin-energy-kraken-orders-openapi.yml#V2 Schedule Order
+  - code: order_process_already_processed
+    detail: The order with external order ID ORD-12345678 has already been processed.
+    source_operation: openapi/origin-energy-kraken-orders-openapi.yml#V2 Schedule Order
+  - code: not_found
+    detail: The requested resource was not found.
+    source_operation: openapi/origin-energy-kraken-orders-openapi.yml#V2 Order Status
+  - detail: Payment unsuccessful
+    source_operation: openapi/origin-energy-kraken-default-openapi.yml#Ad Hoc
+- surface: Kraken GraphQL
+  media_type: application/json
+  fields:
+  - errors[].message
+  - errors[].extensions.errorType
+  - errors[].extensions.errorCode
+  - errors[].extensions.errorDescription
+  catalog: errors/origin-energy-error-codes.yml
+  docs: https://developer.origin-kraken.energy/graphql/reference/error-codes/
+counts:
+  cdr_responses: 6
+problems:
+- status: 400
+  title: The following error codes **MUST** be supported:<br/><ul class="error-code-list"><li>[400 - Invalid
+    Field](#error-400-field-invalid)</li><li>[400 - Missing Required Field](#error-400-field-missing)</li><li>[400
+    - Invalid Date](#error-400-field-invalid-date-time)</li><li>[400 - Invalid Page Size](#error-400-field-invalid-page-size)</li><li>[400
+    - Invalid Version](#error-400-header-invalid-version)</li></ul>
+  media_type:
+  - application/json
+  schema: '#/components/schemas/ResponseErrorListV2'
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listEnergyPlans
+- status: 406
+  title: The following error codes **MUST** be supported:<br/><ul class="error-code-list"><li>[406 - Unsupported
+    Version](#error-406-header-unsupported-version)</li></ul>
+  media_type:
+  - application/json
+  schema: '#/components/schemas/ResponseErrorListV2'
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listEnergyPlans
+- status: 422
+  title: The following error codes **MUST** be supported:<br/><ul class="error-code-list"><li>[422 - Invalid
+    Page](#error-422-field-invalid-page)</li></ul>
+  media_type:
+  - application/json
+  schema: '#/components/schemas/ResponseErrorListV2'
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#listEnergyPlans
+- status: 404
+  title: The following error codes **MUST** be supported:<br/><ul class="error-code-list"><li>[404 - Invalid
+    Resource](#error-404-resource-invalid)</li></ul>
+  media_type:
+  - application/json
+  schema: '#/components/schemas/ResponseErrorListV2'
+  source_operation: openapi/consumer-data-standards-energy-api-openapi.json#getEnergyPlanDetail
+- status: 400
+  title: The following error codes **MUST** be supported:<br/><ul class="error-code-list"><li>[400 - Invalid
+    Field](#error-400-field-invalid)</li><li>[400 - Missing Required Field](#error-400-field-missing)</li><li>[400
+    - Invalid Version](#error-400-header-invalid-version)</li></ul>
+  media_type:
+  - application/json
+  schema: '#/components/schemas/ResponseErrorListV2'
+  source_operation: openapi/consumer-data-standards-common-api-openapi.json#getCustomer
+- status: 406
+  title: The following error codes **MUST** be supported:<br/><ul class="error-code-list"><li>[406 - Unsupported
+    Version](#error-406-header-unsupported-version)</li></ul>
+  media_type:
+  - application/json
+  schema: '#/components/schemas/ResponseErrorListV2'
+  source_operation: openapi/consumer-data-standards-common-api-openapi.json#getCustomer

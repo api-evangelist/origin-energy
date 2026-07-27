@@ -1,0 +1,179 @@
+generated: '2026-07-27'
+method: searched
+source: https://developer.origin-kraken.energy/graphql/changelog/, https://developer.origin-kraken.energy/announcements/,
+  graphql/origin-energy-kraken.graphql
+versioning:
+- surface: Kraken GraphQL
+  scheme: uri-path
+  current: v1
+  endpoint: https://api.origin-kraken.energy/v1/graphql/
+  note: The URL major stays at v1; the schema evolves continuously and is versioned by per-field deprecation
+    rather than by URL.
+  docs: https://developer.origin-kraken.energy/graphql/guides/basics/
+- surface: Kraken REST
+  scheme: uri-path
+  current: v1 (with a v2 namespace for orders and account import)
+  endpoint: https://api.origin-kraken.energy/v1/
+  docs: https://developer.origin-kraken.energy/rest/guides/api-basics/
+- surface: Consumer Data Right
+  scheme: header
+  current: x-v per endpoint
+  note: 'Version negotiated per endpoint with the x-v request header and an optional x-min-v; the server
+    answers with the version it served. Verified 2026-07-27: /energy/plans served x-v:1 while /energy/plans/{planId}
+    requires x-v:3 and rejects x-v:1 with urn:au-cds:error:cds-all:Header/UnsupportedVersion.'
+  docs: https://consumerdatastandardsaustralia.github.io/standards/#versioning
+- surface: Kraken External Events
+  scheme: suffix
+  note: Each event type carries an explicit -v<n> suffix; new majors are published alongside the old ones.
+  docs: https://developer.origin-kraken.energy/events/reference/
+deprecation:
+  policy_url: https://developer.origin-kraken.energy/announcements/
+  changelog_url: https://developer.origin-kraken.energy/graphql/changelog/
+  sunset_header: false
+  mechanism: GraphQL @deprecated directive plus a dated announcement
+  stated_form: Marked as deprecated on [DATE]. Scheduled for removal on or after [FUTURE DATE]
+  typical_notice: roughly 2 to 3 months between the deprecation date and the earliest removal date
+  evidence: Every deprecated field in the live schema carries both dates in its deprecationReason; the
+    announcements feed publishes each one as a dated notice (59 announcements listed on 2026-07-27).
+  note: No RFC 8594 Sunset or Deprecation response headers were observed on any surface; the contract
+    is documentary, carried in the schema and the announcements feed.
+sla:
+  url: null
+  uptime_target: null
+  note: No published SLA or uptime commitment was found on any Origin or Kraken host. The Consumer Data
+    Right non-functional requirements set availability obligations on data holders, but those are the
+    regulator's, not Origin's own published SLA.
+status_page:
+  url: https://public.mydata.cdr.originenergy.com.au/cds-au/v1/discovery/status
+  type: machine-readable (Consumer Data Standards Get Status)
+  outages: https://public.mydata.cdr.originenergy.com.au/cds-au/v1/discovery/outages
+  auth: none
+  verified: '2026-07-27'
+  observed: '{"data":{"status":"OK","explanation":"All services operational"},"links":{},"meta":{}}'
+  note: Origin publishes no human-facing status page. The only operational-status surface is the CDR discovery
+    endpoint, which is mandated, anonymous, machine readable, and was live on 2026-07-27. It covers the
+    CDR surface only, not the Kraken platform.
+  required_headers:
+  - x-v
+deprecated_operations:
+  openapi:
+  - ref: openapi/origin-energy-kraken-default-openapi.yml#Ad Hoc
+    evidence: 'Operation description states: "Note that this is deprecated and should not be used for
+      new integrations."'
+    flag: 'documented, not marked with the OpenAPI deprecated: true flag'
+  graphql:
+  - field: nextPaymentScheduleAvailableDate
+    kind: query
+    reason: The 'nextPaymentScheduleAvailableDate' field is deprecated. Use `getNextPaymentScheduleAvailableDate`
+      instead. - Marked as deprecated on 2024-01-09. - Scheduled for removal on or after 2024-04-09.
+    deprecated_on: '2024-01-09'
+    removal_on_or_after: '2024-04-09'
+  - field: siteworksRequests
+    kind: query
+    reason: The 'siteworksRequests' field is deprecated. Please use getOnSiteJobsRequests instead. - Marked
+      as deprecated on 2026-03-01. - Scheduled for removal on or after 2026-09-01.
+    deprecated_on: '2026-03-01'
+    removal_on_or_after: '2026-09-01'
+  - field: propertySearch
+    kind: query
+    reason: The 'propertySearch' field is deprecated. This query is being deprecated in favour of `propertiesSearch`.
+      The latter returns not only the matched properties but the level of confidence in the results through
+      the `score` field. - Marked as deprecated on 2023-05-23. - Scheduled for removal on or after 2024-01-01.
+    deprecated_on: '2023-05-23'
+    removal_on_or_after: '2024-01-01'
+  - field: defaultPaymentInstruction
+    kind: query
+    reason: The 'defaultPaymentInstruction' field is deprecated. Please use 'usablePaymentInstructions'
+      on the Ledger type to get all usable instructions, or 'paymentPreferenceAtTime' on the Ledger type
+      to get a specific one. Both require explicitly requesting a ledger. - Marked as deprecated on 2026-01-28.
+      - Scheduled for removal on or after 2027-01-28.
+    deprecated_on: '2026-01-28'
+    removal_on_or_after: '2027-01-28'
+  - field: getUsersForAccount
+    kind: query
+    reason: The 'getUsersForAccount' field is deprecated. Use `getUsersForAccounts` instead which gets
+      list of account numbers. - Marked as deprecated on 2024-01-10. - Scheduled for removal on or after
+      2025-01-10.
+    deprecated_on: '2024-01-10'
+    removal_on_or_after: '2025-01-10'
+  - field: apiKeyAuthentication
+    kind: mutation
+    reason: The 'apiKeyAuthentication' field is deprecated. Please use obtainKrakenToken instead of this
+      mutation. - Marked as deprecated on 2021-09-03. - Scheduled for removal on or after 2024-01-01.
+    deprecated_on: '2021-09-03'
+    removal_on_or_after: '2024-01-01'
+  - field: makePaymentWithNewCard
+    kind: mutation
+    reason: The 'makePaymentWithNewCard' field is deprecated. This mutation only applies to clients using
+      the legacy finanicals system. Use a combination of `storePaymentInstruction` and `collectPayment`
+      instead. - Marked as deprecated on 2025-05-26. - Scheduled for removal on or after 2026-07-26.
+    deprecated_on: '2025-05-26'
+    removal_on_or_after: '2026-07-26'
+  - field: setupPaymentDetails
+    kind: mutation
+    reason: The 'setupPaymentDetails' field is deprecated. This mutation only applies to the legacy financial
+      system,which no client uses anymore. Use cashflow mutation equivalents instead. - Marked as deprecated
+      on 2026-07-03. - Scheduled for removal on or after 2026-10-03.
+    deprecated_on: '2026-07-03'
+    removal_on_or_after: '2026-10-03'
+  - field: createDirectDebitInstruction
+    kind: mutation
+    reason: The 'createDirectDebitInstruction' field is deprecated. Use `setUpDirectDebitInstruction`
+      instead. - Marked as deprecated on 2024-02-05. - Scheduled for removal on or after 2024-08-01.
+    deprecated_on: '2024-02-05'
+    removal_on_or_after: '2024-08-01'
+  - field: makePaymentWithSavedCard
+    kind: mutation
+    reason: The 'makePaymentWithSavedCard' field is deprecated. This mutation only applies to clients
+      using the legacy finanicals system. Use `collectPayment` instead. - Marked as deprecated on 2025-05-26.
+      - Scheduled for removal on or after 2026-07-26.
+    deprecated_on: '2025-05-26'
+    removal_on_or_after: '2026-07-26'
+  - field: updateSiteworksRequest
+    kind: mutation
+    reason: The 'updateSiteworksRequest' field is deprecated. Please use updateOnSiteJobsRequest instead.
+      - Marked as deprecated on 2026-03-01. - Scheduled for removal on or after 2026-09-01.
+    deprecated_on: '2026-03-01'
+    removal_on_or_after: '2026-09-01'
+  - field: createTimeSeriesPrices
+    kind: mutation
+    reason: The 'createTimeSeriesPrices' field is deprecated. Please use the 'createOrUpdateTimeSeriesEntries'
+      mutation instead. - Marked as deprecated on 2025-02-03. - Scheduled for removal on or after 2025-03-01.
+    deprecated_on: '2025-02-03'
+    removal_on_or_after: '2025-03-01'
+  - field: resetPassword
+    kind: mutation
+    reason: 'The ''resetPassword'' field is deprecated. Please use `resetUserPassword` instead. - Marked
+      as deprecated on 2024-12-04. - Scheduled for removal on or after 2025-06-01. You can read more about
+      this deprecation on: https://announcements.kraken.tech/announcements/public/81/'
+    deprecated_on: '2024-12-04'
+    removal_on_or_after: '2025-06-01'
+  - field: updateUserDetails
+    kind: mutation
+    reason: The 'updateUserDetails' field is deprecated. Please use the 'updateUser' mutation instead.
+      - Marked as deprecated on 2020-10-02. - Scheduled for removal on or after 2023-04-06.
+    deprecated_on: '2020-10-02'
+    removal_on_or_after: '2023-04-06'
+  - field: createAccountReminder
+    kind: mutation
+    reason: The 'createAccountReminder' field is deprecated. This mutation rely on legacy reminder types.
+      Please use the createReminder mutation which uses the new registry based reminder types instead.
+      - Marked as deprecated on 2024-11-14. - Scheduled for removal on or after 2025-04-16.
+    deprecated_on: '2024-11-14'
+    removal_on_or_after: '2025-04-16'
+  counts:
+    graphql_deprecated_root_fields: 15
+recent_removals:
+- date: '2026-07-20'
+  change: Removed contractIdentifiers from EnrollmentInput
+  breaking: true
+- date: '2026-07-09'
+  change: Removed RateGroupEligibilityType / RateGroupEligibilityInput, replaced by more granular configuration
+    types
+  breaking: true
+- date: '2026-06-29'
+  change: Removed the possibleErrors field from 150+ mutation response types
+  breaking: true
+- date: '2026-04-20'
+  change: Removal of heat_pump_id from heat pump queries and mutations
+  breaking: true

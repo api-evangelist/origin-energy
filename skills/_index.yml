@@ -1,0 +1,90 @@
+generated: '2026-07-27'
+method: generated
+source: openapi/*, graphql/origin-energy-kraken.graphql, conventions/origin-energy-conventions.yml, errors/*,
+  lifecycle/origin-energy-lifecycle.yml
+note: Every operationId and GraphQL field name referenced in these skills was verified to exist verbatim
+  in the harvested contract before the skill was written.
+skills:
+- file: origin-energy-retail-plan-comparison.md
+  name: Compare Origin Energy retail electricity and gas plans
+  api: openapi/consumer-data-standards-energy-api-openapi.json
+  operations:
+  - listEnergyPlans
+  - getEnergyPlanDetail
+- file: origin-energy-cdr-consented-energy-data.md
+  name: Retrieve an Origin Energy customer's energy data under Consumer Data Right consent
+  api: openapi/consumer-data-standards-energy-api-openapi.json
+  operations:
+  - listEnergyAccounts
+  - getEnergyAccountDetail
+  - getEnergyAccountBalance
+  - listEnergyAccountBalancesBulk
+  - getEnergyAccountInvoices
+  - getBillingForEnergyAccount
+  - getEnergyAccountConcessions
+  - getEnergyAccountPaymentSchedule
+  - listElectricityServicePoints
+  - getElectricityServicePointDetail
+  - getElectricityServicePointUsage
+  - listElectricityUsageForServicePoints
+  - getElectricityDERForServicePoint
+  - getCustomer
+  - getStatus
+  - getOutages
+- file: origin-energy-kraken-customer-migration.md
+  name: Migrate customer accounts onto the Origin Energy Kraken platform
+  api: openapi/origin-energy-kraken-data-import-openapi.yml
+  operations:
+  - V2 Validate Account
+  - V2 Schedule Account Creation
+  - V2 Account Import Status
+  - V1 Validate Account
+  - V1 Create Or Update Account Import Process
+  - V1 Process Account Import Process
+  - V1 Get Account Transfer Status
+  - V1 Get Pending Account Import Processes
+  - V1 Get All Account Import Processes
+  - V1 Get Imported Accounts
+  - V1 Create Business
+  - V1 Create Business Payment Instruction
+  - V1 Create Payment Instruction
+  - V1 Create Historical Statements
+  - V1 Create Transactions
+  - V1 Create Account Notes
+- file: origin-energy-kraken-order-scheduling.md
+  name: Schedule and track an order on the Origin Energy Kraken platform
+  api: openapi/origin-energy-kraken-orders-openapi.yml
+  operations:
+  - V2 Schedule Order
+  - V2 Order Status
+- file: origin-energy-kraken-graphql-account-operations.md
+  name: Operate Origin Energy customer accounts through the Kraken GraphQL API
+  api: graphql/origin-energy-kraken.graphql
+  operations: []
+  graphql_fields:
+  - accountsSearch
+  - accountReference
+  - accountUser
+  - meterPoint
+  - electricityMeterReadings
+  - estimatedSupplyPointReadings
+  - createElectricitySelfMeterReads
+  - createGasSelfMeterReads
+  - createPaymentSchedule
+  - updatePaymentSchedule
+  - createPaymentExtension
+  - offerPaymentPlan
+  - acceptPaymentPlan
+  - createCentrepayDeduction
+  - createElectricityQuote
+  - createGasQuote
+  - availableProducts
+  - initiateProductSwitch
+  - processHouseMoveInElectricity
+  - triggerElectricityHouseMoveOut
+  - propertyMoveOut
+  - createConcession
+  - createHardshipAgreement
+  - makePaymentWithNewCard
+  - makePaymentWithSavedCard
+  - setupPaymentDetails

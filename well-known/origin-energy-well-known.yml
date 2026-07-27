@@ -1,0 +1,114 @@
+generated: '2026-07-27'
+method: searched
+source: live probes 2026-07-27
+hosts:
+- host: https://www.originenergy.com.au
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: origin-energy-security.txt
+    standard: RFC 9116
+  - path: /llms.txt
+    status: 200
+    file: ../llms/origin-energy-llms.txt
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://auth.origin-kraken.energy
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: origin-energy-kraken-openid-configuration.json
+    standard: OpenID Connect Discovery 1.0
+  - path: /.well-known/jwks.json
+    status: 200
+    note: Advertised as jwks_uri; not stored (key material rotates).
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://api.origin-kraken.energy
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://developer.origin-kraken.energy
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /sitemap.xml
+    status: 404
+- host: https://public.mydata.cdr.originenergy.com.au
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+  note: No CDR InfoSec discovery document is anonymously reachable on Origin's public CDR base URI.
+- host: https://cdr.energymadeeasy.gov.au
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+  note: The AER's Energy Made Easy CDR gateway that serves Origin's plan reference data. Not an Origin
+    host.
+summary:
+  probed: 44
+  found: 3

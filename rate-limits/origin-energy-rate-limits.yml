@@ -1,0 +1,54 @@
+generated: '2026-07-27'
+method: searched
+source: https://developer.origin-kraken.energy/graphql/guides/basics/
+note: Published usage constraints for the Origin Energy Kraken GraphQL API. The REST API (api.origin-kraken.energy/v1/)
+  shares the same bearer token but publishes no separate numeric limits. The Consumer Data Right surfaces
+  are governed by the Consumer Data Standards traffic thresholds set by the Data Standards Body, not by
+  Origin.
+rate_limits:
+- name: Query complexity per request
+  limit_count: 550
+  unit: complexity points
+  window: per request
+  error_code: KT-CT-1188
+  description: A single GraphQL request may not exceed a complexity score of 550.
+- name: Nodes per request
+  limit_count: 100000
+  unit: nodes
+  window: per request
+  error_code: KT-CT-1189
+  description: A single GraphQL request may not resolve more than 100,000 nodes.
+- name: Account user points allowance
+  limit_count: 50000
+  unit: points
+  window: hour
+  audience: account user
+  description: Hourly points allowance for a token issued to an individual account user.
+- name: Organisation points allowance
+  limit_count: 100000
+  unit: points
+  window: hour
+  audience: organisation
+  description: Hourly points allowance for a token issued to an organisation.
+- name: OAuth application points allowance
+  limit_count: 300000
+  unit: points
+  window: hour
+  audience: oauth application
+  description: Hourly points allowance for a token issued to a registered OAuth application.
+- name: Per-IP / per-user request throttle
+  limit_count: null
+  unit: requests
+  window: unpublished
+  error_code: KT-CT-1199
+  description: Static and dynamic request-rate limits are applied per IP and per user; the numeric thresholds
+    are not published.
+- name: Cursor page size
+  limit_count: 100
+  unit: records
+  window: per page
+  description: The `first` argument on a Relay connection must be less than 100.
+cdr:
+  note: Consumer Data Right traffic thresholds are set in the Consumer Data Standards (non-functional
+    requirements), not by Origin Energy.
+  docs: https://consumerdatastandardsaustralia.github.io/standards/#non-functional-requirements

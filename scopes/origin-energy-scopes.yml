@@ -1,0 +1,496 @@
+generated: '2026-07-27'
+method: searched
+source: well-known/origin-energy-kraken-openid-configuration.json
+docs: https://developer.origin-kraken.energy/graphql/guides/basics/
+note: Harvested verbatim from the Kraken authorisation server's OpenID Connect discovery document (HTTP
+  200, anonymous, 2026-07-27). The Kraken OpenAPI documents declare only apiKey/basic security schemes
+  and no oauth2 flows, so these scopes cannot be derived from the specs — they exist only in the discovery
+  document. Scopes are enforced on the GraphQL and REST surfaces behind the same bearer token. The Consumer
+  Data Right surface uses the separate CDR consent scopes defined by the Data Standards Body, not these.
+schemes:
+- name: Kraken OpenID Connect
+  type: openIdConnect
+  issuer: https://auth.origin-kraken.energy/token/
+  discovery: https://auth.origin-kraken.energy/.well-known/openid-configuration
+  authorizationUrl: https://auth.origin-kraken.energy/authorize/
+  tokenUrl: https://auth.origin-kraken.energy/token/
+  revocationUrl: https://auth.origin-kraken.energy/revoke-token/
+  userinfoUrl: https://auth.origin-kraken.energy/userinfo/
+  jwksUrl: https://auth.origin-kraken.energy/.well-known/jwks.json
+  endSessionUrl: https://auth.origin-kraken.energy/logout/
+  response_types_supported:
+  - code
+  - token
+  - id_token
+  - id_token token
+  - code token
+  - code id_token
+  - code id_token token
+  token_endpoint_auth_methods_supported:
+  - client_secret_post
+  - client_secret_basic
+  dynamic_client_registration: false
+  pkce_methods_advertised: false
+counts:
+  scopes: 113
+  groups: 36
+scopes:
+- scope: openid
+  group: openid-connect
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: full-customer-access
+  group: broad
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: create:payment-method-action-intents
+  group: create
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: change:centrepay-deductions
+  group: change
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:agreements
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: view:smartflex-data
+  group: view
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: amend:payments
+  group: amend
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:customer-flexibility-campaigns
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:goods-products
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:loyalty-enrollment-eligibility
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:workflows
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:fit-installations
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: create:goods-quotes
+  group: create
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:contribution-agreements
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: configure:auto-topup-config
+  group: configure
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:payment-preferences
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: manage:payment-schedules
+  group: manage
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: update:ssd
+  group: update
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:businesses
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: view:detailed-usage
+  group: view
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: create:repayment-request
+  group: create
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:fit-schedules
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: join:campaign-events
+  group: join
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: create:complaints
+  group: create
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: update:sensitive-customer-information
+  group: update
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: manage:product-enrolment
+  group: manage
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:property
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:devices
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:mfa-device
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:account-campaigns
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: cancel:centrepay-deductions
+  group: cancel
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:electricity-meter-point-details
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: stop:automated-payments
+  group: stop
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: occupy:accounts
+  group: occupy
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: update:user-details
+  group: update
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: accept:terms-and-conditions
+  group: accept
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: review:quote
+  group: review
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:account-payments
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: manage:account-renewals
+  group: manage
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: join:campaigns
+  group: join
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:account-reminders
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: update:account-details
+  group: update
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: update:smart-meter-data-preferences
+  group: update
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: report:move-out
+  group: report
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: process:move-outs
+  group: process
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:establishments
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:payment-instructions
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: create:quoting-offer-group
+  group: create
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:portfolios
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: view:api-key
+  group: view
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:user-details
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: access:customer-queries
+  group: access
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:account-applications
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: manage:goods-purchases
+  group: manage
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: edit:customer-marketing-preference
+  group: edit
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: provide:missing-meter-point-details
+  group: provide
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: accept:fit-schedules
+  group: accept
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: cancel:enrollment
+  group: cancel
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:loyalty-points-ledger-entry
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: create:mfa-device
+  group: create
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: request:consumption-data
+  group: request
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: create:payment-action-intents
+  group: create
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:personally-identifiable-information
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: create:customer-feedback
+  group: create
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: create:centrepay-deductions
+  group: create
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: view:sensitive-customer-information
+  group: view
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: accept:fit-terms-and-conditions
+  group: accept
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: create:property
+  group: create
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: submit:customer-feedback
+  group: submit
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: view:account-type
+  group: view
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: add:credit-to-smart-meter
+  group: add
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: escalate:ink-conversation
+  group: escalate
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:contracts
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: submit:fit-meter-readings
+  group: submit
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: add:campaign-to-account
+  group: add
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: view:campaign-dashboards
+  group: view
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: send:loss-objection-for-change-of-supplier
+  group: send
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:customer-assets
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: register:smartflex-devices
+  group: register
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:property-meters
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:billing-information
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: manage:customer-assets
+  group: manage
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: verify:customer-details
+  group: verify
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: view:account-user-permissions
+  group: view
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: view:account-number
+  group: view
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: view:ev-data
+  group: view
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: update:reading-consent-granularity
+  group: update
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: book:smart-meter-appointments
+  group: book
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: checkout:quote
+  group: checkout
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: update:dd-day
+  group: update
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: transfer:loyalty-points
+  group: transfer
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: set:loyalty-points-user
+  group: set
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: manage:ink-live-chat
+  group: manage
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: update:dd-amount
+  group: update
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:complaints
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: submit:meter-readings
+  group: submit
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:authorized-applications
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: validate:mfa-device
+  group: validate
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: initiate:standalone-payments
+  group: initiate
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: view:customer-communications
+  group: view
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: view:customer-marketing-preference
+  group: view
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: manage:contribution-agreements
+  group: manage
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: delete:mfa-device
+  group: delete
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: cancel:siteworks-appointments
+  group: cancel
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: set:payment-preference
+  group: set
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:goods-quotes
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:auto-topup-config
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: manage:ev
+  group: manage
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: create:payment-instructions
+  group: create
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: redeem:loyalty-points
+  group: redeem
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:loyalty-points-balance
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: update:smart-meter-interest
+  group: update
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+- scope: query:lifecycle-processes
+  group: query
+  sources:
+  - well-known/origin-energy-kraken-openid-configuration.json
+cdr_scopes:
+  note: Consumer Data Right consent scopes for the energy sector (energy:accounts.basic:read, energy:billing:read,
+    energy:electricity.usage:read, ...) are defined by the Data Standards Body and negotiated through
+    the CDR consent flow, not advertised on any anonymously reachable Origin endpoint. No Origin-hosted
+    CDR OIDC discovery document was found (public.mydata.cdr.originenergy.com.au/.well-known/openid-configuration
+    returned 404 on 2026-07-27), so they are deliberately not enumerated here.
+  docs: https://consumerdatastandardsaustralia.github.io/standards/#authorisation-scopes

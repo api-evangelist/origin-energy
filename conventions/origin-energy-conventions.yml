@@ -1,0 +1,191 @@
+generated: '2026-07-27'
+method: searched
+source: https://developer.origin-kraken.energy/graphql/guides/basics/, https://developer.origin-kraken.energy/rest/guides/api-basics/,
+  graphql/origin-energy-kraken.graphql, openapi/*, https://consumerdatastandardsaustralia.github.io/standards/
+note: 'Origin Energy exposes three contract families with different conventions: the Kraken GraphQL API,
+  the Kraken REST API, and the Consumer Data Right APIs defined by the Data Standards Body. They are documented
+  separately below and never merged.'
+authentication:
+  style: OAuth 2.0 / OpenID Connect bearer token in the Authorization header for Kraken; mutual TLS plus
+    CDR consent for the Consumer Data Right resource endpoint; none for the CDR public discovery and plan
+    reference endpoints.
+  detail: authentication/origin-energy-authentication.yml
+  scopes: scopes/origin-energy-scopes.yml
+idempotency:
+  supported: true
+  surface: Kraken GraphQL mutations
+  mechanism: An idempotencyKey field on the mutation input object, not a transport header.
+  key_type: UUID or String depending on the mutation
+  scope: per mutation input; a repeated key on a ledger entry is rejected rather than replayed
+  conflict_error:
+    code: KT-CT-9221
+    message: Idempotency key already used on ledger entry.
+  retention: not published
+  evidence: 17 input objects in the live GraphQL schema declare an idempotency key field, and the schema
+    documents KT-CT-9221 for a reused key. Harvested from graphql/origin-energy-kraken.graphql on 2026-07-27.
+  counts:
+    input_objects_with_idempotency_key: 17
+  inputs:
+  - input: LoyaltyPointLedgerEntryInput
+    field: idempotencyKey
+    type: UUID
+    required: true
+  - input: CreateScheduledTransactionsInput
+    field: idempotencyKey
+    type: String
+    required: true
+  - input: PublishTransactionalMessagingExternalTriggerInput
+    field: idempotencyKey
+    type: String
+    required: false
+  - input: RequestRepaymentInputType
+    field: idempotencyKey
+    type: String
+    required: true
+  - input: CollectDepositInput
+    field: idempotencyKey
+    type: String
+    required: true
+  - input: CompleteStandalonePaymentInput
+    field: idempotencyKey
+    type: String
+    required: true
+  - input: CollectPaymentInput
+    field: idempotencyKey
+    type: String
+    required: true
+  - input: CreatePaymentActionIntentInput
+    field: idempotencyKey
+    type: String
+    required: true
+  - input: CreatePaymentMethodActionIntentInput
+    field: idempotencyKey
+    type: String
+    required: true
+  - input: TriggerStandalonePaymentRequestInput
+    field: idempotencyKey
+    type: String
+    required: true
+  - input: RefundPaymentInput
+    field: idempotencyKey
+    type: String
+    required: true
+  - input: AwardLoyaltyPointsInput
+    field: idempotencyKey
+    type: UUID
+    required: false
+  - input: BulkAwardLoyaltyPointsItemInput
+    field: idempotencyKey
+    type: UUID
+    required: true
+  - input: DeductLoyaltyPointsInput
+    field: idempotencyKey
+    type: UUID
+    required: false
+  - input: LeaveSupplierInput
+    field: idempotencyKey
+    type: String
+    required: false
+  - input: UpdateLeaveSupplierInput
+    field: idempotencyKey
+    type: String
+    required: false
+  - input: EnrollmentInput
+    field: idempotencyKey
+    type: String
+    required: false
+  rest:
+    supported: false
+    note: No Idempotency-Key parameter or header appears in any of the three harvested Kraken OpenAPI
+      documents.
+  cdr:
+    supported: false
+    note: The Consumer Data Standards energy APIs are read-only GETs plus POST filter endpoints; no idempotency
+      key is defined.
+  naturally_idempotent_mutations: The schema also documents several mutations as idempotent by design
+    (for example adding a property that is already a child of a hierarchy "is idempotent" and "does nothing").
+pagination:
+- surface: Kraken GraphQL
+  style: cursor (Relay connections)
+  params:
+  - first
+  - after
+  - last
+  - before
+  response_fields:
+  - pageInfo.startCursor
+  - pageInfo.endCursor
+  - pageInfo.hasNextPage
+  - pageInfo.hasPreviousPage
+  - edges
+  - node
+  max_page_size: 100
+  note: The docs state the first argument must be set to a value less than 100, and that hasPreviousPage
+    returns false when paginating forward with after. 94 *Connection types exist in the schema.
+  errors:
+  - 'KT-AU-5410: This query only supports the `first` argument for pagination.'
+- surface: Consumer Data Right
+  style: page-number
+  params:
+  - page
+  - page-size
+  default_page_size: 25
+  response_fields:
+  - meta.totalRecords
+  - meta.totalPages
+  - links.first
+  - links.prev
+  - links.next
+  - links.last
+  - links.self
+  note: Standard Consumer Data Standards pagination; verified against the AER gateway on 2026-07-27 (meta.totalRecords
+    3595 for Origin's plans).
+- surface: Kraken REST
+  style: none documented
+  note: The three harvested REST documents expose single-resource and command endpoints; no list pagination
+    parameters are declared.
+field_selection:
+  graphql: Native GraphQL field selection; no REST sparse-fieldset or expand parameter exists on any surface.
+  cdr: No field selection; response shapes are fixed by the Consumer Data Standards.
+metadata:
+  cdr: Every CDS response carries a meta object and a links object; paginated responses use MetaPaginated
+    / LinksPaginated.
+  kraken: No generic metadata envelope; responses are typed per operation.
+request_tracing:
+- surface: Kraken
+  header: x-kraken-correlation-id
+  direction: response
+  evidence: Observed on an anonymous 404 from https://api.origin-kraken.energy/ on 2026-07-27.
+- surface: Consumer Data Right
+  header: x-fapi-interaction-id
+  direction: request and response
+  evidence: Declared as a header parameter on every operation in openapi/consumer-data-standards-energy-api-openapi.json;
+    an RFC 4122 UUID used as a correlation id, echoed by the data holder.
+required_headers:
+  cdr:
+  - x-v (mandatory)
+  - x-min-v (optional)
+  - x-fapi-interaction-id (optional)
+  - x-fapi-auth-date
+  - x-fapi-customer-ip-address
+  - x-cds-client-headers
+  kraken:
+  - Authorization
+datetime:
+  format: ISO 8601
+  note: The REST guide states datetime parameters must use ISO 8601 and strongly recommends including
+    timezone information; when omitted the platform default is Europe/London — a Kraken platform default,
+    not an Australian one, which matters for an AU tenancy.
+  evidence: https://developer.origin-kraken.energy/rest/guides/api-basics/
+errors:
+  catalog:
+  - errors/origin-energy-error-codes.yml
+  - errors/origin-energy-problem-types.yml
+  rfc9457: false
+  note: Three distinct error envelopes; see errors/origin-energy-problem-types.yml.
+rate_limit_signalling:
+  artifact: rate-limits/origin-energy-rate-limits.yml
+  mechanism: 'Errors rather than headers: KT-CT-1188 (complexity), KT-CT-1189 (node limit), KT-CT-1199
+    (request rate).'
+  headers: No RateLimit / X-RateLimit response headers are documented.
+versioning: lifecycle/origin-energy-lifecycle.yml

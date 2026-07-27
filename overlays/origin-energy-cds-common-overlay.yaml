@@ -1,0 +1,32 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Consumer Data Standards Common API as implemented by Origin Energy
+  version: 1.0.0
+extends: openapi/consumer-data-standards-common-api-openapi.json
+x-generated: '2026-07-27'
+x-method: generated
+x-source: API Evangelist enrichment pipeline; every value below is evidenced by a probe or an artifact
+  in this repo.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: origin-energy
+    x-apievangelist-harvested: '2026-07-27'
+    x-apievangelist-access: gated — CDR accreditation or an Origin partner/customer account is required;
+      there is no self-serve signup
+    x-apievangelist-artifacts:
+      authentication: authentication/origin-energy-authentication.yml
+      conventions: conventions/origin-energy-conventions.yml
+      errors: errors/origin-energy-problem-types.yml
+      lifecycle: lifecycle/origin-energy-lifecycle.yml
+      rate_limits: rate-limits/origin-energy-rate-limits.yml
+      scopes: scopes/origin-energy-scopes.yml
+      conformance: conformance/origin-energy-conformance.yml
+- target: $
+  update:
+    x-apievangelist-primary-server: https://public.mydata.cdr.originenergy.com.au/cds-au/v1
+- target: $.servers
+  update:
+  - url: https://public.mydata.cdr.originenergy.com.au/cds-au/v1
+    description: Origin Energy CDR public base URI. GET /discovery/status and /discovery/outages verified
+      HTTP 200 anonymously on 2026-07-27.
