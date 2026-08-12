@@ -311,6 +311,8 @@ apis:
   - type: WellKnown
     url: well-known/origin-energy-well-known.yml
 common:
+- type: MCPServer
+  url: mcp/origin-energy-mcp.yml
 - type: AgenticAccess
   url: agentic-access/origin-energy-agentic-access.yml
 - type: VulnerabilityDisclosure
