@@ -1,0 +1,424 @@
+{
+  "item": [
+    {
+      "id": "2f1610e4-374a-47ca-a2e0-23e4c70a3d03",
+      "name": "orders",
+      "description": {
+        "content": "APIs for placing and managing orders.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6d22ac65-40ac-4df2-b0a5-abea14d3859b",
+          "name": "Schedule the placement of an order in Kraken",
+          "request": {
+            "name": "Schedule the placement of an order in Kraken",
+            "description": {
+              "content": "Use this endpoint to schedule the placement of an order in Kraken. It accepts a request containing the necessary information for order placement, validates the data, and creates an order management task to be executed asynchronously.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "orders",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payload\": {\n    \"accounts\": [\n      {\n        \"account_identifier\": \"<string>\",\n        \"account_number\": \"<string>\",\n        \"type\": \"<string>\",\n        \"business_reference\": \"<string>\"\n      },\n      {\n        \"account_identifier\": \"<string>\",\n        \"account_number\": \"<string>\",\n        \"type\": \"<string>\",\n        \"business_reference\": \"<string>\"\n      }\n    ],\n    \"businesses\": [\n      {\n        \"business_identifier\": \"<string>\",\n        \"type\": \"<string>\",\n        \"business_type\": \"<string>\",\n        \"company_name\": \"<string>\",\n        \"company_number\": \"<string>\",\n        \"details\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"parent_business_reference\": \"<string>\",\n        \"portfolios\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"segment_name\": {},\n        \"users\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      {\n        \"business_identifier\": \"<string>\",\n        \"type\": \"<string>\",\n        \"business_type\": \"<string>\",\n        \"company_name\": \"<string>\",\n        \"company_number\": \"<string>\",\n        \"details\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"parent_business_reference\": \"<string>\",\n        \"portfolios\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"segment_name\": {},\n        \"users\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      }\n    ],\n    \"external_order_id\": \"<string>\",\n    \"order_lines\": [\n      {\n        \"contract\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"target_reference\": \"<string>\",\n        \"target_type\": \"<string>\",\n        \"type\": \"<string>\",\n        \"agreements\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      {\n        \"contract\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"target_reference\": \"<string>\",\n        \"target_type\": \"<string>\",\n        \"type\": \"<string>\",\n        \"agreements\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      }\n    ],\n    \"sales_info\": {\n      \"date_of_sale\": \"<date>\",\n      \"sales_channel\": \"<string>\",\n      \"affiliate_link_identifier\": \"<string>\",\n      \"affiliate_organisation_name\": \"<string>\",\n      \"affiliate_query_params\": {},\n      \"offer_group_identifier\": \"<uuid>\",\n      \"referral_code\": \"<string>\",\n      \"sales_subchannel\": \"<string>\",\n      \"urn\": \"<string>\"\n    }\n  },\n  \"task_params\": {\n    \"is_dry_run\": false,\n    \"schedule_window_end\": \"<dateTime>\",\n    \"schedule_window_start\": \"<dateTime>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "34d80b4d-57f2-43e6-b27b-4d9c806fda47",
+              "name": "The payload has been successfully scheduled.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "orders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_order_id\": \"ORD-12345678\",\n  \"accounts\": [\n    {\n      \"type\": \"EXISTING\",\n      \"account_identifier\": \"acc-ref-001\",\n      \"account_number\": \"A-12345678\"\n    }\n  ],\n  \"businesses\": [\n    {\n      \"type\": \"EXISTING\",\n      \"business_identifier\": \"biz-ref-001\",\n      \"company_name\": \"Tentacle Corp\",\n      \"company_number\": \"12345678\",\n      \"business_type\": \"LTD\"\n    }\n  ],\n  \"order_lines\": [\n    {\n      \"type\": \"CONTRACT_RENEWAL\",\n      \"target_type\": \"BUSINESS\",\n      \"target_reference\": \"biz-ref-001\",\n      \"contract\": {\n        \"identifier\": \"contract-001\",\n        \"valid_from_date\": \"2026-01-01\",\n        \"signed_at_date\": \"2025-12-15\",\n        \"valid_to_date\": \"2027-01-01\",\n        \"versions\": [],\n        \"subjects\": [\n          {\n            \"type\": \"ACCOUNT\",\n            \"identifier\": \"acc-ref-001\"\n          }\n        ]\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4ea29166-3622-4dc1-a23b-6b32868d7766",
+              "name": "Validation errors occurred while processing the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "orders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_order_id\": \"ORD-12345678\",\n  \"accounts\": [\n    {\n      \"type\": \"EXISTING\",\n      \"account_identifier\": \"acc-ref-001\",\n      \"account_number\": \"A-12345678\"\n    }\n  ],\n  \"businesses\": [\n    {\n      \"type\": \"EXISTING\",\n      \"business_identifier\": \"biz-ref-001\",\n      \"company_name\": \"Tentacle Corp\",\n      \"company_number\": \"12345678\",\n      \"business_type\": \"LTD\"\n    }\n  ],\n  \"order_lines\": [\n    {\n      \"type\": \"CONTRACT_RENEWAL\",\n      \"target_type\": \"BUSINESS\",\n      \"target_reference\": \"biz-ref-001\",\n      \"contract\": {\n        \"identifier\": \"contract-001\",\n        \"valid_from_date\": \"2026-01-01\",\n        \"signed_at_date\": \"2025-12-15\",\n        \"valid_to_date\": \"2027-01-01\",\n        \"versions\": [],\n        \"subjects\": [\n          {\n            \"type\": \"ACCOUNT\",\n            \"identifier\": \"acc-ref-001\"\n          }\n        ]\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"order_process_failed_validation\",\n  \"detail\": \"Order payload validation failed.\",\n  \"domain\": \"order_process\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d2d577ae-71c1-45b7-9da8-b9e704e65ff2",
+          "name": "Return the status of an order process",
+          "request": {
+            "name": "Return the status of an order process",
+            "description": {
+              "content": "Use this endpoint to retrieve the current status of an order. The order is identified by its external_order_id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "orders",
+                ":external_order_id",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "external_order_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d35f5623-efe5-4cce-88c9-b884a4abb3aa",
+              "name": "The status of the order.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "orders",
+                    ":external_order_id",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"PROCESSED\",\n  \"created_at\": \"2025-04-17T00:00:00Z\",\n  \"modified_at\": \"2025-04-17T01:00:00Z\",\n  \"latest_error\": null,\n  \"latest_event\": {\n    \"event\": \"ORDER_PROCESS_SUCCEEDED\",\n    \"occurred_at\": \"2025-04-17T01:00:00Z\",\n    \"data\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c18d1566-64b5-4072-b25e-ef368eb40c99",
+              "name": "Order not found for the given external_order_id.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "orders",
+                    ":external_order_id",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource was not found.\",\n  \"code\": \"not_found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "839a9bbf-cbbb-40a9-a930-8f5b7395fbe8",
+              "name": "The order process has an invalid or missing status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "orders",
+                    ":external_order_id",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Order process has no status set for external_order_id: example-order-id\",\n  \"code\": \"invalid_status_for_order_process\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f4e3139a-d9b2-4e9b-b945-f378c051e455",
+    "name": "Kraken",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

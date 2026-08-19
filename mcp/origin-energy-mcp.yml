@@ -302,3 +302,9 @@ counts:
   graphql_root_fields_not_enumerated: 561
 graphql_note: The Kraken GraphQL surface exposes 187 queries and 374 mutations; they are not enumerated
   as candidate tools here because a GraphQL surface is better bound through the crosswalk in mcp/origin-energy-tool-crosswalk.yml.
+deployment:
+  mode: none
+  verified: derived
+  tools: 54
+  checked: '2026-08-12'
+  source: catalog MCP census

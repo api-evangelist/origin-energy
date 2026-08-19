@@ -1,0 +1,207 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kraken",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "data-import",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Data Import Open Api Schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/data-import/schema/",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Base OpenAPI schema endpoint that filters URL patterns by namespace.\n\nSubclasses must define ``schema_namespaces`` to control which URL\nnamespaces appear in the generated schema."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "external-client-healthcheck",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "External Client Health Check",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/external-client-healthcheck/"
+          },
+          "docs": "Healthcheck endpoint for external clients.\n\nWhen called, this API will return a 200 status and increment a metric.\n\nThis endpoint allows clients to implement a healthcheck that is also supported\nby monitoring on the Kraken side."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "external-events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Open Api Schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/external-events/schema/",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "OpenApi3 schema for this API. Format can be selected via content negotiation.\n\n- YAML: application/vnd.oai.openapi\n- JSON: application/vnd.oai.openapi+json"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "v1",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Ad Hoc",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/accounts/:account_number/payments/ad-hoc/",
+            "params": [
+              {
+                "name": "account_number",
+                "value": "",
+                "type": "path",
+                "description": "Number of the account"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "A view to be called by Origin's consumer-site for creating ad hoc card payments.\n\nNote that this is deprecated and should not be used for new integrations."
+        },
+        {
+          "info": {
+            "name": "Get Energetiq Public Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/energetiq-public-key/"
+          }
+        },
+        {
+          "info": {
+            "name": "Get Energetiq Public Key_2",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/unbundled-network-charges/energetiq-public-key/"
+          }
+        },
+        {
+          "info": {
+            "name": "Twilio Enqueue Audio",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/voice/twilio/enqueue-audio/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Voice Announcement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/voice/twilio/voice-announcement/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return TwiML that speaks a translated message to the caller.\n\nQuery parameters:\n\n- ``translation_key``: required if ``announcement`` is not provided — the FTL message identifier to translate.\n- ``announcement``: required if ``translation_key`` is not provided — the message to speak to the caller.\n- ``language_code``: optional — BCP-47 / Django language code to use for\n  the translation and Twilio TTS voice. Defaults to the client's configured\n  language when omitted."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "v2",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Order Management Open Api Schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v2/orders/schema/",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Base OpenAPI schema endpoint that filters URL patterns by namespace.\n\nSubclasses must define ``schema_namespaces`` to control which URL\nnamespaces appear in the generated schema."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
