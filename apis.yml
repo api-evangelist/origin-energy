@@ -21,6 +21,18 @@ description: 'Origin Energy Limited is Australia''s largest energy retailer, an 
   or system data of its own; the only anonymously retrievable data is its retail plan reference data,
   and that is served from the Australian Energy Regulator''s Energy Made Easy CDR gateway, not from an
   Origin host.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: approval
