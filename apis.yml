@@ -1050,6 +1050,9 @@ apis:
   - type: Documentation
     url: https://developer.origin-kraken.energy/rest/guides/data-import/
 common:
+- type: CapabilityMap
+  url: capabilities/origin-energy-capability-edges.yml
+  name: Origin Energy Business Capability Map
 - type: Overlay
   url: overlays/origin-energy-cds-energy-overlay.yaml
 - type: AgentSkill
