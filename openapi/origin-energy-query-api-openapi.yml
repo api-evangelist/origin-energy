@@ -1,0 +1,149 @@
+openapi: 3.2.0
+info:
+  title: Kraken Query API
+  version: v1
+  description: APIs for querying import status and retrieving data
+servers:
+- url: https://api.origin-kraken.energy/v1
+  description: Base URL declared by the provider in apis.yml (roadmap#122).
+tags:
+- name: query
+  x-title: Query APIs
+  description: APIs for querying import status and retrieving data
+paths:
+  /v1/data-import/all-account-import-processes/{import_supplier_code}/:
+    get:
+      operationId: V1 Get All Account Import Processes
+      description: Use this endpoint to list all accounts for import, whether they are pending (their data has been staged) or have had a Kraken account created.
+      summary: List all accounts for import
+      parameters:
+      - in: path
+        name: import_supplier_code
+        schema:
+          type: string
+        description: The code of an existing Import Supplier.
+        required: true
+      tags:
+      - query
+      security:
+      - DataImportViewerAPIKeyAuthentication: []
+      - DRFKrakenTokenAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImportProcess'
+              examples:
+                AllAccountImportProcesses:
+                  value:
+                  - - external_account_number: '1234'
+                      kraken_account_number: null
+                      account_created_at: null
+                    - external_account_number: '5678'
+                      kraken_account_number: A-56785678
+                      account_created_at: '2020-01-01T12:00:00Z'
+                  summary: All account import processes
+          description: If any pending or imported accounts are found for the given `import_supplier_code`, they will be returned in the response. If the account is pending import then the `kraken_account_number` and `account_created_at will` be null.
+      x-doc-alerts: []
+  /v1/data-import/imported-account-import-processes/{import_supplier_code}/:
+    get:
+      operationId: V1 Get Imported Accounts
+      description: Use this endpoint to list all accounts that have been imported and now have a Kraken account.
+      summary: List all accounts that have been imported
+      parameters:
+      - in: path
+        name: import_supplier_code
+        schema:
+          type: string
+        description: The code of an existing Import Supplier.
+        required: true
+      tags:
+      - query
+      security:
+      - DataImportViewerAPIKeyAuthentication: []
+      - DRFKrakenTokenAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImportProcess'
+              examples:
+                SuccessfullyImportedImportProcesses:
+                  value:
+                  - - external_account_number: '5678'
+                      kraken_account_number: A-56785678
+                      account_created_at: '2020-01-01T12:00:00Z'
+                  summary: Successfully imported import processes
+          description: If any imported accounts are found for the given `import_supplier_code`, they will be returned in the response.
+      x-doc-alerts: []
+  /v1/data-import/pending-account-import-processes/{import_supplier_code}/:
+    get:
+      operationId: V1 Get Pending Account Import Processes
+      description: Use this endpoint to list all accounts pending import (their data has been staged).
+      summary: List all accounts pending import
+      parameters:
+      - in: path
+        name: import_supplier_code
+        schema:
+          type: string
+        description: The code of an existing Import Supplier.
+        required: true
+      tags:
+      - query
+      security:
+      - DataImportViewerAPIKeyAuthentication: []
+      - DRFKrakenTokenAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImportProcess'
+              examples:
+                PendingAccountImportProcesses:
+                  value:
+                  - - external_account_number: '1234'
+                      kraken_account_number: null
+                      account_created_at: null
+                  summary: Pending account import processes
+                  description: If any accounts pending import are found for the given `import_supplier_code`, they will be returned in the response. For consistency with the other APIs the `kraken_account_number` and `account_created_at` fields will be returned but will always be `null`.
+          description: Pending import processes matching request parameters.
+      x-doc-alerts: []
+components:
+  schemas:
+    ImportProcess:
+      type: object
+      properties:
+        account_created_at:
+          type: string
+          format: date-time
+          description: <p>The date and time that the account was created at.</p>
+        external_account_number:
+          type: string
+          description: <p>The account number in the source system. This, along with the <code>import_supplier</code>, will be used to find the account in Kraken.</p>
+          maxLength: 128
+        kraken_account_number:
+          type: string
+          description: Account number
+          maxLength: 128
+      required:
+      - external_account_number
+  securitySchemes:
+    DRFKrakenTokenAuthentication:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: JWT-based authentication
+    DataImportViewerAPIKeyAuthentication:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token "

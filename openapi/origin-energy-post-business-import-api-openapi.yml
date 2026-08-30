@@ -1,0 +1,262 @@
+openapi: 3.2.0
+info:
+  title: Kraken Post Business Import API
+  version: v1
+  description: APIs for importing additional data after a business has been imported.
+servers:
+- url: https://api.origin-kraken.energy/v1
+  description: Base URL declared by the provider in apis.yml (roadmap#122).
+tags:
+- name: post_business_import
+  x-title: Post Business Import
+  description: APIs for importing additional data after a business has been imported.
+  x-documentation-order: 3
+paths:
+  /v1/data-import/business-payment-instruction/create/:
+    post:
+      operationId: V1 Create Business Payment Instruction
+      description: Create a payment instruction for a business after import.
+      summary: Create a payment instruction for a business after import.
+      tags:
+      - post_business_import
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessPaymentInstruction'
+            examples:
+              ExamplePayload:
+                value:
+                  import_supplier_code: TENTACLE_UTILITIES
+                  external_business_identifier: EXTERNAL-1234
+                  vendor: STRIPE
+                  reference: THIS-IS-A-FAKE-REFERENCE
+                  type: CARD
+                  accounts:
+                  - external_account_number: EXTERNAL-ACCOUNT-123
+                  - external_account_number: EXTERNAL-ACCOUNT-1234
+                summary: Example payload
+        required: true
+      security:
+      - DataImportViewerAPIKeyAuthentication: []
+      - DRFKrakenTokenAuthentication: []
+      responses:
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBusinessPaymentInstructionError'
+              examples:
+                UnableToCreatePaymentInstruction.:
+                  value:
+                    error_detail: Unable to create payment instruction
+                    external_business_identifier: EXTERNAL-1234
+                    import_supplier_code: SOME_IMPORT_SUPPLIER
+                    reference: THIS-IS-A-FAKE-REFERENCE
+                  summary: Unable to create payment instruction.
+          description: '
+
+            If there are validation errors, the errors will be detailed in the body of the response. To
+
+            resolve the error, refer to the field definitions and validation rules.
+
+
+            This error can be returned if we have persistent issues communicating with the upstream payment
+
+            vendor (we call their API to verify the instruction exists, and retrieve the details to store in
+
+            Kraken). In this case, **the request should not be retried in its current form**.
+
+            '
+        '404':
+          description: The business import process have not been found. To resolve the error, check that the business has been imported (not just staged) and that the `import_supplier_code` and `external_business_identifier` are correct.
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBusinessPaymentInstructionResponse'
+              examples:
+                CreatedBusinessPaymentInstruction:
+                  value:
+                    external_business_identifier: EXTERNAL-1234
+                    reference: THIS-IS-A-FAKE-REFERENCE
+                  summary: Created business payment instruction
+          description: If the payload is valid, the external business identifier and the reference will be returned.
+        '401':
+          description: Authentication credentials were not provided or are invalid.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBusinessPaymentInstructionError'
+          description: '
+
+            This error can be returned if we have intermittent issues communicating with the upstream payment
+
+            vendor (we call their API to verify the instruction exists, and retrieve the details to store in
+
+            Kraken). In this case, **the request should be retried as-is**.
+
+            '
+      x-doc-alerts: []
+components:
+  schemas:
+    CreateBusinessPaymentInstructionError:
+      type: object
+      properties:
+        error_detail:
+          type: string
+          description: <p>If payment instruction creation failed, then this field will provide details of the error.</p>
+        external_business_identifier:
+          type: string
+          description: <p>The unique identifier of a business in the external system. This id is used to link an imported business in Kraken to the external system</p>
+          maxLength: 128
+        import_supplier_code:
+          enum:
+          - ORIGIN_SOLARFLEX_INACTIVE
+          - ORIGIN
+          - WIN_CONNECT_PARENT
+          - ORIGIN_CNI
+          - ORIGIN_BUSINESS
+          - WIN_CONNECT
+          - ORIGIN_SOLARFLEX
+          - ORIGIN_BUSINESS_NO_CONTRACT
+          type: string
+          x-spec-enum-id: 9572ea198e3a9787
+          description: <p>The code of an existing <code>ImportSupplier</code> in the database.</p>
+          x-enum-descriptions:
+            ORIGIN_SOLARFLEX_INACTIVE: Origin SolarFlex Inactive
+            ORIGIN: Origin
+            WIN_CONNECT_PARENT: Win Connect Parent
+            ORIGIN_CNI: Origin CNI
+            ORIGIN_BUSINESS: Origin Zero Business Import Supplier
+            WIN_CONNECT: WinConnect
+            ORIGIN_SOLARFLEX: Origin SolarFlex
+            ORIGIN_BUSINESS_NO_CONTRACT: Origin Business - No Contracts e.g. trustee
+        reference:
+          type: string
+          description: <p>The reference of the mandate as known by the vendor.</p>
+          maxLength: 128
+      required:
+      - error_detail
+      - external_business_identifier
+      - import_supplier_code
+      - reference
+      x-validators:
+      - name: Validate that migration is ongoing
+        description: Validate whether or not an import supplier is open for further data migration.
+        possible_errors:
+        - import_supplier_migration_not_ongoing
+    BusinessPaymentInstruction:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessPaymentInstructionAccount'
+          description: <p>Accounts for the business to set preference for.</p>
+        external_business_identifier:
+          type: string
+          description: <p>The unique identifier of a business in the external system. This id is used to link an imported business in Kraken to the external system</p>
+          maxLength: 128
+        import_supplier_code:
+          enum:
+          - ORIGIN_SOLARFLEX_INACTIVE
+          - ORIGIN
+          - WIN_CONNECT_PARENT
+          - ORIGIN_CNI
+          - ORIGIN_BUSINESS
+          - WIN_CONNECT
+          - ORIGIN_SOLARFLEX
+          - ORIGIN_BUSINESS_NO_CONTRACT
+          type: string
+          x-spec-enum-id: 9572ea198e3a9787
+          description: <p>The code of an existing <code>ImportSupplier</code> in the database.</p>
+          x-enum-descriptions:
+            ORIGIN_SOLARFLEX_INACTIVE: Origin SolarFlex Inactive
+            ORIGIN: Origin
+            WIN_CONNECT_PARENT: Win Connect Parent
+            ORIGIN_CNI: Origin CNI
+            ORIGIN_BUSINESS: Origin Zero Business Import Supplier
+            WIN_CONNECT: WinConnect
+            ORIGIN_SOLARFLEX: Origin SolarFlex
+            ORIGIN_BUSINESS_NO_CONTRACT: Origin Business - No Contracts e.g. trustee
+        reference:
+          type: string
+          description: <p>The reference of the mandate as known by the vendor.</p>
+          maxLength: 512
+        type:
+          enum:
+          - BPAY
+          - CARD
+          - CUSTOM
+          - DIRECT_DEBIT
+          - GMO_REFUND
+          - PAYMENT_SLIP
+          type: string
+          x-spec-enum-id: 601d0b035869d4dd
+          description: <p>The payment type of the payment instruction.</p>
+          x-enum-descriptions:
+            BPAY: BPAY
+            CARD: Card
+            CUSTOM: Custom
+            DIRECT_DEBIT: Direct Debit
+            GMO_REFUND: GMO Refund
+            PAYMENT_SLIP: Payment slip
+        valid_from:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: <p>The date from which the payment instruction is valid.</p>
+        vendor:
+          enum:
+          - WESTPAC
+          type: string
+          x-spec-enum-id: 19baa89b6ef9d00c
+          description: <p>The vendor for the payment instruction.</p>
+          x-enum-descriptions:
+            WESTPAC: Westpac
+      required:
+      - external_business_identifier
+      - import_supplier_code
+      - type
+      - vendor
+      x-validators:
+      - name: Validate that migration is ongoing
+        description: Validate whether or not an import supplier is open for further data migration.
+        possible_errors:
+        - import_supplier_migration_not_ongoing
+    CreateBusinessPaymentInstructionResponse:
+      type: object
+      properties:
+        external_business_identifier:
+          type: string
+          description: <p>The unique identifier of a business in the external system. This id is used to link an imported business in Kraken to the external system</p>
+          maxLength: 128
+        reference:
+          type: string
+          description: <p>The reference of the mandate as known by the vendor.</p>
+          maxLength: 128
+      required:
+      - external_business_identifier
+      - reference
+    BusinessPaymentInstructionAccount:
+      type: object
+      properties:
+        external_account_number:
+          type: string
+          description: <p>The account number in the source system. This, along with the <code>import_supplier</code>, will be used to find the account in Kraken.</p>
+      required:
+      - external_account_number
+  securitySchemes:
+    DRFKrakenTokenAuthentication:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: JWT-based authentication
+    DataImportViewerAPIKeyAuthentication:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token "
