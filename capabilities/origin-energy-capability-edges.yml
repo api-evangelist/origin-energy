@@ -3,7 +3,7 @@ provider: Origin Energy
 generated_by: planning/capability-mapping/scripts/classify_capabilities.py
 model: claude-opus-5
 frame:
-- Power & Water Utilities
+- Oil & Gas
 min_confidence: 0.7
 capability_model:
   source: https://github.com/vincentmakes/turbo-ea-capabilities
@@ -11,39 +11,16 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 3
+edge_count: 1
 edges:
-- tag: Electricity Usage
-  spec_file: origin-energy-electricity-usage-api-openapi.yml
-  capability_id: BC-3910.40
-  capability_id_l1: BC-3910
-  capability_name: Meter Reading & Validation
-  confidence: 0.78
-  evidence: 'GET /energy/electricity/servicepoints/{servicePointId}/usage Get Usage For Service Point;
-    schemas: EnergyUsageRead, EnergyUsageRead_intervalRead, EnergyUsageRead_intervalRead_readQualities'
-  reason: The operations return metered consumption reads per service point, including interval reads
-    and read-quality flags (actual/estimated/substituted), which is meter reading and validated consumption
-    data for a utility.
-- tag: Distributed Energy Resources
-  spec_file: origin-energy-distributed-energy-resources-api-openapi.yml
-  capability_id: BC-3840
-  capability_id_l1: BC-3840
-  capability_name: Distributed Energy Resource Management
-  confidence: 0.75
-  evidence: 'GET /energy/electricity/servicepoints/{servicePointId}/der getElectricityDERForServicePoint;
-    schemas: EnergyDerRecord, EnergyDerRecord_derDevices, EnergyDerRecord_acConnections, EnergyDerRecord_protectionMode'
-  reason: The operations return the registered DER installation record (devices, AC connections, protection
-    mode, inverter details) for an electricity service point, which is squarely distributed energy resource
-    management data. Left at L1 because the read-only disclosure does not clearly name a single sub-capability
-    (registration record vs forecasting inputs).
-- tag: Energy Accounts
-  spec_file: origin-energy-energy-accounts-api-openapi.yml
-  capability_id: BC-3910.10
-  capability_id_l1: BC-3910
-  capability_name: Utility Customer Account Management
+- tag: Energy Account Billing
+  spec_file: origin-energy-energy-account-billing-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
   confidence: 0.7
-  evidence: 'GET /energy/accounts/{accountId} getEnergyAccountDetail; GET /energy/accounts/{accountId}/concessions
-    Get Concessions; schemas: EnergyAccountDetailV4, EnergyAccountV2_allOf_plans, EnergyPaymentSchedule_cardDebit'
-  reason: The surface exposes the retail energy account lifecycle view — account detail with associated
-    service points, plans/tariffs, agreed payment schedule and concessions — which is utility-specific
-    customer account management including tariff assignment.
+  evidence: GET /energy/accounts/{accountId}/invoices getEnergyAccountInvoices Get Invoices For Account;
+    schemas EnergyInvoice, EnergyBillingPaymentTransaction, EnergyBillingUsageTransactionV2
+  reason: Customer invoices, usage-based billing transactions and payment transactions on retail energy
+    accounts — customer invoicing and receivables data. Mapped to Accounts Receivable Management; some
+    ambiguity because these are disclosure endpoints over an underlying billing system.
