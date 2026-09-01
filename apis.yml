@@ -1022,7 +1022,7 @@ apis:
   humanURL: https://consumerdatastandardsaustralia.github.io/standards/#energy-apis
   baseURL: https://api.mydata.cdr.originenergy.com.au
   tags:
-  - V2
+  - v2
   tags_raw:
   - v2
   properties:
