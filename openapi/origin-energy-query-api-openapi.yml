@@ -7,7 +7,7 @@ servers:
 - url: https://api.origin-kraken.energy/v1
   description: Base URL declared by the provider in apis.yml (roadmap#122).
 tags:
-- name: query
+- name: Query
   x-title: Query APIs
   description: APIs for querying import status and retrieving data
 paths:
@@ -24,7 +24,7 @@ paths:
         description: The code of an existing Import Supplier.
         required: true
       tags:
-      - query
+      - Query
       security:
       - DataImportViewerAPIKeyAuthentication: []
       - DRFKrakenTokenAuthentication: []
@@ -61,7 +61,7 @@ paths:
         description: The code of an existing Import Supplier.
         required: true
       tags:
-      - query
+      - Query
       security:
       - DataImportViewerAPIKeyAuthentication: []
       - DRFKrakenTokenAuthentication: []
@@ -95,7 +95,7 @@ paths:
         description: The code of an existing Import Supplier.
         required: true
       tags:
-      - query
+      - Query
       security:
       - DataImportViewerAPIKeyAuthentication: []
       - DRFKrakenTokenAuthentication: []

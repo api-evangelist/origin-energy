@@ -67,6 +67,8 @@ paths:
                     detail: Payment unsuccessful
                   summary: Could not create payment
           description: Fixed response in case of error
+      summary: Ad hoc
+      x-summary-source: derived
   /v1/energetiq-public-key/:
     get:
       operationId: Get Energetiq Public Key
@@ -75,6 +77,8 @@ paths:
       responses:
         '200':
           description: No response body
+      summary: Get energetiq public key
+      x-summary-source: derived
   /v1/unbundled-network-charges/energetiq-public-key/:
     get:
       operationId: Get Energetiq Public Key_2
@@ -83,6 +87,8 @@ paths:
       responses:
         '200':
           description: No response body
+      summary: Get energetiq public key 2
+      x-summary-source: derived
   /v1/voice/twilio/enqueue-audio/:
     post:
       operationId: Twilio Enqueue Audio
@@ -95,10 +101,26 @@ paths:
       responses:
         '200':
           description: No response body
+      summary: Twilio enqueue audio
+      x-summary-source: derived
   /v1/voice/twilio/voice-announcement/:
     get:
       operationId: Voice Announcement
-      description: "Return TwiML that speaks a translated message to the caller.\n\nQuery parameters:\n\n- ``translation_key``: required if ``announcement`` is not provided — the FTL message identifier to translate.\n- ``announcement``: required if ``translation_key`` is not provided — the message to speak to the caller.\n- ``language_code``: optional — BCP-47 / Django language code to use for\n  the translation and Twilio TTS voice. Defaults to the client's configured\n  language when omitted."
+      description: 'Return TwiML that speaks a translated message to the caller.
+
+
+        Query parameters:
+
+
+        - ``translation_key``: required if ``announcement`` is not provided — the FTL message identifier to translate.
+
+        - ``announcement``: required if ``translation_key`` is not provided — the message to speak to the caller.
+
+        - ``language_code``: optional — BCP-47 / Django language code to use for
+
+        the translation and Twilio TTS voice. Defaults to the client''s configured
+
+        language when omitted.'
       tags:
       - v1
       security:
@@ -108,6 +130,8 @@ paths:
       responses:
         '200':
           description: No response body
+      summary: Voice announcement
+      x-summary-source: derived
 components:
   schemas:
     AdHocResponse:
@@ -130,6 +154,13 @@ components:
       - amount
       - payment_date
       - reference
+    PaymentUnsuccessful:
+      type: object
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
     AdHoc:
       type: object
       properties:
@@ -182,13 +213,6 @@ components:
       - electronic_commerce_indicator
       - single_use_token
       - supplier_business_code
-    PaymentUnsuccessful:
-      type: object
-      properties:
-        detail:
-          type: string
-      required:
-      - detail
   securitySchemes:
     AccountUserAPIKeyAuthentication:
       type: http

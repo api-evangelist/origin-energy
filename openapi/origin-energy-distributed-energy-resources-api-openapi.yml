@@ -365,6 +365,15 @@ paths:
       x-version: '1'
 components:
   schemas:
+    ErrorV2_meta:
+      description: Additional data for customised error codes.
+      properties:
+        urn:
+          description: The CDR error code URN which the application-specific error code extends. Mandatory if the error _code_ is an application-specific error rather than a standardised error code.
+          type: string
+      type: object
+      x-conditional:
+      - urn
     LinksPaginated:
       properties:
         self:
@@ -395,46 +404,73 @@ components:
       - prev
       - next
       - last
-    RequestServicePointIdListV1:
+    Links:
       properties:
-        data:
-          $ref: '#/components/schemas/RequestServicePointIdListV1_data'
-        meta:
-          $ref: '#/components/schemas/Meta'
+        self:
+          description: Fully qualified link that generated the current response document.
+          type: string
+          x-cds-type: URIString
       required:
-      - data
+      - self
       type: object
-    EnergyServicePointId:
-      description: A unique identifier for an Energy service point, generated according to [CDR ID Permanence](#id-permanence) requirements.
-      type: string
-      x-cds-type: ASCIIString
-    Meta:
-      type: object
-    MetaPaginated:
+    EnergyDerRecord_protectionMode:
+      description: Required only when the _hasCentralProtectionControl_ flag is set to `true`. One or more of the object fields will be provided to describe the protection modes in place.
       properties:
-        totalRecords:
-          description: The total number of records in the full set. See [pagination](#pagination).
-          type: integer
-          x-cds-type: NaturalNumber
-        totalPages:
-          description: The total number of pages in the full set. See [pagination](#pagination).
-          type: integer
-          x-cds-type: NaturalNumber
-      required:
-      - totalPages
-      - totalRecords
+        exportLimitKva:
+          description: Maximum amount of power (kVA) that may be exported from a connection point to the grid, as monitored by a control/relay function. An absent value indicates no limit.
+          type: number
+        underFrequencyProtection:
+          description: Protective function limit in Hz.
+          type: number
+        underFrequencyProtectionDelay:
+          description: Trip delay time in seconds.
+          type: number
+        overFrequencyProtection:
+          description: Protective function limit in Hz.
+          type: number
+        overFrequencyProtectionDelay:
+          description: Trip delay time in seconds.
+          type: number
+        underVoltageProtection:
+          description: Protective function limit in V.
+          type: number
+        underVoltageProtectionDelay:
+          description: Trip delay time in seconds.
+          type: number
+        overVoltageProtection:
+          description: Protective function limit in V.
+          type: number
+        overVoltageProtectionDelay:
+          description: Trip delay time in seconds.
+          type: number
+        sustainedOverVoltage:
+          description: Sustained over voltage.
+          type: number
+        sustainedOverVoltageDelay:
+          description: Sustained Over voltage protection delay in seconds.
+          type: number
+        frequencyRateOfChange:
+          description: Rate of change of frequency trip point (Hz/s).
+          type: number
+        voltageVectorShift:
+          description: Trip angle in degrees.
+          type: number
+        interTripScheme:
+          description: Description of the form of inter-trip (e.g., 'from local substation').
+          type: string
+        neutralVoltageDisplacement:
+          description: Trip voltage.
+          type: number
       type: object
-    EnergyDerDetailResponse:
+    RequestServicePointIdListV1_data:
       properties:
-        data:
-          $ref: '#/components/schemas/EnergyDerRecord'
-        links:
-          $ref: '#/components/schemas/Links'
-        meta:
-          $ref: '#/components/schemas/Meta'
+        servicePointIds:
+          description: Array of _servicePointId_ values to obtain data for.
+          items:
+            $ref: '#/components/schemas/EnergyServicePointId'
+          type: array
       required:
-      - data
-      - links
+      - servicePointIds
       type: object
     EnergyDerRecord_acConnections:
       properties:
@@ -491,6 +527,35 @@ components:
       - inverterSeries
       - inverterModelNumber
       - inverterDeviceCapacity
+    PrimaryErrorV1_allOf:
+      properties:
+        isSecondaryDataHolderError:
+          default: false
+          description: Indicates the error was propagated from a designated secondary data holder.
+          type: boolean
+      type: object
+    EnergyDerDetailResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/EnergyDerRecord'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      required:
+      - data
+      - links
+      type: object
+    EnergyDerListResponse_data:
+      properties:
+        derRecords:
+          description: Array of meter reads.
+          items:
+            $ref: '#/components/schemas/EnergyDerRecord'
+          type: array
+      required:
+      - derRecords
+      type: object
     ErrorV2:
       properties:
         code:
@@ -511,90 +576,50 @@ components:
       type: object
       x-conditional:
       - meta
-    EnergyDerRecord:
+    MetaPaginated:
       properties:
-        servicePointId:
-          allOf:
-          - $ref: '#/components/schemas/EnergyServicePointId'
-          description: Unique identifier for the service point.
-        approvedCapacity:
-          description: Approved small generating unit capacity as agreed with NSP in the connection agreement, expressed in kVA. Value of `0` indicates no DER record exists for the given _servicePointId_.
-          type: number
-        availablePhasesCount:
-          description: The number of phases available for the installation of DER. Acceptable values are `0`, `1`, `2` or `3`. Value of `0` indicates no DER record exists for the given _servicePointId_.
-          maximum: 3
-          minimum: 0
+        totalRecords:
+          description: The total number of records in the full set. See [pagination](#pagination).
           type: integer
           x-cds-type: NaturalNumber
-        installedPhasesCount:
-          description: The number of phases that DER is connected to. Acceptable values are `0`, `1`, `2` or `3`. Value of `0` indicates no DER record exists for the given _servicePointId_.
-          maximum: 3
-          minimum: 0
+        totalPages:
+          description: The total number of pages in the full set. See [pagination](#pagination).
           type: integer
           x-cds-type: NaturalNumber
-        islandableInstallation:
-          description: For identification of small generating units designed with the ability to operate in an islanded mode.
-          type: boolean
-        hasCentralProtectionControl:
-          default: false
-          description: For DER installations where NSPs specify the need for additional forms of protection above those inbuilt in an inverter. If absent then assumed to be `false`.
-          type: boolean
-        protectionMode:
-          $ref: '#/components/schemas/EnergyDerRecord_protectionMode'
-        acConnections:
-          items:
-            $ref: '#/components/schemas/EnergyDerRecord_acConnections'
-          type: array
       required:
-      - acConnections
-      - approvedCapacity
-      - availablePhasesCount
-      - installedPhasesCount
-      - islandableInstallation
-      - servicePointId
+      - totalPages
+      - totalRecords
       type: object
-      x-conditional:
-      - protectionMode
-    PrimaryErrorV1_allOf:
+    RequestServicePointIdListV1:
       properties:
-        isSecondaryDataHolderError:
-          default: false
-          description: Indicates the error was propagated from a designated secondary data holder.
-          type: boolean
+        data:
+          $ref: '#/components/schemas/RequestServicePointIdListV1_data'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      required:
+      - data
       type: object
+    EnergyServicePointId:
+      description: A unique identifier for an Energy service point, generated according to [CDR ID Permanence](#id-permanence) requirements.
+      type: string
+      x-cds-type: ASCIIString
     PrimaryErrorV1:
       allOf:
       - $ref: '#/components/schemas/PrimaryErrorV1_allOf'
       - $ref: '#/components/schemas/ErrorV2'
       type: object
-    Links:
+    EnergyDerListResponse:
       properties:
-        self:
-          description: Fully qualified link that generated the current response document.
-          type: string
-          x-cds-type: URIString
+        data:
+          $ref: '#/components/schemas/EnergyDerListResponse_data'
+        links:
+          $ref: '#/components/schemas/LinksPaginated'
+        meta:
+          $ref: '#/components/schemas/MetaPaginated'
       required:
-      - self
-      type: object
-    EnergyDerListResponse_data:
-      properties:
-        derRecords:
-          description: Array of meter reads.
-          items:
-            $ref: '#/components/schemas/EnergyDerRecord'
-          type: array
-      required:
-      - derRecords
-      type: object
-    PrimaryResponseErrorListV1:
-      properties:
-        errors:
-          description: List of errors.
-          items:
-            $ref: '#/components/schemas/PrimaryErrorV1'
-          type: array
-      required:
-      - errors
+      - data
+      - links
+      - meta
       type: object
     EnergyDerRecord_derDevices:
       properties:
@@ -647,87 +672,70 @@ components:
       type: object
       x-conditional:
       - nominalStorageCapacity
-    EnergyDerListResponse:
+    EnergyDerRecord:
       properties:
-        data:
-          $ref: '#/components/schemas/EnergyDerListResponse_data'
-        links:
-          $ref: '#/components/schemas/LinksPaginated'
-        meta:
-          $ref: '#/components/schemas/MetaPaginated'
-      required:
-      - data
-      - links
-      - meta
-      type: object
-    RequestServicePointIdListV1_data:
-      properties:
-        servicePointIds:
-          description: Array of _servicePointId_ values to obtain data for.
+        servicePointId:
+          allOf:
+          - $ref: '#/components/schemas/EnergyServicePointId'
+          description: Unique identifier for the service point.
+        approvedCapacity:
+          description: Approved small generating unit capacity as agreed with NSP in the connection agreement, expressed in kVA. Value of `0` indicates no DER record exists for the given _servicePointId_.
+          type: number
+        availablePhasesCount:
+          description: The number of phases available for the installation of DER. Acceptable values are `0`, `1`, `2` or `3`. Value of `0` indicates no DER record exists for the given _servicePointId_.
+          maximum: 3
+          minimum: 0
+          type: integer
+          x-cds-type: NaturalNumber
+        installedPhasesCount:
+          description: The number of phases that DER is connected to. Acceptable values are `0`, `1`, `2` or `3`. Value of `0` indicates no DER record exists for the given _servicePointId_.
+          maximum: 3
+          minimum: 0
+          type: integer
+          x-cds-type: NaturalNumber
+        islandableInstallation:
+          description: For identification of small generating units designed with the ability to operate in an islanded mode.
+          type: boolean
+        hasCentralProtectionControl:
+          default: false
+          description: For DER installations where NSPs specify the need for additional forms of protection above those inbuilt in an inverter. If absent then assumed to be `false`.
+          type: boolean
+        protectionMode:
+          $ref: '#/components/schemas/EnergyDerRecord_protectionMode'
+        acConnections:
           items:
-            $ref: '#/components/schemas/EnergyServicePointId'
+            $ref: '#/components/schemas/EnergyDerRecord_acConnections'
           type: array
       required:
-      - servicePointIds
-      type: object
-    ErrorV2_meta:
-      description: Additional data for customised error codes.
-      properties:
-        urn:
-          description: The CDR error code URN which the application-specific error code extends. Mandatory if the error _code_ is an application-specific error rather than a standardised error code.
-          type: string
+      - acConnections
+      - approvedCapacity
+      - availablePhasesCount
+      - installedPhasesCount
+      - islandableInstallation
+      - servicePointId
       type: object
       x-conditional:
-      - urn
-    EnergyDerRecord_protectionMode:
-      description: Required only when the _hasCentralProtectionControl_ flag is set to `true`. One or more of the object fields will be provided to describe the protection modes in place.
+      - protectionMode
+    PrimaryResponseErrorListV1:
       properties:
-        exportLimitKva:
-          description: Maximum amount of power (kVA) that may be exported from a connection point to the grid, as monitored by a control/relay function. An absent value indicates no limit.
-          type: number
-        underFrequencyProtection:
-          description: Protective function limit in Hz.
-          type: number
-        underFrequencyProtectionDelay:
-          description: Trip delay time in seconds.
-          type: number
-        overFrequencyProtection:
-          description: Protective function limit in Hz.
-          type: number
-        overFrequencyProtectionDelay:
-          description: Trip delay time in seconds.
-          type: number
-        underVoltageProtection:
-          description: Protective function limit in V.
-          type: number
-        underVoltageProtectionDelay:
-          description: Trip delay time in seconds.
-          type: number
-        overVoltageProtection:
-          description: Protective function limit in V.
-          type: number
-        overVoltageProtectionDelay:
-          description: Trip delay time in seconds.
-          type: number
-        sustainedOverVoltage:
-          description: Sustained over voltage.
-          type: number
-        sustainedOverVoltageDelay:
-          description: Sustained Over voltage protection delay in seconds.
-          type: number
-        frequencyRateOfChange:
-          description: Rate of change of frequency trip point (Hz/s).
-          type: number
-        voltageVectorShift:
-          description: Trip angle in degrees.
-          type: number
-        interTripScheme:
-          description: Description of the form of inter-trip (e.g., 'from local substation').
-          type: string
-        neutralVoltageDisplacement:
-          description: Trip voltage.
-          type: number
+        errors:
+          description: List of errors.
+          items:
+            $ref: '#/components/schemas/PrimaryErrorV1'
+          type: array
+      required:
+      - errors
       type: object
+    Meta:
+      type: object
+  requestBodies:
+    RequestServicePointIds:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestServicePointIdListV1'
+      description: Request payload containing a list of _servicePointId_ values to obtain data for.
+      required: true
   headers:
     XV:
       description: The [payload version](#response-headers) that the endpoint has responded with.
@@ -743,11 +751,3 @@ components:
       schema:
         type: string
       style: simple
-  requestBodies:
-    RequestServicePointIds:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RequestServicePointIdListV1'
-      description: Request payload containing a list of _servicePointId_ values to obtain data for.
-      required: true

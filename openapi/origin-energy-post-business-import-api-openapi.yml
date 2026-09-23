@@ -16,7 +16,7 @@ paths:
     post:
       operationId: V1 Create Business Payment Instruction
       description: Create a payment instruction for a business after import.
-      summary: Create a payment instruction for a business after import.
+      summary: Create a payment instruction for a business after import
       tags:
       - post_business_import
       requestBody:
@@ -101,6 +101,28 @@ paths:
       x-doc-alerts: []
 components:
   schemas:
+    BusinessPaymentInstructionAccount:
+      type: object
+      properties:
+        external_account_number:
+          type: string
+          description: <p>The account number in the source system. This, along with the <code>import_supplier</code>, will be used to find the account in Kraken.</p>
+      required:
+      - external_account_number
+    CreateBusinessPaymentInstructionResponse:
+      type: object
+      properties:
+        external_business_identifier:
+          type: string
+          description: <p>The unique identifier of a business in the external system. This id is used to link an imported business in Kraken to the external system</p>
+          maxLength: 128
+        reference:
+          type: string
+          description: <p>The reference of the mandate as known by the vendor.</p>
+          maxLength: 128
+      required:
+      - external_business_identifier
+      - reference
     CreateBusinessPaymentInstructionError:
       type: object
       properties:
@@ -227,28 +249,6 @@ components:
         description: Validate whether or not an import supplier is open for further data migration.
         possible_errors:
         - import_supplier_migration_not_ongoing
-    CreateBusinessPaymentInstructionResponse:
-      type: object
-      properties:
-        external_business_identifier:
-          type: string
-          description: <p>The unique identifier of a business in the external system. This id is used to link an imported business in Kraken to the external system</p>
-          maxLength: 128
-        reference:
-          type: string
-          description: <p>The reference of the mandate as known by the vendor.</p>
-          maxLength: 128
-      required:
-      - external_business_identifier
-      - reference
-    BusinessPaymentInstructionAccount:
-      type: object
-      properties:
-        external_account_number:
-          type: string
-          description: <p>The account number in the source system. This, along with the <code>import_supplier</code>, will be used to find the account in Kraken.</p>
-      required:
-      - external_account_number
   securitySchemes:
     DRFKrakenTokenAuthentication:
       type: apiKey
