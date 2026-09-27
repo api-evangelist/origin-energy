@@ -1,36 +1,25 @@
 openapi: 3.2.0
 info:
-  title: Kraken External Client Healthcheck API
+  title: Kraken Energetiq Public Key API
   version: v1
 servers:
 - url: https://api.origin-kraken.energy/v1
   description: Base URL declared by the provider in apis.yml (roadmap#122).
 tags:
-- name: external-client-healthcheck
+- name: Energetiq Public Key
 paths:
-  /external-client-healthcheck/:
+  /v1/energetiq-public-key/:
     get:
-      operationId: ExternalClientHealthCheck
-      description: 'Healthcheck endpoint for external clients.
-
-
-        When called, this API will return a 200 status and increment a metric.
-
-
-        This endpoint allows clients to implement a healthcheck that is also supported
-
-        by monitoring on the Kraken side.'
+      operationId: GetEnergetiqPublicKey
       tags:
-      - external-client-healthcheck
-      security:
-      - {}
+      - Energetiq Public Key
       responses:
         '200':
           description: No response body
-      summary: External client health check
+      summary: Get energetiq public key
       x-summary-source: derived
       x-operation-id-source: normalized
-      x-operation-id-original: External Client Health Check
+      x-operation-id-original: Get Energetiq Public Key
 components:
   securitySchemes:
     AccountUserAPIKeyAuthentication:

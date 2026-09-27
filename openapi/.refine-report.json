@@ -22,14 +22,18 @@
     "origin-energy-post-account-import-api-openapi.yml",
     "origin-energy-post-business-import-api-openapi.yml",
     "origin-energy-query-api-openapi.yml",
+    "origin-energy-accounts-api-openapi.yml",
+    "origin-energy-energetiq-public-key-api-openapi.yml",
+    "origin-energy-orders-api-openapi.yml",
+    "origin-energy-unbundled-network-charges-api-openapi.yml",
+    "origin-energy-voice-api-openapi.yml",
     "origin-energy-data-import-api-openapi.yml",
     "origin-energy-external-client-healthcheck-api-openapi.yml",
-    "origin-energy-external-events-api-openapi.yml",
-    "origin-energy-v1-api-openapi.yml",
-    "origin-energy-v2-api-openapi.yml",
-    "origin-energy-orders-api-openapi.yml"
+    "origin-energy-external-events-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 2 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -38,13 +42,24 @@
     "consumer-data-standards-energy-api-openapi.json: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
     "origin-energy-kraken-data-import-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
     "origin-energy-kraken-default-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "origin-energy-kraken-default-openapi.yml: tagged paths POST /v1/accounts/{account_number}/payments/ad-hoc/ -> Accounts",
+    "origin-energy-kraken-default-openapi.yml: tagged paths GET /v1/energetiq-public-key/ -> Energetiq Public Key",
+    "origin-energy-kraken-default-openapi.yml: tagged paths GET /v1/unbundled-network-charges/energetiq-public-key/ -> Unbundled Network Charges",
+    "origin-energy-kraken-default-openapi.yml: tagged paths POST /v1/voice/twilio/enqueue-audio/ -> Voice",
+    "origin-energy-kraken-default-openapi.yml: tagged paths GET /v1/voice/twilio/voice-announcement/ -> Voice",
+    "origin-energy-kraken-default-openapi.yml: tagged paths GET /v2/orders/schema/ -> Orders",
+    "origin-energy-kraken-default-openapi.yml: declared missing tag: Accounts",
+    "origin-energy-kraken-default-openapi.yml: declared missing tag: Energetiq Public Key",
+    "origin-energy-kraken-default-openapi.yml: declared missing tag: Orders",
+    "origin-energy-kraken-default-openapi.yml: declared missing tag: Unbundled Network Charges",
+    "origin-energy-kraken-default-openapi.yml: declared missing tag: Voice",
     "origin-energy-kraken-default-openapi.yml: declared missing tag: data-import",
     "origin-energy-kraken-default-openapi.yml: declared missing tag: external-client-healthcheck",
     "origin-energy-kraken-default-openapi.yml: declared missing tag: external-events",
-    "origin-energy-kraken-default-openapi.yml: declared missing tag: v1",
-    "origin-energy-kraken-default-openapi.yml: declared missing tag: v2",
     "origin-energy-kraken-orders-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "apis.yml register: already-registered"
+    "tag 'Orders' spans 2 source specs (origin-energy-kraken-default-openapi.yml, origin-energy-kraken-orders-openapi.yml): per-path servers applied",
+    "superseded outputs removed: origin-energy-v1-api-openapi.yml, origin-energy-v2-api-openapi.yml",
+    "apis.yml register: written (+4 apis, 25 total)"
   ],
   "skipped": [
     "origin-energy-account-import-api-openapi.yml: previously refined output, superseded by openapi/_original/",

@@ -67,9 +67,10 @@ specificationVersion: '0.23'
 apis:
 - aid: origin-energy:origin-energy-kraken-graphql-api
   name: Origin Energy Kraken GraphQL API
-  description: The primary Kraken platform API for Origin Energy accounts, agreements, meter points, readings,
-    payments, quotes and devices. Served at https://api.origin-kraken.energy/v1/graphql/ with a browser
-    GraphQL IDE at the same URL. Verified on 2026-07-27 — an anonymous POST with the query {__schema{queryType{name}}}
+  description: >-
+    The primary Kraken platform API for Origin Energy accounts, agreements, meter points, readings, payments,
+    quotes and devices. Served at https://api.origin-kraken.energy/v1/graphql/ with a browser GraphQL
+    IDE at the same URL. Verified on 2026-07-27 — an anonymous POST with the query {__schema{queryType{name}}}
     returned HTTP 200 and introspection is enabled, while data queries return the KT-CT-1112 AUTHORIZATION
     error until a bearer token is supplied. The documented usage constraints are a per-request complexity
     limit of 550 and an hourly points allowance, with cursor pagination capped at first=100.
@@ -100,8 +101,8 @@ apis:
     url: https://developer.origin-kraken.energy/graphql/reference/error-codes/
   - type: GraphQL
     url: graphql/origin-energy-kraken.graphql
-    name: Kraken GraphQL SDL harvested by anonymous introspection — 187 queries, 374 mutations, 2,407
-      types
+    name: >-
+      Kraken GraphQL SDL harvested by anonymous introspection — 187 queries, 374 mutations, 2,407 types
   - type: ToolCrosswalk
     url: mcp/origin-energy-tool-crosswalk.yml
   - type: ErrorCatalog
@@ -123,13 +124,14 @@ apis:
     name: Operate Origin Energy customer accounts through the Kraken GraphQL API
 - aid: origin-energy:origin-energy-kraken-events
   name: Origin Energy Kraken External Events
-  description: Origin's publicly readable Kraken External Events reference, cataloguing several hundred
-    versioned event types emitted by the platform. Confirmed HTTP 200 on 2026-07-27. The catalogue is
-    explicitly Australian-market shaped, carrying National Electricity Market industry events such as
-    aus.industry.electricity.cats_notification.received-v1, aus.industry.electricity.register.network_tariff_code.changed-v1,
-    aus.industry.electricity.life_support_request.received-v1 and aus.electricity.move-in.completed-v1
-    alongside generic account, agreement and approval events. The machine-readable schema endpoint (https://api.origin-kraken.energy/external-events/schema/)
-    returned HTTP 403 anonymously, so no event contract could be harvested.
+  description: >-
+    Origin's publicly readable Kraken External Events reference, cataloguing several hundred versioned
+    event types emitted by the platform. Confirmed HTTP 200 on 2026-07-27. The catalogue is explicitly
+    Australian-market shaped, carrying National Electricity Market industry events such as aus.industry.electricity.cats_notification.received-v1,
+    aus.industry.electricity.register.network_tariff_code.changed-v1, aus.industry.electricity.life_support_request.received-v1
+    and aus.electricity.move-in.completed-v1 alongside generic account, agreement and approval events.
+    The machine-readable schema endpoint (https://api.origin-kraken.energy/external-events/schema/) returned
+    HTTP 403 anonymously, so no event contract could be harvested.
   humanURL: https://developer.origin-kraken.energy/events/
   tags:
   - Kraken
@@ -154,8 +156,9 @@ apis:
   baseURL: https://api.origin-kraken.energy/external-events
 - aid: origin-energy:origin-energy-kraken-auth-api
   name: Origin Energy Kraken Authorization Server
-  description: The OpenID Connect authorisation server issuing the bearer tokens used by both the Kraken
-    REST and GraphQL APIs. Its discovery document at https://auth.origin-kraken.energy/.well-known/openid-configuration
+  description: >-
+    The OpenID Connect authorisation server issuing the bearer tokens used by both the Kraken REST and
+    GraphQL APIs. Its discovery document at https://auth.origin-kraken.energy/.well-known/openid-configuration
     was retrieved anonymously with HTTP 200 on 2026-07-27 and is harvested verbatim here. Issuer https://auth.origin-kraken.energy/token/,
     authorization /authorize/, token /token/, userinfo /userinfo/, revocation /revoke-token/, end session
     /logout/, JWKS /.well-known/jwks.json. Client authentication is client_secret_post or client_secret_basic,
@@ -203,7 +206,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -246,7 +250,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -288,7 +293,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -330,7 +336,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -374,7 +381,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -416,7 +424,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -458,7 +467,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -500,7 +510,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -542,7 +553,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -584,7 +596,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -626,7 +639,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -668,7 +682,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -695,7 +710,8 @@ apis:
     url: https://developer.origin-kraken.energy/rest/guides/data-import/
 - aid: origin-energy:origin-energy-external-client-healthcheck-api
   name: Origin Energy External Client Healthcheck API
-  description: The external-client-healthcheck API from Origin Energy — 1 operation(s) for external-client-healthcheck.
+  description: >-
+    The external-client-healthcheck API from Origin Energy — 1 operation(s) for external-client-healthcheck.
   humanURL: https://consumerdatastandardsaustralia.github.io/standards/#energy-apis
   baseURL: https://api.mydata.cdr.originenergy.com.au
   tags:
@@ -710,7 +726,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -752,7 +769,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -796,7 +814,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -839,7 +858,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -882,7 +902,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -926,7 +947,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -951,16 +973,16 @@ apis:
     url: https://developer.origin-kraken.energy/rest/guides/api-basics/
   - type: Documentation
     url: https://developer.origin-kraken.energy/rest/guides/data-import/
-- aid: origin-energy:origin-energy-v1-api
-  name: Origin Energy V1 API
-  description: The v1 API from Origin Energy — 5 operation(s) for v1.
-  humanURL: https://consumerdatastandardsaustralia.github.io/standards/#energy-apis
-  baseURL: https://api.mydata.cdr.originenergy.com.au
+- aid: origin-energy:origin-energy-accounts-api
+  name: Origin Energy Accounts API
+  description: The Accounts API from Origin Energy — 1 operation(s) for accounts.
+  humanURL: https://developer.origin-kraken.energy/graphql/
+  baseURL: https://api.origin-kraken.energy/v1/graphql/
   tags:
-  - v1
+  - Accounts
   properties:
   - type: OpenAPI
-    url: openapi/origin-energy-v1-api-openapi.yml
+    url: openapi/origin-energy-accounts-api-openapi.yml
   - type: Documentation
     url: https://consumerdatastandardsaustralia.github.io/standards/#energy-apis
   - type: APIReference
@@ -968,7 +990,8 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
@@ -993,18 +1016,17 @@ apis:
     url: https://developer.origin-kraken.energy/rest/guides/api-basics/
   - type: Documentation
     url: https://developer.origin-kraken.energy/rest/guides/data-import/
-- aid: origin-energy:origin-energy-v2-api
-  name: Origin Energy V2 API
-  description: The v2 API from Origin Energy — 1 operation(s) for v2.
-  humanURL: https://consumerdatastandardsaustralia.github.io/standards/#energy-apis
-  baseURL: https://api.mydata.cdr.originenergy.com.au
+- aid: origin-energy:origin-energy-energetiq-public-key-api
+  name: Origin Energy Energetiq Public Key API
+  description: >-
+    The Energetiq Public Key API from Origin Energy — 1 operation(s) for energetiq public key.
+  humanURL: https://developer.origin-kraken.energy/graphql/
+  baseURL: https://api.origin-kraken.energy/v1/graphql/
   tags:
-  - v2
-  tags_raw:
-  - v2
+  - Energetiq Public Key
   properties:
   - type: OpenAPI
-    url: openapi/origin-energy-v2-api-openapi.yml
+    url: openapi/origin-energy-energetiq-public-key-api-openapi.yml
   - type: Documentation
     url: https://consumerdatastandardsaustralia.github.io/standards/#energy-apis
   - type: APIReference
@@ -1012,7 +1034,95 @@ apis:
   - type: Registration
     url: https://www.cdr.gov.au/for-providers/accreditation
   - type: Documentation
-    url: https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+  - type: Authentication
+    url: authentication/origin-energy-authentication.yml
+  - type: ErrorCatalog
+    url: errors/origin-energy-problem-types.yml
+  - type: Conventions
+    url: conventions/origin-energy-conventions.yml
+  - type: DataModel
+    url: data-model/origin-energy-data-model.yml
+  - type: Documentation
+    url: https://consumerdatastandardsaustralia.github.io/standards/#discovery-apis
+  - type: StatusPage
+    url: https://public.mydata.cdr.originenergy.com.au/cds-au/v1/discovery/status
+  - type: Lifecycle
+    url: lifecycle/origin-energy-lifecycle.yml
+  - type: APIReference
+    url: https://cdr.energymadeeasy.gov.au/origin/cds-au/v1/energy/plans
+  - type: Documentation
+    url: https://developer.origin-kraken.energy/rest/
+  - type: APIReference
+    url: https://developer.origin-kraken.energy/rest/reference/
+  - type: GettingStarted
+    url: https://developer.origin-kraken.energy/rest/guides/api-basics/
+  - type: Documentation
+    url: https://developer.origin-kraken.energy/rest/guides/data-import/
+- aid: origin-energy:origin-energy-unbundled-network-charges-api
+  name: Origin Energy Unbundled Network Charges API
+  description: >-
+    The Unbundled Network Charges API from Origin Energy — 1 operation(s) for unbundled network charges.
+  humanURL: https://developer.origin-kraken.energy/graphql/
+  baseURL: https://api.origin-kraken.energy/v1/graphql/
+  tags:
+  - Unbundled Network Charges
+  properties:
+  - type: OpenAPI
+    url: openapi/origin-energy-unbundled-network-charges-api-openapi.yml
+  - type: Documentation
+    url: https://consumerdatastandardsaustralia.github.io/standards/#energy-apis
+  - type: APIReference
+    url: https://consumerdatastandardsaustralia.github.io/standards/#cdr-energy-api
+  - type: Registration
+    url: https://www.cdr.gov.au/for-providers/accreditation
+  - type: Documentation
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
+  - type: Authentication
+    url: authentication/origin-energy-authentication.yml
+  - type: ErrorCatalog
+    url: errors/origin-energy-problem-types.yml
+  - type: Conventions
+    url: conventions/origin-energy-conventions.yml
+  - type: DataModel
+    url: data-model/origin-energy-data-model.yml
+  - type: Documentation
+    url: https://consumerdatastandardsaustralia.github.io/standards/#discovery-apis
+  - type: StatusPage
+    url: https://public.mydata.cdr.originenergy.com.au/cds-au/v1/discovery/status
+  - type: Lifecycle
+    url: lifecycle/origin-energy-lifecycle.yml
+  - type: APIReference
+    url: https://cdr.energymadeeasy.gov.au/origin/cds-au/v1/energy/plans
+  - type: Documentation
+    url: https://developer.origin-kraken.energy/rest/
+  - type: APIReference
+    url: https://developer.origin-kraken.energy/rest/reference/
+  - type: GettingStarted
+    url: https://developer.origin-kraken.energy/rest/guides/api-basics/
+  - type: Documentation
+    url: https://developer.origin-kraken.energy/rest/guides/data-import/
+- aid: origin-energy:origin-energy-voice-api
+  name: Origin Energy Voice API
+  description: The Voice API from Origin Energy — 2 operation(s) for voice.
+  humanURL: https://developer.origin-kraken.energy/graphql/
+  baseURL: https://api.origin-kraken.energy/v1/graphql/
+  tags:
+  - Voice
+  properties:
+  - type: OpenAPI
+    url: openapi/origin-energy-voice-api-openapi.yml
+  - type: Documentation
+    url: https://consumerdatastandardsaustralia.github.io/standards/#energy-apis
+  - type: APIReference
+    url: https://consumerdatastandardsaustralia.github.io/standards/#cdr-energy-api
+  - type: Registration
+    url: https://www.cdr.gov.au/for-providers/accreditation
+  - type: Documentation
+    url: >-
+      https://www.originenergy.com.au/help-support/account-management/consumer-data-right-cdr/consumer-data-right-cdr
   - type: Authentication
     url: authentication/origin-energy-authentication.yml
   - type: ErrorCatalog
