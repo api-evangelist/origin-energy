@@ -73,6 +73,13 @@ paths:
       x-operation-id-original: Ad Hoc
 components:
   schemas:
+    PaymentUnsuccessful:
+      type: object
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
     AdHocResponse:
       type: object
       properties:
@@ -145,13 +152,6 @@ components:
       - electronic_commerce_indicator
       - single_use_token
       - supplier_business_code
-    PaymentUnsuccessful:
-      type: object
-      properties:
-        detail:
-          type: string
-      required:
-      - detail
   securitySchemes:
     AccountUserAPIKeyAuthentication:
       type: http

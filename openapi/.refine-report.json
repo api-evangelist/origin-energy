@@ -31,9 +31,7 @@
     "origin-energy-external-client-healthcheck-api-openapi.yml",
     "origin-energy-external-events-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 2 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -58,11 +56,11 @@
     "origin-energy-kraken-default-openapi.yml: declared missing tag: external-events",
     "origin-energy-kraken-orders-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
     "tag 'Orders' spans 2 source specs (origin-energy-kraken-default-openapi.yml, origin-energy-kraken-orders-openapi.yml): per-path servers applied",
-    "superseded outputs removed: origin-energy-v1-api-openapi.yml, origin-energy-v2-api-openapi.yml",
-    "apis.yml register: written (+4 apis, 25 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "origin-energy-account-import-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "origin-energy-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "origin-energy-business-import-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "origin-energy-data-holder-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "origin-energy-data-holder-operations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
@@ -70,6 +68,7 @@
     "origin-energy-distributed-energy-resources-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "origin-energy-electricity-service-points-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "origin-energy-electricity-usage-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "origin-energy-energetiq-public-key-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "origin-energy-energy-account-balances-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "origin-energy-energy-account-billing-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "origin-energy-energy-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
@@ -80,7 +79,7 @@
     "origin-energy-post-account-import-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "origin-energy-post-business-import-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "origin-energy-query-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "origin-energy-v1-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "origin-energy-v2-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "origin-energy-unbundled-network-charges-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "origin-energy-voice-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }
