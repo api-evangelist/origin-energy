@@ -979,6 +979,8 @@ apis:
   humanURL: https://developer.origin-kraken.energy/graphql/
   baseURL: https://api.origin-kraken.energy/v1/graphql/
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
