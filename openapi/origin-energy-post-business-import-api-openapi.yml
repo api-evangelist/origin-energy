@@ -103,14 +103,6 @@ paths:
       x-operation-id-original: V1 Create Business Payment Instruction
 components:
   schemas:
-    BusinessPaymentInstructionAccount:
-      type: object
-      properties:
-        external_account_number:
-          type: string
-          description: <p>The account number in the source system. This, along with the <code>import_supplier</code>, will be used to find the account in Kraken.</p>
-      required:
-      - external_account_number
     CreateBusinessPaymentInstructionResponse:
       type: object
       properties:
@@ -251,6 +243,14 @@ components:
         description: Validate whether or not an import supplier is open for further data migration.
         possible_errors:
         - import_supplier_migration_not_ongoing
+    BusinessPaymentInstructionAccount:
+      type: object
+      properties:
+        external_account_number:
+          type: string
+          description: <p>The account number in the source system. This, along with the <code>import_supplier</code>, will be used to find the account in Kraken.</p>
+      required:
+      - external_account_number
   securitySchemes:
     DRFKrakenTokenAuthentication:
       type: apiKey

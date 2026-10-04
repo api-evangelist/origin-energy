@@ -60,22 +60,7 @@ paths:
       x-operation-id-original: V1 Create Business
 components:
   schemas:
-    CustomerAlternativeNumber:
-      type: object
-      properties:
-        phone_number:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: <p>A customer's alternative phone number.</p>
-          maxLength: 32
-          x-validators:
-          - name: Validate phone number
-            description: Validates that a phone number conforms to the norms of the region from which the migration is taking place.
-            possible_errors:
-            - invalid_phone_number
-    RateGroupEligibilityConfiguration:
+    CharacteristicOverrideConfiguration:
       type: object
       properties:
         term_type:
@@ -85,425 +70,37 @@ components:
           type: boolean
           default: true
           description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        schedules:
+        overrides:
           type: array
           items:
-            $ref: '#/components/schemas/RateGroupEligibilitySchedule'
-          description: <p>Rate group eligibility schedules.</p>
-        time_series_specification_schedules:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimeSeriesSpecificationEligibilitySchedule'
-          description: <p>Shared rate eligibility schedules.</p>
+            $ref: '#/components/schemas/CharacteristicOverride'
+          description: <p>The characterisctics associated with the characterisctic override.</p>
       required:
-      - schedules
+      - overrides
       - term_type
-      - time_series_specification_schedules
-    CardAndBankAccountPaymentInstruction:
+    CustomerUserDetail:
       type: object
       properties:
-        bank_account:
-          allOf:
-          - $ref: '#/components/schemas/PaymentInstructionBankAccount'
-          description: <p>Bank account payment instruction details.</p>
-        card:
-          allOf:
-          - $ref: '#/components/schemas/PaymentInstructionCard'
-          description: <p>Card payment instruction details.</p>
-        customer_reference:
-          type: string
-          description: <p>The customer reference of the payment instruction.</p><p>Although not required for payment instructions to take payments, if provided it keeps Kraken's data in sync with the customer's account in the payment vendor's systems.</p>
-          maxLength: 512
-        instruction_identifier:
-          type: string
-          description: <p>Unique identifier for the payment instruction. Used for cross referencing the payment instruction within other parts of the payload.</p>
-        ledger_code:
-          type: string
-          description: <p>The code of the relevant Kraken ledger type for the payment instruction. This code must exist in Kraken.</p>
-          x-validators:
-          - name: Validate ledger code
-            description: Validates that the ledger code provided in the payload matches an available ledger type in Kraken.
-            possible_errors:
-            - ledger_code_does_not_exist
-        reference:
-          type: string
-          description: <p>The reference of the mandate as known by the vendor.</p>
-          maxLength: 512
-        type:
+        namespace:
           enum:
-          - BPAY
-          - CARD
-          - CUSTOM
-          - DIRECT_DEBIT
-          - GMO_REFUND
-          - PAYMENT_SLIP
+          - external_user_id
           type: string
-          x-spec-enum-id: 601d0b035869d4dd
-          description: <p>The payment type of the payment instruction.</p>
+          x-spec-enum-id: 6bb07f5044ea9b8a
+          description: <p>The namespace of the customer user detail.</p>
           x-enum-descriptions:
-            BPAY: BPAY
-            CARD: Card
-            CUSTOM: Custom
-            DIRECT_DEBIT: Direct Debit
-            GMO_REFUND: GMO Refund
-            PAYMENT_SLIP: Payment slip
-        use_for_scheduled_payments:
-          type: boolean
-          description: <p>Whether this payment instruction should be used for scheduled payments on a given ledger. If true, this instruction will be set as the payment method for the account's payment schedule.</p>
-        valid_from:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: <p>The date from which the payment instruction is valid.</p>
-        vendor:
-          enum:
-          - WESTPAC
-          type: string
-          x-spec-enum-id: 19baa89b6ef9d00c
-          description: <p>The vendor for the payment instruction.</p>
-          x-enum-descriptions:
-            WESTPAC: Westpac
+            external_user_id: external_user_id
+        value:
+          description: <p>The value of the customer user detail.</p>
       required:
-      - reference
-      - type
-      - vendor
+      - namespace
+      - value
       x-validators:
-      - name: null
-        description: null
+      - name: Validate user details
+        description: Validates that the user detail namespace and value are allowed for the customer. The user detail namespace (the key in the JSON object) must already have been set up in Kraken. The value (the value in the JSON object) must be the correct data type.
         possible_errors:
-        - incomplete_payments_not_enabled
-      - name: Validate card details are provided for card payment instruction
-        description: Validate that if the payment instruction is of type CARD then card payment details are provided in the payload. This may not be enforced if client is using cashflow instructions as card details are obtained from the vendor in this case.
-        possible_errors:
-        - card_details_not_provided_for_card_payment_instruction
-    BespokeRateItem:
-      type: object
-      properties:
-        identifier:
-          type:
-          - string
-          - 'null'
-          description: <p>A unique identifier for the bespoke rate item.</p>
-        price_per_unit:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,11}(?:\.\d{0,8})?$
-          description: <p>The price per unit of the bespoke rate.</p>
-        rate_specification_code:
-          type: string
-          description: <p>The rate specification code for the bespoke rate.</p>
-        rate_specification_type:
-          enum:
-          - PRODUCT_RATE
-          - SHARED_RATE
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 94c4191a865cda34
-          default: PRODUCT_RATE
-          description: <p>The rate specification type for the bespoke rate.</p>
-          x-enum-descriptions:
-            PRODUCT_RATE: Product rate
-            SHARED_RATE: Shared rate
-            None: None
-        variant_profile:
-          allOf:
-          - $ref: '#/components/schemas/VariantProfile'
-          description: <p>The variant profile which the rate applies to.</p>
-      required:
-      - price_per_unit
-      - rate_specification_code
-      - variant_profile
-    TaxAdjustmentConfiguration:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        adjustments:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupplyPointTaxAdjustment'
-          description: <p>A list of tax adjustments for supply points.</p>
-          minItems: 0
-          x-validators:
-          - name: Validate tax adjustments do not overlap
-            description: Validate that tax adjustments for the same supply point, adjustment type, tax category, and tax subcategory do not have overlapping effective periods.
-            possible_errors:
-            - overlapping_tax_adjustments
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-      required:
-      - adjustments
-      - term_type
-    TimeSeriesSpecificationEligibilitySchedule:
-      type: object
-      properties:
-        effective_period:
-          allOf:
-          - $ref: '#/components/schemas/EffectivePeriod'
-          description: <p>The effective period of the schedule.</p>
-        is_eligible:
-          type: boolean
-          description: <p>Whether the rate group is eligible for charging to the customer.</p>
-        product_code:
-          type: string
-          description: <p>Product code. </p>
-          x-validators:
-          - name: Validate product code exists
-            description: Validate that the product code exists in Kraken.
-            possible_errors:
-            - product_code_does_not_exist
-        supply_point_identifier:
-          type: string
-          description: <p>Optional supply point identifier to restrict this schedule to a specific supply point.</p>
-        time_series_specification_code:
-          type: string
-          description: <p>The unique shared rate code for the product.</p>
-      required:
-      - effective_period
-      - is_eligible
-      - product_code
-      - time_series_specification_code
-      x-validators:
-      - name: data-import--validation--shared-rate-exists-for-product
-        description: Validate that the shared rate code provided matches the shared rate for the product with the provided product code.
-        possible_errors:
-        - product_specification_not_found_for_product
-        - time_series_not_found_for_product
-    ProductRateOverrideConfiguration:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        indexation_options:
-          allOf:
-          - $ref: '#/components/schemas/IndexationOption'
-          description: <p>The indexation options for the product rate override.</p>
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        schedules:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductRateOverrideSchedule'
-          description: <p>The schedule associated with the product rate override.</p>
-      required:
-      - schedules
-      - term_type
-    PortfolioSettings:
-      type: object
-      properties:
-        collective_billing:
-          type: boolean
-          default: false
-          description: <p>Set all accounts on the portfolio to be billed collectively. This value can only be provided if the account is the portfolio lead account.</p>
-        collective_payments:
-          type: boolean
-          default: false
-          description: <p>Set all accounts on the portfolio to pay collectively. This value can only be provided if the account is the portfolio lead account.</p>
-        delegate_billing_schedule_to_children:
-          type: boolean
-          default: false
-          description: <p>When using collective billing, use the child account's billing options to determine when we charge and prepare billing documents (as opposed to using the lead account's options). This value can only be provided if the account is the portfolio lead account.</p>
-        send_collective_bill_constituent_messages:
-          type: boolean
-          default: false
-          description: <p>When using collective billing, send collective bill constituent messages to each member of the collective bill. This value can only be provided if the account is the portfolio lead account.</p>
-    BusinessContract:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: <p>The contract's unique identifier.</p>
-          x-validators:
-          - name: Validates that a contract with the given identifier does not exist
-            description: Validates that there is not an existing contract in Kraken with the same identifier provided in the payload.
-            possible_errors:
-            - contract_with_identifier_exists
-        sales_record:
-          allOf:
-          - $ref: '#/components/schemas/ContractSalesRecord'
-          description: <p>Sales record details about the contract.</p>
-        signed_at_date:
-          type: string
-          format: date
-          description: <p>The date on which the contract was signed.</p>
-        valid_from_date:
-          type: string
-          format: date
-          description: '<p>The date from which the contract is valid. This is an inclusive date. Example: If <code>valid_from</code> is October 1, 2024, then the contract is valid on October 1, 2024 and following dates.</p>'
-        valid_to_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: '<p>The date on which the contract expires. This is an exclusive date. Example: If <code>valid_to</code> is October 1, 2025, then the contract is not valid on October 1, 2025 or following dates.</p>'
-        versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContractVersion'
-          description: <p> The versions of this contract, each version is a collection of terms and the date they are applicable. Only two versions can be provided, one which starts on the same date as the contract is valid from and one other future dated version to be scheduled.</p>
-      required:
-      - identifier
-      - signed_at_date
-      - valid_from_date
-      x-validators:
-      - name: Validate that contract versions include a version for the current terms
-        description: Validate that the earliest version in the list of contract versions provided has an <code>applicable_at_date</code> that is equal to the contract <code>valid_from_date</code>.
-        possible_errors:
-        - contract_versions_does_not_include_current
-    IndexationOption:
-      type: object
-      properties:
-        escalation_start_date:
-          type: string
-          format: date
-          description: <p>Date the indexation applies from.</p>
-        index_code:
-          type: string
-          description: <p>The code for the relevant index.</p>
-      required:
-      - escalation_start_date
-      - index_code
-    MinimumContractLength:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        contract_identifier:
-          type: string
-          description: <p>Unique identifier of the contract.</p>
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        length:
-          type: integer
-          minimum: 1
-          description: <p>Minimum length of the contract.</p>
-        unit_of_time:
-          enum:
-          - WEEK
-          - MONTH
-          - YEAR
-          type: string
-          x-spec-enum-id: 2dd8361d760ce9df
-          description: <p>Unit of time used to measure the length of the contract.</p>
-          x-enum-descriptions:
-            WEEK: Week
-            MONTH: Month
-            YEAR: Year
-      required:
-      - contract_identifier
-      - length
-      - term_type
-      - unit_of_time
-    Note:
-      type: object
-      properties:
-        body:
-          type: string
-          description: <p>The body of the note. Should include who/what created the note if this is required.</p>
-        created_at:
-          type: string
-          format: date-time
-          description: <p>The date and time the note was created.</p>
-        document_paths:
-          type: array
-          items:
-            $ref: '#/components/schemas/NoteDocument'
-          description: <p>A list of relative paths in S3 for documents to be attached to the note.</p><p>More details on document path parameters can be found <a href="/rest/guides/data-import/basics#document-paths">here</a>.</p>
-        external_id:
-          type: string
-          description: <p>Unique identifier for this note to avoid duplicate entries.</p>
-        is_archived:
-          type: boolean
-          description: <p>If set to true, this will archive the note in the Kraken account support site page.</p>
-        is_pinned:
-          type: boolean
-          description: <p>If set to true, this will pin the note to the top of the Kraken account support site page.</p>
-        unpin_at:
-          type: string
-          format: date-time
-          description: <p>When the pinned note should be unpinned. Has to be later than <code>created_at</code> if this is provided. Has no effect if the note is not pinned.</p>
-      x-validators:
-      - name: Validate note body or document paths provided
-        description: Validate that at least a note body or document paths are provided.
-        possible_errors:
-        - note_body_or_document_path_not_found
-      - name: Validate note created at is equal to or before unpin at
-        description: Validate that the note's created at date is equal to or before the unpin at date if both are provided.
-        possible_errors:
-        - note_unpin_at_earlier_than_creation_date
-    AusEEPAExportContractedVolumeConfiguration:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        periods:
-          type: array
-          items:
-            $ref: '#/components/schemas/AusEEPAExportContractedVolumePeriod'
-          description: <p>A list of EEPA export contracted volume periods.</p>
-          minItems: 1
-          x-validators:
-          - name: Validate EEPA export contracted volume periods
-            description: 'Validate that the EEPA export contracted volume periods form a valid term: no overlapping general periods, and no supply point repeated across overlapping periods.'
-            possible_errors:
-            - invalid_eepa_export_contracted_volume
-      required:
-      - periods
-      - term_type
-    BusinessImportProcess:
-      type: object
-      properties:
-        business:
-          allOf:
-          - $ref: '#/components/schemas/BusinessWithContracts'
-          description: <p>The business's information</p>
-        external_business_identifier:
-          type: string
-          description: <p>The unique identifier of a business in the external system. This id is used to link an imported business in Kraken to the external system</p>
-          maxLength: 128
-        import_supplier_code:
-          enum:
-          - ORIGIN_SOLARFLEX_INACTIVE
-          - ORIGIN
-          - WIN_CONNECT_PARENT
-          - ORIGIN_CNI
-          - ORIGIN_BUSINESS
-          - WIN_CONNECT
-          - ORIGIN_SOLARFLEX
-          - ORIGIN_BUSINESS_NO_CONTRACT
-          type: string
-          x-spec-enum-id: 9572ea198e3a9787
-          description: The code of an existing ImportSupplier in the database.
-          x-enum-descriptions:
-            ORIGIN_SOLARFLEX_INACTIVE: Origin SolarFlex Inactive
-            ORIGIN: Origin
-            WIN_CONNECT_PARENT: Win Connect Parent
-            ORIGIN_CNI: Origin CNI
-            ORIGIN_BUSINESS: Origin Zero Business Import Supplier
-            WIN_CONNECT: WinConnect
-            ORIGIN_SOLARFLEX: Origin SolarFlex
-            ORIGIN_BUSINESS_NO_CONTRACT: Origin Business - No Contracts e.g. trustee
-      required:
-      - business
-      - external_business_identifier
-      - import_supplier_code
+        - customer_detail_failed_validation
+        - customer_detail_incorrect_value_type
+        - customer_detail_not_registered
     CharacteristicOverride:
       type: object
       properties:
@@ -534,21 +131,6 @@ components:
         description: null
         possible_errors:
         - invalid_characteristic_for_product
-    ContractVersion:
-      type: object
-      properties:
-        applicable_at_date:
-          type: string
-          format: date
-          description: <p>The date on which this contract version become applicable at.</p>
-        terms:
-          type: array
-          items:
-            $ref: '#/components/schemas/Terms'
-          description: <p>The terms for this version of the contract.</p>
-      required:
-      - applicable_at_date
-      - terms
     Address:
       type: object
       properties:
@@ -620,7 +202,63 @@ components:
         description: Validate that the address is in the correct format.
         possible_errors:
         - invalid_address
-    BespokeRateConfiguration:
+    TerminationFee:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        amount:
+          type: integer
+          description: <p>The fee amount in the lowest currency unit. For example, this amount could be represented in cents, pence, etc.</p>
+        fee_type:
+          enum:
+          - FLAT
+          - WHOLE_MONTHS_REMAINING
+          - WHOLE_DAYS_REMAINING
+          type: string
+          x-spec-enum-id: ac778cd433d63345
+          description: <p>The type, or nature, of the fee. For example, the fee can be flat or pertain to the amount of time remaining in the contract.</p>
+          x-enum-descriptions:
+            FLAT: contracts--terms--termination-fee-fee-type-flat
+            WHOLE_MONTHS_REMAINING: Per month remaining
+            WHOLE_DAYS_REMAINING: Per day remaining
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+        supply_type:
+          enum:
+          - ELECTRICITY
+          - GAS
+          - UNMETERED_GAS
+          - UNMETERED_ELECTRICITY
+          - EMBEDDED_WATER
+          - EMBEDDED_ELECTRICITY
+          - EMBEDDED_GAS
+          - SOLAR_PPA
+          type: string
+          x-spec-enum-id: b30233ba99cda713
+          description: <p>The supply type being terminated.</p>
+          x-enum-descriptions:
+            ELECTRICITY: Electricity
+            GAS: Gas
+            UNMETERED_GAS: Unmetered Gas
+            UNMETERED_ELECTRICITY: Unmetered Electricity
+            EMBEDDED_WATER: Embedded Water
+            EMBEDDED_ELECTRICITY: Embedded Electricity
+            EMBEDDED_GAS: Embedded Gas
+            SOLAR_PPA: Solar PPA
+      required:
+      - amount
+      - fee_type
+      - term_type
+      x-validators:
+      - name: Validate that <code>⁨supply_type⁩</code> and <code>⁨market_name⁩</code> are not both provided
+        description: Validate that ⁨supply_type⁩ and ⁨market_name⁩ are not both provided.
+        possible_errors:
+        - fields_are_mutually_exclusive
+    RateGroupEligibilityConfiguration:
       type: object
       properties:
         term_type:
@@ -633,59 +271,92 @@ components:
         schedules:
           type: array
           items:
-            $ref: '#/components/schemas/BespokeRateSchedule'
-          description: <p>The schedules of bespoke rates.</p>
-          minItems: 1
-          x-validators:
-          - name: Validate bespoke rates do not conflict
-            description: Validate bespoke rates for the same target and rate do not conflict during the same period. The target of a bespoke rate is determined by the supply point identifier and product code.
-            possible_errors:
-            - overlapping_bespoke_rate_schedules
-          - name: Validate bespoke rate schedules target consistently
-            description: Validate that bespoke rate schedules either all target supply points via the supply_point_identifier field or none do.
-            possible_errors:
-            - inconsistent_bespoke_rate_schedule_targeting
+            $ref: '#/components/schemas/RateGroupEligibilitySchedule'
+          description: <p>Rate group eligibility schedules.</p>
+        time_series_specification_schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeSeriesSpecificationEligibilitySchedule'
+          description: <p>Shared rate eligibility schedules.</p>
       required:
       - schedules
       - term_type
-    LatePaymentFees:
+      - time_series_specification_schedules
+    AusEEPAExportContractedVolumeConfiguration:
       type: object
       properties:
         term_type:
           type: string
           description: <p>The type of the contract term.</p>
-        flat_fee_amount:
-          type: integer
-          minimum: 0
-          description: <p>The flat amount added to each late payment fee, in the lowest denomination for the currency.</p>
-        interest_policy_name:
-          enum:
-          - ''
-          - RBA
-          type: string
-          x-spec-enum-id: 755d70bd45dbabbb
-          description: <p>The interest policy to use for late payment fee calculations.</p>
-          x-enum-descriptions:
-            ? ''
-            : '---------'
-            RBA: RBA
         is_variable:
           type: boolean
           default: true
           description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        percentage_fee:
+        periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/AusEEPAExportContractedVolumePeriod'
+          description: <p>A list of EEPA export contracted volume periods.</p>
+          minItems: 1
+          x-validators:
+          - name: Validate EEPA export contracted volume periods
+            description: 'Validate that the EEPA export contracted volume periods form a valid term: no overlapping general periods, and no supply point repeated across overlapping periods.'
+            possible_errors:
+            - invalid_eepa_export_contracted_volume
+      required:
+      - periods
+      - term_type
+    ProductRateOverrideItemByRateBand:
+      type: object
+      properties:
+        price_per_unit:
           type: string
           format: decimal
-          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-          description: <p>The percentage fee to be applied as part of the late payment fee calculations.</p>
-        percentage_interval_days:
+          pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
+          description: <p>The price per unit of the item.</p>
+        product_code:
+          type: string
+          description: <p>The product code of the item.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+        rate_band:
+          type: string
+          description: <p>The override rate of the item.</p>
+      required:
+      - price_per_unit
+      - product_code
+      - rate_band
+      x-validators:
+      - name: Validate that the rate band is valid for the product code
+        description: Validate that the rate band provided matches the rate band for the product's rates with the provided product code.
+        possible_errors:
+        - rate_band_not_found_for_product
+    CollateralRequired:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        amount:
           type: integer
           minimum: 0
-          description: <p>The interval the percentage fee rate represents in days (365 = annual).</p>
+          description: <p>The amount set up as collateral as condition for account creation.</p>
+        interest_policy:
+          type: string
+          description: <p>The type of interest policy of required collateral.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+        reason:
+          type: string
+          description: <p>The reason for setting up required collateral.</p>
       required:
-      - flat_fee_amount
-      - percentage_fee
-      - percentage_interval_days
+      - amount
+      - reason
       - term_type
     PartnerOrganisation:
       type: object
@@ -728,6 +399,27 @@ components:
         description: Validates that <code>⁨valid_to⁩</code>, if given, is on or later than <code>⁨valid_from⁩</code>.
         possible_errors:
         - start_date_later_than_end_date
+    VariantProfile:
+      type: object
+      properties:
+        characteristic_values:
+          type: object
+          description: <p>A dictionary of characteristic values which the rate applies to.</p>
+          x-validators:
+          - name: Validate provided dictionary content types
+            description: Validates that provided dictionary contents are of the specified key type and value type.
+            possible_errors: []
+        scheme_labels:
+          type: object
+          description: <p>A dictionary of scheme labels which the rate applies to.</p>
+          x-validators:
+          - name: Validate provided dictionary content types
+            description: Validates that provided dictionary contents are of the specified key type and value type.
+            possible_errors: []
+          - name: Validate that scheme labels have the correct format
+            description: Validate that scheme labels have the the following format 'scheme-type:identifier' where 'scheme-type' is one of 'time_of_use', 'register'.
+            possible_errors:
+            - invalid_scheme_label_format
     AusEEPAExportContractedVolumePeriod:
       type: object
       properties:
@@ -770,177 +462,208 @@ components:
         description: Validates that <code>⁨valid_to⁩</code>, if given, is on or later than <code>⁨valid_from⁩</code>.
         possible_errors:
         - start_date_later_than_end_date
-    BusinessImportProcessCreation:
+    EffectivePeriod:
       type: object
       properties:
+        end_date:
+          type: string
+          format: date
+          description: <p>The effective period end date (exclusive).</p>
+        start_date:
+          type: string
+          format: date
+          description: <p>The effective period start date (inclusive).</p>
+      required:
+      - start_date
+    PaymentInstructionCard:
+      type: object
+      properties:
+        card_payment_network:
+          enum:
+          - MASTERCARD
+          - VISA
+          - AMEX
+          - JCB
+          - DISCOVER
+          - DANKORT
+          type: string
+          x-spec-enum-id: c8ed471949510265
+          description: <p>The card payment network for the payment instruction.</p>
+          x-enum-descriptions:
+            MASTERCARD: Mastercard
+            VISA: Visa
+            AMEX: American Express
+            JCB: JCB
+            DISCOVER: Discover
+            DANKORT: Dankort
+        card_type:
+          enum:
+          - CREDIT
+          - DEBIT
+          - PREPAID
+          type: string
+          x-spec-enum-id: 90bbc4bed8c0c0e8
+          description: <p>The card type for the payment instruction.</p>
+          x-enum-descriptions:
+            CREDIT: Credit
+            DEBIT: Debit
+            PREPAID: Prepaid
+        expiry_month:
+          type: integer
+          maximum: 12
+          minimum: 1
+          description: <p>The expiry month of the card in MM format.</p>
+        expiry_year:
+          type: integer
+          minimum: 1000
+          description: <p>The expiry year of the card in YYYY format.</p>
+        last_digits:
+          type: string
+          description: <p>The last 3 or 4 digits of the card number.</p>
+          pattern: ^[0-9]{3,4}$
+      required:
+      - card_payment_network
+      - card_type
+    BusinessImportProcess:
+      type: object
+      properties:
+        business:
+          allOf:
+          - $ref: '#/components/schemas/BusinessWithContracts'
+          description: <p>The business's information</p>
         external_business_identifier:
           type: string
           description: <p>The unique identifier of a business in the external system. This id is used to link an imported business in Kraken to the external system</p>
-        kraken_business_id:
-          type: integer
-          description: <p>The unique identifier of a business in Kraken. This id can be used to identify a business in Kraken</p>
-    ProductRateOverrideSchedule:
-      type: object
-      properties:
-        effective_from:
-          type: string
-          format: date-time
-          description: '<p>The date on which the schedule goes into effect. This is an inclusive date. Example: If the <code>effective_from</code> is October 1, 2024, then the schedule is valid on October 1, 2024 and following dates.</p>'
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductRateOverrideItemByRateBand'
-          description: <p>The items specified by rate band affected by the override during this schedule.</p>
-        variant_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductRateOverrideItemByVariantProfile'
-          description: <p>The items specified by characteristic values affected by the override during this schedule.</p>
-      required:
-      - effective_from
-      x-validators:
-      - name: Validate that rate override schedule item must include rate overrides.
-        description: Validate that rate override schedule item must include at least 'items' or 'characteristic_items' values.
-        possible_errors:
-        - rate_override_items_required
-    TrancheTargetResidualFee:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        contract_identifier:
-          type: string
-          description: <p>Contract identifier</p>
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        markets:
-          type: array
-          items:
-            $ref: '#/components/schemas/TrancheTargetResidualFeeMarket'
-          description: <p>Markets</p>
-      required:
-      - contract_identifier
-      - markets
-      - term_type
-    CharacteristicOverrideConfiguration:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        overrides:
-          type: array
-          items:
-            $ref: '#/components/schemas/CharacteristicOverride'
-          description: <p>The characterisctics associated with the characterisctic override.</p>
-      required:
-      - overrides
-      - term_type
-    RateGroupEligibilitySchedule:
-      type: object
-      properties:
-        effective_period:
-          allOf:
-          - $ref: '#/components/schemas/EffectivePeriod'
-          description: <p>The effective period of the schedule.</p>
-        is_eligible:
-          type: boolean
-          description: <p>Whether the rate group is eligible for charging to the customer.</p>
-        product_code:
-          type: string
-          description: <p>Product code. </p>
-          x-validators:
-          - name: Validate product code exists
-            description: Validate that the product code exists in Kraken.
-            possible_errors:
-            - product_code_does_not_exist
-        rate_group_code:
-          type: string
-          description: <p>The unique rate group code for the product.</p>
-        supply_point_identifier:
-          type: string
-          description: <p>Optional supply point identifier to restrict this schedule to a specific supply point.</p>
-      required:
-      - effective_period
-      - is_eligible
-      - product_code
-      - rate_group_code
-      x-validators:
-      - name: Validate that the rate group code is valid for the product code
-        description: Validate that the rate group code provided matches the rate group for the product with the provided product code.
-        possible_errors:
-        - rate_group_not_found_for_product
-    DRFError:
-      type: object
-      description: Simplistic and mostly inaccurate Serializer that should represent DRF's ValidationError details
-      properties:
-        field_name:
-          type: array
-          items:
-            type: string
-          description: Validation error messages.
-    PartnerCommissionConfig:
-      type: object
-      properties:
-        apply_uplift:
-          type: boolean
-          default: false
-          description: <p>Whether to apply a product uplift for this partner commission. Defaults to <code>false</code>.</p>
-        override_trailing_percentage:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-          description: <p>Optional override for the trailing commission percentage. Overrides the default percentage on the partner commission.</p>
-        override_unit_amount:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,8})?$
-          description: <p>Optional override for the unit-based commission rate. Overrides the default unit amount on the partner commission.</p>
-        partner_commission_number:
-          type: string
-          description: <p>The unique identifier of the partner commission (e.g. <code>OPC-XXXXXXXX</code> or <code>TPC-XXXXXXXX</code>).</p>
-          maxLength: 20
-      required:
-      - partner_commission_number
-    DelayerDays:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        days:
-          type: integer
-          minimum: 1
-          description: <p>The number of days between when a reactive payment is triggered and when it should be taken.</p>
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        strategy:
+          maxLength: 128
+        import_supplier_code:
           enum:
-          - FIXED
-          - WORKING_DAYS
+          - ORIGIN_SOLARFLEX_INACTIVE
+          - ORIGIN
+          - WIN_CONNECT_PARENT
+          - ORIGIN_CNI
+          - ORIGIN_BUSINESS
+          - WIN_CONNECT
+          - ORIGIN_SOLARFLEX
+          - ORIGIN_BUSINESS_NO_CONTRACT
           type: string
-          x-spec-enum-id: b62f1d43e0839f86
-          description: <p>The strategy used to count the delayer days.</p>
+          x-spec-enum-id: 9572ea198e3a9787
+          description: The code of an existing ImportSupplier in the database.
           x-enum-descriptions:
-            FIXED: Calendar days
-            WORKING_DAYS: Working days
+            ORIGIN_SOLARFLEX_INACTIVE: Origin SolarFlex Inactive
+            ORIGIN: Origin
+            WIN_CONNECT_PARENT: Win Connect Parent
+            ORIGIN_CNI: Origin CNI
+            ORIGIN_BUSINESS: Origin Zero Business Import Supplier
+            WIN_CONNECT: WinConnect
+            ORIGIN_SOLARFLEX: Origin SolarFlex
+            ORIGIN_BUSINESS_NO_CONTRACT: Origin Business - No Contracts e.g. trustee
       required:
-      - days
-      - strategy
-      - term_type
+      - business
+      - external_business_identifier
+      - import_supplier_code
+    Terms:
+      oneOf:
+      - $ref: '#/components/schemas/BespokeRateConfiguration'
+      - $ref: '#/components/schemas/BillDueDate'
+      - $ref: '#/components/schemas/BillingDocumentIssuanceFrequencyTerm'
+      - $ref: '#/components/schemas/CharacteristicOverrideConfiguration'
+      - $ref: '#/components/schemas/CollateralRequired'
+      - $ref: '#/components/schemas/ContractMetaData'
+      - $ref: '#/components/schemas/ContractedVolumeConfiguration'
+      - $ref: '#/components/schemas/CorrectivePeriod'
+      - $ref: '#/components/schemas/DelayerDays'
+      - $ref: '#/components/schemas/GuaranteeOfOriginConfiguration'
+      - $ref: '#/components/schemas/LatePaymentFees'
+      - $ref: '#/components/schemas/MinimumContractLength'
+      - $ref: '#/components/schemas/PartnerCommission'
+      - $ref: '#/components/schemas/PaysByDirectDebitTerm'
+      - $ref: '#/components/schemas/ProductRateOverrideConfiguration'
+      - $ref: '#/components/schemas/PromotionAssignmentTerm'
+      - $ref: '#/components/schemas/RateGroupEligibilityConfiguration'
+      - $ref: '#/components/schemas/TrancheTargetResidualFee'
+      - $ref: '#/components/schemas/TaxAdjustmentConfiguration'
+      - $ref: '#/components/schemas/TerminationFee'
+      - $ref: '#/components/schemas/AusEEPAExportContractedVolumeConfiguration'
+      discriminator:
+        propertyName: term_type
+        mapping:
+          BESPOKE_RATE_CONFIGURATION: '#/components/schemas/BespokeRateConfiguration'
+          BILL_DUE_DATE: '#/components/schemas/BillDueDate'
+          ISSUANCE_FREQUENCY: '#/components/schemas/BillingDocumentIssuanceFrequencyTerm'
+          CHARACTERISTIC_OVERRIDE: '#/components/schemas/CharacteristicOverrideConfiguration'
+          COLLATERAL_REQUIRED: '#/components/schemas/CollateralRequired'
+          CONTRACT_METADATA: '#/components/schemas/ContractMetaData'
+          CONTRACTED_VOLUME_CONFIGURATION: '#/components/schemas/ContractedVolumeConfiguration'
+          CORRECTIVE_PERIOD: '#/components/schemas/CorrectivePeriod'
+          DELAYER_DAYS: '#/components/schemas/DelayerDays'
+          GUARANTEE_OF_ORIGIN_CONFIGURATION: '#/components/schemas/GuaranteeOfOriginConfiguration'
+          LATE_PAYMENT_FEES: '#/components/schemas/LatePaymentFees'
+          MINIMUM_CONTRACT_LENGTH: '#/components/schemas/MinimumContractLength'
+          PARTNER_COMMISSION: '#/components/schemas/PartnerCommission'
+          PAYS_BY_DIRECT_DEBIT: '#/components/schemas/PaysByDirectDebitTerm'
+          PRODUCT_RATE_OVERRIDE_SCHEDULE: '#/components/schemas/ProductRateOverrideConfiguration'
+          PROMOTION_ASSIGNMENT: '#/components/schemas/PromotionAssignmentTerm'
+          RATE_GROUP_ELIGIBILITY: '#/components/schemas/RateGroupEligibilityConfiguration'
+          TRANCHE_TARGET_RESIDUAL_FEE: '#/components/schemas/TrancheTargetResidualFee'
+          TAX_ADJUSTMENT_CONFIGURATION: '#/components/schemas/TaxAdjustmentConfiguration'
+          TERMINATION_FEE: '#/components/schemas/TerminationFee'
+          EEPA_EXPORT_CONTRACTED_VOLUME: '#/components/schemas/AusEEPAExportContractedVolumeConfiguration'
+    SupplyPointTaxAdjustment:
+      type: object
+      properties:
+        adjustment_type:
+          enum:
+          - EXEMPTION
+          - REDUCTION
+          type: string
+          x-spec-enum-id: '7048963418647159'
+          description: <p>The type of tax adjustment (EXEMPTION or REDUCTION).</p>
+          x-enum-descriptions:
+            EXEMPTION: Exemption
+            REDUCTION: Reduction
+        effective_from_date:
+          type: string
+          format: date
+          description: <p>The date the tax adjustment is effective from.</p>
+        effective_to_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: <p>The date the tax adjustment is effective to (inclusive, optional).</p>
+        qualifying_usage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,2})?$
+          description: <p>The normalised percentage of energy use on the supply point that qualifies for the tax adjustment (between 0 and 1).</p>
+        supply_point_external_identifier:
+          type: string
+          description: <p>The external identifier of the supply point this tax adjustment applies to.</p>
+          maxLength: 255
+        tax_category:
+          type: string
+          description: <p>The category of tax this adjustment applies to.</p>
+          maxLength: 50
+        tax_subcategory:
+          type: string
+          default: ''
+          description: <p>The subcategory of tax this adjustment applies to (optional).</p>
+          maxLength: 50
+      required:
+      - adjustment_type
+      - effective_from_date
+      - qualifying_usage
+      - supply_point_external_identifier
+      - tax_category
+      x-validators:
+      - name: Convert supply point external identifier to ID
+        description: Convert the supply point external identifier to the internal supply point ID by looking up the supply point in the database.
+        possible_errors:
+        - supply_point_not_found
+      - name: Validate <code>⁨effective_to⁩</code> not before <code>⁨effective_from⁩</code>
+        description: Validates that <code>⁨effective_to⁩</code>, if given, is on or later than <code>⁨effective_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
     AusPropertyRichAddress:
       type: object
       properties:
@@ -1035,136 +758,278 @@ components:
         description: Validate that the address is in the correct format.
         possible_errors:
         - invalid_address
-    ProductRateOverrideItemByVariantProfile:
+    ContractSalesRecord:
       type: object
       properties:
-        characteristic_values:
-          type: object
-          description: <p>The characteristic values of the product rate override item.</p>
-          x-validators:
-          - name: Validate provided dictionary content types
-            description: Validates that provided dictionary contents are of the specified key type and value type.
-            possible_errors: []
-        price_per_unit:
+        affiliate_organisation_name:
           type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
-          description: <p>The override rate of the item.</p>
-        product_code:
-          type: string
-          description: <p>The product code of the item.</p>
+          description: <p>The affiliate organisation name associated with the contract.</p>
+          maxLength: 128
           x-validators:
-          - name: Validate product code exists
-            description: Validate that the product code exists in Kraken.
+          - name: Validate affiliate organisation exists
+            description: Validate that an affiliate organisation exists in Kraken for the given name.
             possible_errors:
-            - product_code_does_not_exist
-        rate_specification_code:
+            - affiliate_organisation_does_not_exist
+        sales_channel:
+          enum:
+          - DIRECT
+          - PRICE_COMPARISON
+          - TELESALES
+          - DIGI_TELESALES
+          - EVENTS
+          - FIELD_SALES
+          - AGGREGATOR
+          - PARTNERSHIPS
+          - NEW_TENANT
+          - MOVE_IN
+          - WORKPLACE_POP_UP
+          - BROKER
+          - PARENT_POWER
+          - PEOPLE_POWER
+          - GIFT_OF_KIT
+          - HIGH_REFERRER
+          - SUPPLIER_OF_LAST_RESORT
+          - ACQUISITION
+          - WORKS_WITH_OCTOPUS
+          - LANDLORD
+          - DEBT_COLLECTION_AGENCY
           type: string
-          description: <p>The rate specification code of the item.</p>
-        scheme_labels:
-          type: object
-          description: <p>The scheme labels of the product rate override item.</p>
-          x-validators:
-          - name: Validate provided dictionary content types
-            description: Validates that provided dictionary contents are of the specified key type and value type.
-            possible_errors: []
-      required:
-      - price_per_unit
-      - product_code
-      - rate_specification_code
+          x-spec-enum-id: f4ccf4dcda60c174
+          description: <p>The sales channel associated with the contract</p>
+          x-enum-descriptions:
+            DIRECT: Direct
+            PRICE_COMPARISON: Price comparison
+            TELESALES: Telesales
+            DIGI_TELESALES: Digital telesales
+            EVENTS: Events
+            FIELD_SALES: Field sales
+            AGGREGATOR: Aggregator
+            PARTNERSHIPS: Partnerships
+            NEW_TENANT: New tenant
+            MOVE_IN: Move in
+            WORKPLACE_POP_UP: Workplace pop-up
+            BROKER: Broker
+            PARENT_POWER: Parent power
+            PEOPLE_POWER: People power
+            GIFT_OF_KIT: Gift of kit
+            HIGH_REFERRER: High referrer
+            SUPPLIER_OF_LAST_RESORT: Supplier of last resort
+            ACQUISITION: Acquisition
+            WORKS_WITH_OCTOPUS: Works with octopus
+            LANDLORD: Landlord
+            DEBT_COLLECTION_AGENCY: Debt collection agency
       x-validators:
-      - name: Validate that the rate band is valid for the product code
-        description: Validate that the rate band provided matches the rate band for the product's rates with the provided product code.
+      - name: Sales channel matches affiliate organisation
+        description: Validates that when an affiliate_organisation_name is provided, the sales_channel is in the set of channels configured for that organisation.
         possible_errors:
-        - characteristic_code_not_found
-        - invalid_characteristic_value
-        - invalid_variant_profile_for_product
-        - product_specification_not_found_for_product
-        - rate_specification_not_found_for_product
-    TerminationFee:
+        - sales_channel_does_not_match_affiliate_organisation
+    PartnerFileAttachment:
+      type: object
+      properties:
+        category:
+          enum:
+          - LETTER_OF_AUTHORITY
+          type: string
+          x-spec-enum-id: 23434383040d8c62
+          description: <p>The category of the partner file attachment.</p>
+          x-enum-descriptions:
+            LETTER_OF_AUTHORITY: Letter of Authority
+        filename:
+          type: string
+          description: <p>The filename of the partner file attachment.</p>
+          maxLength: 255
+        partner_number:
+          type: string
+          description: <p>The partner number of the organisation the file attachment belongs to.</p>
+          maxLength: 128
+          x-validators:
+          - name: Validate <code>organisation_number</code>
+            description: Validate that the given <code>organisation_number</code> has a corresponding organisation registered in the database.
+            possible_errors:
+            - partner_organisation_does_not_exist
+        s3_key:
+          type: string
+          description: <p>The S3 key of the partner file attachment.</p>
+          maxLength: 1024
+          x-validators:
+          - name: Validate path exists in file store
+            description: Validate that the given path corresponds to a file that has previously been uploaded to the correct file store.
+            possible_errors:
+            - path_does_not_exist_in_file_store
+      required:
+      - category
+      - filename
+      - partner_number
+      - s3_key
+    PromotionAssignmentSchedule:
+      type: object
+      properties:
+        discount_targets:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/PromotionAssignmentTarget'
+          description: <p>Mapping of discount code to a list of targets the discount applies to.</p>
+        params:
+          type: object
+          description: '<p>Optional parameters for the promotion assignment schedule. Supports the following keys: <code>promotion_start_date</code> — an ISO 8601 datetime string (e.g. <code>2024-01-15T00:00:00+00:00</code>) that overrides the date used when calculating promotion eligibility (e.g. months since sign-up). If omitted, the date is derived from the customer''s agreement.</p>'
+        promotion_code:
+          type: string
+          description: <p>The promotion code to apply.</p>
+      required:
+      - discount_targets
+      - promotion_code
+      x-validators:
+      - name: Promotion assignment discount targets are valid
+        description: Validates that the promotion exists, discounts are defined in the promotion, target types match the discount target type, and target identifiers are valid.
+        possible_errors:
+        - discount_not_in_promotion
+        - invalid_input_data
+        - promotion_not_registered
+        - rate_source_provider_not_registered
+        - source_data_not_supported_for_fixed_rate
+        - source_data_reference_mismatch
+        - target_identifier_invalid
+        - target_type_mismatch
+        - target_type_not_registered
+      - name: Promotion assignment params are valid
+        description: Validates that the params field contains only valid values. If promotion_start_date is provided, it must be a valid ISO 8601 datetime string.
+        possible_errors:
+        - invalid_promotion_start_date
+    TaxAdjustmentConfiguration:
       type: object
       properties:
         term_type:
           type: string
           description: <p>The type of the contract term.</p>
-        amount:
-          type: integer
-          description: <p>The fee amount in the lowest currency unit. For example, this amount could be represented in cents, pence, etc.</p>
-        fee_type:
-          enum:
-          - FLAT
-          - WHOLE_MONTHS_REMAINING
-          - WHOLE_DAYS_REMAINING
-          type: string
-          x-spec-enum-id: ac778cd433d63345
-          description: <p>The type, or nature, of the fee. For example, the fee can be flat or pertain to the amount of time remaining in the contract.</p>
-          x-enum-descriptions:
-            FLAT: contracts--terms--termination-fee-fee-type-flat
-            WHOLE_MONTHS_REMAINING: Per month remaining
-            WHOLE_DAYS_REMAINING: Per day remaining
+        adjustments:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplyPointTaxAdjustment'
+          description: <p>A list of tax adjustments for supply points.</p>
+          minItems: 0
+          x-validators:
+          - name: Validate tax adjustments do not overlap
+            description: Validate that tax adjustments for the same supply point, adjustment type, tax category, and tax subcategory do not have overlapping effective periods.
+            possible_errors:
+            - overlapping_tax_adjustments
         is_variable:
           type: boolean
           default: true
           description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        supply_type:
-          enum:
-          - ELECTRICITY
-          - GAS
-          - UNMETERED_GAS
-          - UNMETERED_ELECTRICITY
-          - EMBEDDED_WATER
-          - EMBEDDED_ELECTRICITY
-          - EMBEDDED_GAS
-          - SOLAR_PPA
-          type: string
-          x-spec-enum-id: b30233ba99cda713
-          description: <p>The supply type being terminated.</p>
-          x-enum-descriptions:
-            ELECTRICITY: Electricity
-            GAS: Gas
-            UNMETERED_GAS: Unmetered Gas
-            UNMETERED_ELECTRICITY: Unmetered Electricity
-            EMBEDDED_WATER: Embedded Water
-            EMBEDDED_ELECTRICITY: Embedded Electricity
-            EMBEDDED_GAS: Embedded Gas
-            SOLAR_PPA: Solar PPA
       required:
-      - amount
-      - fee_type
+      - adjustments
       - term_type
-      x-validators:
-      - name: Validate that <code>⁨supply_type⁩</code> and <code>⁨market_name⁩</code> are not both provided
-        description: Validate that ⁨supply_type⁩ and ⁨market_name⁩ are not both provided.
-        possible_errors:
-        - fields_are_mutually_exclusive
-    ProductRateOverrideItemByRateBand:
+    DelayerDays:
       type: object
       properties:
-        price_per_unit:
+        term_type:
           type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
-          description: <p>The price per unit of the item.</p>
-        product_code:
+          description: <p>The type of the contract term.</p>
+        days:
+          type: integer
+          minimum: 1
+          description: <p>The number of days between when a reactive payment is triggered and when it should be taken.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+        strategy:
+          enum:
+          - FIXED
+          - WORKING_DAYS
           type: string
-          description: <p>The product code of the item.</p>
-          x-validators:
-          - name: Validate product code exists
-            description: Validate that the product code exists in Kraken.
-            possible_errors:
-            - product_code_does_not_exist
-        rate_band:
-          type: string
-          description: <p>The override rate of the item.</p>
+          x-spec-enum-id: b62f1d43e0839f86
+          description: <p>The strategy used to count the delayer days.</p>
+          x-enum-descriptions:
+            FIXED: Calendar days
+            WORKING_DAYS: Working days
       required:
-      - price_per_unit
-      - product_code
-      - rate_band
-      x-validators:
-      - name: Validate that the rate band is valid for the product code
-        description: Validate that the rate band provided matches the rate band for the product's rates with the provided product code.
-        possible_errors:
-        - rate_band_not_found_for_product
+      - days
+      - strategy
+      - term_type
+    MinimumContractLength:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        contract_identifier:
+          type: string
+          description: <p>Unique identifier of the contract.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+        length:
+          type: integer
+          minimum: 1
+          description: <p>Minimum length of the contract.</p>
+        unit_of_time:
+          enum:
+          - WEEK
+          - MONTH
+          - YEAR
+          type: string
+          x-spec-enum-id: 2dd8361d760ce9df
+          description: <p>Unit of time used to measure the length of the contract.</p>
+          x-enum-descriptions:
+            WEEK: Week
+            MONTH: Month
+            YEAR: Year
+      required:
+      - contract_identifier
+      - length
+      - term_type
+      - unit_of_time
+    BespokeRateConfiguration:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/BespokeRateSchedule'
+          description: <p>The schedules of bespoke rates.</p>
+          minItems: 1
+          x-validators:
+          - name: Validate bespoke rates do not conflict
+            description: Validate bespoke rates for the same target and rate do not conflict during the same period. The target of a bespoke rate is determined by the supply point identifier and product code.
+            possible_errors:
+            - overlapping_bespoke_rate_schedules
+          - name: Validate bespoke rate schedules target consistently
+            description: Validate that bespoke rate schedules either all target supply points via the supply_point_identifier field or none do.
+            possible_errors:
+            - inconsistent_bespoke_rate_schedule_targeting
+      required:
+      - schedules
+      - term_type
+    PortfolioSettings:
+      type: object
+      properties:
+        collective_billing:
+          type: boolean
+          default: false
+          description: <p>Set all accounts on the portfolio to be billed collectively. This value can only be provided if the account is the portfolio lead account.</p>
+        collective_payments:
+          type: boolean
+          default: false
+          description: <p>Set all accounts on the portfolio to pay collectively. This value can only be provided if the account is the portfolio lead account.</p>
+        delegate_billing_schedule_to_children:
+          type: boolean
+          default: false
+          description: <p>When using collective billing, use the child account's billing options to determine when we charge and prepare billing documents (as opposed to using the lead account's options). This value can only be provided if the account is the portfolio lead account.</p>
+        send_collective_bill_constituent_messages:
+          type: boolean
+          default: false
+          description: <p>When using collective billing, send collective bill constituent messages to each member of the collective bill. This value can only be provided if the account is the portfolio lead account.</p>
     PortfolioReference:
       type: object
       properties:
@@ -1185,6 +1050,413 @@ components:
       required:
       - namespace
       - value
+    CustomerAlternativeNumber:
+      type: object
+      properties:
+        phone_number:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: <p>A customer's alternative phone number.</p>
+          maxLength: 32
+          x-validators:
+          - name: Validate phone number
+            description: Validates that a phone number conforms to the norms of the region from which the migration is taking place.
+            possible_errors:
+            - invalid_phone_number
+    BusinessDetail:
+      type: object
+      properties:
+        key:
+          enum:
+          - abn
+          - acn
+          - frmp
+          - anzsic
+          type: string
+          x-spec-enum-id: cf8b0ced1c78b621
+          description: <p>The key for the business detail. Keys need to be registered before import. If a value is provided for a key that is not registered then an error will be raised.</p>
+          x-enum-descriptions:
+            abn: abn
+            acn: acn
+            frmp: frmp
+            anzsic: anzsic
+        value:
+          description: <p>The value for the business detail. This must match the type the registered key is expecting.</p>
+      required:
+      - key
+      - value
+      x-validators:
+      - name: Validate that the value for the business details key has the correct type
+        description: Validate that the value given has the type that matches the type configured for the registered business detail key.
+        possible_errors:
+        - business_detail_incorrect_value_type
+      - name: Validate the business details value
+        description: Validate that business detail value complies with any validation required by their corresponding detail key.
+        possible_errors:
+        - business_detail_failed_validation
+    ProductRateOverrideConfiguration:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        indexation_options:
+          allOf:
+          - $ref: '#/components/schemas/IndexationOption'
+          description: <p>The indexation options for the product rate override.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductRateOverrideSchedule'
+          description: <p>The schedule associated with the product rate override.</p>
+      required:
+      - schedules
+      - term_type
+    BusinessImportProcessCreation:
+      type: object
+      properties:
+        external_business_identifier:
+          type: string
+          description: <p>The unique identifier of a business in the external system. This id is used to link an imported business in Kraken to the external system</p>
+        kraken_business_id:
+          type: integer
+          description: <p>The unique identifier of a business in Kraken. This id can be used to identify a business in Kraken</p>
+    TrancheTargetResidualFee:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        contract_identifier:
+          type: string
+          description: <p>Contract identifier</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+        markets:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrancheTargetResidualFeeMarket'
+          description: <p>Markets</p>
+      required:
+      - contract_identifier
+      - markets
+      - term_type
+    ContractedVolumePeriod:
+      type: object
+      properties:
+        market_name:
+          enum:
+          - AUS_EMBEDDED_GAS
+          - AUS_EMBEDDED_UNMETERED_ELECTRICITY
+          - AUS_SOLAR_PPA
+          - AUS_EMBEDDED_UNMETERED_GAS
+          - AUS_EMBEDDED_ELECTRICITY
+          - SIMPLE_SERVICES
+          - AUS_ELECTRICITY
+          - AUS_EMBEDDED_WATER
+          - AUS_GAS
+          type: string
+          x-spec-enum-id: 2efb600dcd89ea97
+          description: <p>The market name for the contracted volume.</p>
+          x-enum-descriptions:
+            AUS_EMBEDDED_GAS: AUS_EMBEDDED_GAS
+            AUS_EMBEDDED_UNMETERED_ELECTRICITY: AUS_EMBEDDED_UNMETERED_ELECTRICITY
+            AUS_SOLAR_PPA: AUS_SOLAR_PPA
+            AUS_EMBEDDED_UNMETERED_GAS: AUS_EMBEDDED_UNMETERED_GAS
+            AUS_EMBEDDED_ELECTRICITY: AUS_EMBEDDED_ELECTRICITY
+            SIMPLE_SERVICES: SIMPLE_SERVICES
+            AUS_ELECTRICITY: AUS_ELECTRICITY
+            AUS_EMBEDDED_WATER: AUS_EMBEDDED_WATER
+            AUS_GAS: AUS_GAS
+        unit:
+          type: string
+          description: <p>The units for the contracted volume.</p>
+        valid_from_date:
+          type: string
+          format: date
+          description: <p>The datetime the contracted volume is valid from.</p>
+        valid_to_date:
+          type: string
+          format: date
+          description: <p>The datetime the contracted volume is valid to.</p>
+        value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,4})?$
+          description: <p>The value of the contracted volume.</p>
+      required:
+      - market_name
+      - unit
+      - valid_from_date
+      - valid_to_date
+      - value
+      x-validators:
+      - name: Validate <code>⁨valid_to⁩</code> not before <code>⁨valid_from⁩</code>
+        description: Validates that <code>⁨valid_to⁩</code>, if given, is on or later than <code>⁨valid_from⁩</code>.
+        possible_errors:
+        - start_date_later_than_end_date
+    ProductRateOverrideSchedule:
+      type: object
+      properties:
+        effective_from:
+          type: string
+          format: date-time
+          description: '<p>The date on which the schedule goes into effect. This is an inclusive date. Example: If the <code>effective_from</code> is October 1, 2024, then the schedule is valid on October 1, 2024 and following dates.</p>'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductRateOverrideItemByRateBand'
+          description: <p>The items specified by rate band affected by the override during this schedule.</p>
+        variant_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductRateOverrideItemByVariantProfile'
+          description: <p>The items specified by characteristic values affected by the override during this schedule.</p>
+      required:
+      - effective_from
+      x-validators:
+      - name: Validate that rate override schedule item must include rate overrides.
+        description: Validate that rate override schedule item must include at least 'items' or 'characteristic_items' values.
+        possible_errors:
+        - rate_override_items_required
+    NoteDocument:
+      type: object
+      properties:
+        document_path:
+          type: string
+          description: <p>The S3 relative path to the document to be attached to the note.</p>
+          x-validators:
+          - name: Validate path exists in file store
+            description: Validate that the given path corresponds to a file that has previously been uploaded to the migration file store. Note that this validation is disabled by default and can be enabled using the relevant feature flag.
+            possible_errors:
+            - path_does_not_exist_in_file_store
+      required:
+      - document_path
+    RateGroupEligibilitySchedule:
+      type: object
+      properties:
+        effective_period:
+          allOf:
+          - $ref: '#/components/schemas/EffectivePeriod'
+          description: <p>The effective period of the schedule.</p>
+        is_eligible:
+          type: boolean
+          description: <p>Whether the rate group is eligible for charging to the customer.</p>
+        product_code:
+          type: string
+          description: <p>Product code. </p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+        rate_group_code:
+          type: string
+          description: <p>The unique rate group code for the product.</p>
+        supply_point_identifier:
+          type: string
+          description: <p>Optional supply point identifier to restrict this schedule to a specific supply point.</p>
+      required:
+      - effective_period
+      - is_eligible
+      - product_code
+      - rate_group_code
+      x-validators:
+      - name: Validate that the rate group code is valid for the product code
+        description: Validate that the rate group code provided matches the rate group for the product with the provided product code.
+        possible_errors:
+        - rate_group_not_found_for_product
+    Note:
+      type: object
+      properties:
+        body:
+          type: string
+          description: <p>The body of the note. Should include who/what created the note if this is required.</p>
+        created_at:
+          type: string
+          format: date-time
+          description: <p>The date and time the note was created.</p>
+        document_paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/NoteDocument'
+          description: <p>A list of relative paths in S3 for documents to be attached to the note.</p><p>More details on document path parameters can be found <a href="/rest/guides/data-import/basics#document-paths">here</a>.</p>
+        external_id:
+          type: string
+          description: <p>Unique identifier for this note to avoid duplicate entries.</p>
+        is_archived:
+          type: boolean
+          description: <p>If set to true, this will archive the note in the Kraken account support site page.</p>
+        is_pinned:
+          type: boolean
+          description: <p>If set to true, this will pin the note to the top of the Kraken account support site page.</p>
+        unpin_at:
+          type: string
+          format: date-time
+          description: <p>When the pinned note should be unpinned. Has to be later than <code>created_at</code> if this is provided. Has no effect if the note is not pinned.</p>
+      x-validators:
+      - name: Validate note body or document paths provided
+        description: Validate that at least a note body or document paths are provided.
+        possible_errors:
+        - note_body_or_document_path_not_found
+      - name: Validate note created at is equal to or before unpin at
+        description: Validate that the note's created at date is equal to or before the unpin at date if both are provided.
+        possible_errors:
+        - note_unpin_at_earlier_than_creation_date
+    BillDueDate:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+        number_of_days:
+          type: integer
+          minimum: 0
+          description: <p>The number of days added to the issuance date to determine the due date.</p>
+        type_of_days:
+          enum:
+          - WORKING
+          - CALENDAR
+          type: string
+          x-spec-enum-id: ca64884b18199022
+          description: data-import--field-definition--bill-due-date--type-of-days--html
+          x-enum-descriptions:
+            WORKING: Working days
+            CALENDAR: Calendar days
+      required:
+      - number_of_days
+      - term_type
+      - type_of_days
+    BespokeRateSchedule:
+      type: object
+      properties:
+        identifier:
+          type:
+          - string
+          - 'null'
+          description: <p>A unique identifier for the bespoke rate schedule.</p>
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BespokeRateItem'
+          description: <p>A list of bespoke rates.</p>
+          minItems: 1
+          x-validators:
+          - name: Validate bespoke rate items are unique
+            description: Validate that no two bespoke rate items in a schedule share the same rate specification code, rate specification type, and variant profile.
+            possible_errors:
+            - duplicate_bespoke_rate_items
+        product_code:
+          type: string
+          description: <p>A product code for the schedule of bespoke rate.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+        supply_point_identifier:
+          type:
+          - string
+          - 'null'
+          description: <p>The external identifier of the supply point that this bespoke rate schedule targets.</p>
+          minLength: 1
+        valid_from:
+          type: string
+          format: date-time
+          description: <p>The date the schedule of bespoke rates is valid from (inclusive).</p>
+        valid_to:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: <p>The date the schedule of bespoke rates is valid to (exclusive).</p>
+      required:
+      - items
+      - product_code
+      - valid_from
+      x-validators:
+      - name: Validate <code>⁨valid_to⁩</code> not before or equal to <code>⁨valid_from⁩</code>
+        description: Validates that <code>⁨valid_to⁩</code>, if given, is strictly later than ⁨valid_from⁩.
+        possible_errors:
+        - start_date_same_as_end_date
+      - name: Validate each item represents a possible rate for the product
+        description: Validate each item's rate specification, characteristic values, and scheme labels represent a rate defned on the product.
+        possible_errors:
+        - characteristic_code_not_found
+        - invalid_characteristic_value
+        - invalid_profile_variant_for_specification
+        - product_specification_not_found_for_product
+        - rate_specification_not_found_for_product
+        - shared_rate_not_found
+        - shared_rate_not_found_for_product
+      - name: Validate that all required bespoke rates are present and no non-overridable rates are supplied
+        description: Validates that bespoke rate schedules include all rate specifications marked as must-be-overridden and mandatory, and do not include any rate specifications marked as cannot-be-overridden.
+        possible_errors:
+        - bespoke_rate_cannot_be_overridden
+        - missing_required_bespoke_rate
+    PartnerCommission:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        configurations:
+          type: array
+          items:
+            $ref: '#/components/schemas/PartnerCommissionConfig'
+          description: <p>List of partner commission configurations to associate with this contract term.</p>
+          minItems: 1
+          x-validators:
+          - name: Validate partner commission numbers exist
+            description: Validate that all partner commission numbers in the term configurations exist in Kraken.
+            possible_errors:
+            - not_found
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+      required:
+      - configurations
+      - term_type
+    PartnerCommissionConfig:
+      type: object
+      properties:
+        apply_uplift:
+          type: boolean
+          default: false
+          description: <p>Whether to apply a product uplift for this partner commission. Defaults to <code>false</code>.</p>
+        override_trailing_percentage:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          description: <p>Optional override for the trailing commission percentage. Overrides the default percentage on the partner commission.</p>
+        override_unit_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,8})?$
+          description: <p>Optional override for the unit-based commission rate. Overrides the default unit amount on the partner commission.</p>
+        partner_commission_number:
+          type: string
+          description: <p>The unique identifier of the partner commission (e.g. <code>OPC-XXXXXXXX</code> or <code>TPC-XXXXXXXX</code>).</p>
+          maxLength: 20
+      required:
+      - partner_commission_number
     BusinessWithContracts:
       type: object
       properties:
@@ -1299,84 +1571,190 @@ components:
         description: Validate that keys with unique constraints do not already have provided value in Kraken.
         possible_errors:
         - business_detail_value_exists_for_unique_key
-    CollateralRequired:
+    LatePaymentFees:
       type: object
       properties:
         term_type:
           type: string
           description: <p>The type of the contract term.</p>
-        amount:
+        flat_fee_amount:
           type: integer
           minimum: 0
-          description: <p>The amount set up as collateral as condition for account creation.</p>
-        interest_policy:
+          description: <p>The flat amount added to each late payment fee, in the lowest denomination for the currency.</p>
+        interest_policy_name:
+          enum:
+          - ''
+          - RBA
           type: string
-          description: <p>The type of interest policy of required collateral.</p>
+          x-spec-enum-id: 755d70bd45dbabbb
+          description: <p>The interest policy to use for late payment fee calculations.</p>
+          x-enum-descriptions:
+            ? ''
+            : '---------'
+            RBA: RBA
         is_variable:
           type: boolean
           default: true
           description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        reason:
+        percentage_fee:
           type: string
-          description: <p>The reason for setting up required collateral.</p>
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          description: <p>The percentage fee to be applied as part of the late payment fee calculations.</p>
+        percentage_interval_days:
+          type: integer
+          minimum: 0
+          description: <p>The interval the percentage fee rate represents in days (365 = annual).</p>
       required:
-      - amount
-      - reason
+      - flat_fee_amount
+      - percentage_fee
+      - percentage_interval_days
       - term_type
-    ContractedVolumePeriod:
+    PaysByDirectDebitTerm:
       type: object
       properties:
-        market_name:
-          enum:
-          - AUS_EMBEDDED_GAS
-          - AUS_EMBEDDED_UNMETERED_ELECTRICITY
-          - AUS_SOLAR_PPA
-          - AUS_EMBEDDED_UNMETERED_GAS
-          - AUS_EMBEDDED_ELECTRICITY
-          - SIMPLE_SERVICES
-          - AUS_ELECTRICITY
-          - AUS_EMBEDDED_WATER
-          - AUS_GAS
+        term_type:
           type: string
-          x-spec-enum-id: 2efb600dcd89ea97
-          description: <p>The market name for the contracted volume.</p>
-          x-enum-descriptions:
-            AUS_EMBEDDED_GAS: AUS_EMBEDDED_GAS
-            AUS_EMBEDDED_UNMETERED_ELECTRICITY: AUS_EMBEDDED_UNMETERED_ELECTRICITY
-            AUS_SOLAR_PPA: AUS_SOLAR_PPA
-            AUS_EMBEDDED_UNMETERED_GAS: AUS_EMBEDDED_UNMETERED_GAS
-            AUS_EMBEDDED_ELECTRICITY: AUS_EMBEDDED_ELECTRICITY
-            SIMPLE_SERVICES: SIMPLE_SERVICES
-            AUS_ELECTRICITY: AUS_ELECTRICITY
-            AUS_EMBEDDED_WATER: AUS_EMBEDDED_WATER
-            AUS_GAS: AUS_GAS
-        unit:
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+        pays_by_direct_debit:
+          type: boolean
+          description: <p>Whether the customer pays by direct debit.</p>
+      required:
+      - pays_by_direct_debit
+      - term_type
+    BusinessContract:
+      type: object
+      properties:
+        identifier:
           type: string
-          description: <p>The units for the contracted volume.</p>
+          description: <p>The contract's unique identifier.</p>
+          x-validators:
+          - name: Validates that a contract with the given identifier does not exist
+            description: Validates that there is not an existing contract in Kraken with the same identifier provided in the payload.
+            possible_errors:
+            - contract_with_identifier_exists
+        sales_record:
+          allOf:
+          - $ref: '#/components/schemas/ContractSalesRecord'
+          description: <p>Sales record details about the contract.</p>
+        signed_at_date:
+          type: string
+          format: date
+          description: <p>The date on which the contract was signed.</p>
         valid_from_date:
           type: string
           format: date
-          description: <p>The datetime the contracted volume is valid from.</p>
+          description: '<p>The date from which the contract is valid. This is an inclusive date. Example: If <code>valid_from</code> is October 1, 2024, then the contract is valid on October 1, 2024 and following dates.</p>'
         valid_to_date:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date
-          description: <p>The datetime the contracted volume is valid to.</p>
-        value:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,7}(?:\.\d{0,4})?$
-          description: <p>The value of the contracted volume.</p>
+          description: '<p>The date on which the contract expires. This is an exclusive date. Example: If <code>valid_to</code> is October 1, 2025, then the contract is not valid on October 1, 2025 or following dates.</p>'
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContractVersion'
+          description: <p> The versions of this contract, each version is a collection of terms and the date they are applicable. Only two versions can be provided, one which starts on the same date as the contract is valid from and one other future dated version to be scheduled.</p>
       required:
-      - market_name
-      - unit
+      - identifier
+      - signed_at_date
       - valid_from_date
-      - valid_to_date
-      - value
       x-validators:
-      - name: Validate <code>⁨valid_to⁩</code> not before <code>⁨valid_from⁩</code>
-        description: Validates that <code>⁨valid_to⁩</code>, if given, is on or later than <code>⁨valid_from⁩</code>.
+      - name: Validate that contract versions include a version for the current terms
+        description: Validate that the earliest version in the list of contract versions provided has an <code>applicable_at_date</code> that is equal to the contract <code>valid_from_date</code>.
         possible_errors:
-        - start_date_later_than_end_date
+        - contract_versions_does_not_include_current
+    PaymentInstructionBankAccount:
+      type: object
+      properties:
+        account_holder:
+          type: string
+          description: <p>The name of the account holder on the bank account.</p>
+          maxLength: 255
+        account_number:
+          type: string
+          description: <p>The account number for the bank account.</p>
+        iban:
+          type: string
+          description: <p>The iban code for the bank account.</p>
+        sort_code:
+          type: string
+          description: <p>The sort code for the bank account.</p>
+      required:
+      - account_holder
+      - account_number
+    PromotionAssignmentTarget:
+      type: object
+      properties:
+        displayed_on_bill:
+          type: boolean
+          default: true
+          description: <p>Whether this discount should be displayed as a line item on customer bills. Defaults to <code>true</code>. Set to <code>false</code> to hide the discount from bills while still applying it.</p>
+        identifier:
+          type: string
+          description: <p>The identifier for the target. Format is <code>&lt;product_specification_identifier&gt;:&lt;specification_code&gt;</code> (e.g., for rate specifications or shared rates).</p>
+        source_data:
+          type: object
+          description: '<p>Optional configuration data used by rate providers to resolve discount rates. The structure depends on the rate provider (e.g., <code>&#123;"bespoke_amount": "0.05"&#125;</code> for bespoke rates).</p>'
+        target_type:
+          type: string
+          description: <p>The type of target being discounted. Use <code>rate_specification</code> to target a product catalog rate specification, or <code>shared_rate</code> to target a shared rate.</p>
+      required:
+      - identifier
+      - target_type
+    GuaranteeOfOriginConfiguration:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        guarantee_of_origin_percentage:
+          enum:
+          - 0
+          - 25
+          - 50
+          - 75
+          - 100
+          type: integer
+          x-spec-enum-id: fb9427e17f642d36
+          description: data-import--field-definition--guarantee-of-origin-configuration--guarantee-of-origin-percentage-help
+          x-enum-descriptions:
+            '0': '0'
+            '25': '25'
+            '50': '50'
+            '75': '75'
+            '100': '100'
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+      required:
+      - guarantee_of_origin_percentage
+      - term_type
+    CorrectivePeriod:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+        market_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/CorrectivePeriodMarketConfig'
+          description: <p>Market configurations for corrective periods</p>
+          minItems: 1
+      required:
+      - market_configs
+      - term_type
     CorrectivePeriodMarketConfig:
       type: object
       properties:
@@ -1435,374 +1813,6 @@ components:
       - length
       - length_unit
       - market_name
-    PromotionAssignmentTerm:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        schedules:
-          type: array
-          items:
-            $ref: '#/components/schemas/PromotionAssignmentSchedule'
-          description: <p>The list of promotion assignment schedules.</p>
-          minItems: 1
-      required:
-      - schedules
-      - term_type
-    PartnerFileAttachment:
-      type: object
-      properties:
-        category:
-          enum:
-          - LETTER_OF_AUTHORITY
-          type: string
-          x-spec-enum-id: 23434383040d8c62
-          description: <p>The category of the partner file attachment.</p>
-          x-enum-descriptions:
-            LETTER_OF_AUTHORITY: Letter of Authority
-        filename:
-          type: string
-          description: <p>The filename of the partner file attachment.</p>
-          maxLength: 255
-        partner_number:
-          type: string
-          description: <p>The partner number of the organisation the file attachment belongs to.</p>
-          maxLength: 128
-          x-validators:
-          - name: Validate <code>organisation_number</code>
-            description: Validate that the given <code>organisation_number</code> has a corresponding organisation registered in the database.
-            possible_errors:
-            - partner_organisation_does_not_exist
-        s3_key:
-          type: string
-          description: <p>The S3 key of the partner file attachment.</p>
-          maxLength: 1024
-          x-validators:
-          - name: Validate path exists in file store
-            description: Validate that the given path corresponds to a file that has previously been uploaded to the correct file store.
-            possible_errors:
-            - path_does_not_exist_in_file_store
-      required:
-      - category
-      - filename
-      - partner_number
-      - s3_key
-    NoteDocument:
-      type: object
-      properties:
-        document_path:
-          type: string
-          description: <p>The S3 relative path to the document to be attached to the note.</p>
-          x-validators:
-          - name: Validate path exists in file store
-            description: Validate that the given path corresponds to a file that has previously been uploaded to the migration file store. Note that this validation is disabled by default and can be enabled using the relevant feature flag.
-            possible_errors:
-            - path_does_not_exist_in_file_store
-      required:
-      - document_path
-    PaymentInstructionBankAccount:
-      type: object
-      properties:
-        account_holder:
-          type: string
-          description: <p>The name of the account holder on the bank account.</p>
-          maxLength: 255
-        account_number:
-          type: string
-          description: <p>The account number for the bank account.</p>
-        iban:
-          type: string
-          description: <p>The iban code for the bank account.</p>
-        sort_code:
-          type: string
-          description: <p>The sort code for the bank account.</p>
-      required:
-      - account_holder
-      - account_number
-    BusinessPortfolio:
-      type: object
-      properties:
-        billing_name:
-          type: string
-          description: <p>Optional billing name to be used on the account. If provided, it will be used for producing statements. If not, the customer names will be used.</p>
-          maxLength: 510
-        notes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Note'
-          description: <p>List of notes that should be applied at the portfolio level instead of the individual account.</p>
-        portfolio_references:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortfolioReference'
-          description: <p>List of references to the portfolio that this account belongs to.</p>
-          minItems: 1
-        portfolio_settings:
-          allOf:
-          - $ref: '#/components/schemas/PortfolioSettings'
-          description: <p>This object allows for setting portfolio settings during data migration. This object is only available where the <code>is_portfolio_lead</code> flag is true. Any other account type will fail validation.</p>
-      required:
-      - portfolio_references
-      x-validators:
-      - name: Validate portfolio reference provided correctly
-        description: Validate that a portfolio reference is provided if portfolio settings have been provided and that a portfolio reference is not provided if the import supplier is set to create new portfolios.
-        possible_errors:
-        - portfolio_references_missing
-        - portfolio_references_provided
-      - name: Validate no duplicate portfolio reference namespaces
-        description: Validate that there are no duplicate portfolio reference namespaces in the payload.
-        possible_errors:
-        - duplicate_portfolio_references
-    PartnerCommission:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        configurations:
-          type: array
-          items:
-            $ref: '#/components/schemas/PartnerCommissionConfig'
-          description: <p>List of partner commission configurations to associate with this contract term.</p>
-          minItems: 1
-          x-validators:
-          - name: Validate partner commission numbers exist
-            description: Validate that all partner commission numbers in the term configurations exist in Kraken.
-            possible_errors:
-            - not_found
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-      required:
-      - configurations
-      - term_type
-    CorrectivePeriod:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        market_configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/CorrectivePeriodMarketConfig'
-          description: <p>Market configurations for corrective periods</p>
-          minItems: 1
-      required:
-      - market_configs
-      - term_type
-    PromotionAssignmentSchedule:
-      type: object
-      properties:
-        discount_targets:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/PromotionAssignmentTarget'
-          description: <p>Mapping of discount code to a list of targets the discount applies to.</p>
-        params:
-          type: object
-          description: '<p>Optional parameters for the promotion assignment schedule. Supports the following keys: <code>promotion_start_date</code> — an ISO 8601 datetime string (e.g. <code>2024-01-15T00:00:00+00:00</code>) that overrides the date used when calculating promotion eligibility (e.g. months since sign-up). If omitted, the date is derived from the customer''s agreement.</p>'
-        promotion_code:
-          type: string
-          description: <p>The promotion code to apply.</p>
-      required:
-      - discount_targets
-      - promotion_code
-      x-validators:
-      - name: Promotion assignment discount targets are valid
-        description: Validates that the promotion exists, discounts are defined in the promotion, target types match the discount target type, and target identifiers are valid.
-        possible_errors:
-        - discount_not_in_promotion
-        - invalid_input_data
-        - promotion_not_registered
-        - rate_source_provider_not_registered
-        - source_data_not_supported_for_fixed_rate
-        - source_data_reference_mismatch
-        - target_identifier_invalid
-        - target_type_mismatch
-        - target_type_not_registered
-      - name: Promotion assignment params are valid
-        description: Validates that the params field contains only valid values. If promotion_start_date is provided, it must be a valid ISO 8601 datetime string.
-        possible_errors:
-        - invalid_promotion_start_date
-    TrancheTargetResidualFeeMarket:
-      type: object
-      properties:
-        amount:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,8})?$
-          description: <p>Residual fee amount</p>
-        market_name:
-          type: string
-          description: <p>The market the residual fee applies to</p>
-        unit:
-          type: string
-          description: <p>Residual fee unit</p>
-      required:
-      - amount
-      - market_name
-      - unit
-    BespokeRateSchedule:
-      type: object
-      properties:
-        identifier:
-          type:
-          - string
-          - 'null'
-          description: <p>A unique identifier for the bespoke rate schedule.</p>
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/BespokeRateItem'
-          description: <p>A list of bespoke rates.</p>
-          minItems: 1
-          x-validators:
-          - name: Validate bespoke rate items are unique
-            description: Validate that no two bespoke rate items in a schedule share the same rate specification code, rate specification type, and variant profile.
-            possible_errors:
-            - duplicate_bespoke_rate_items
-        product_code:
-          type: string
-          description: <p>A product code for the schedule of bespoke rate.</p>
-          x-validators:
-          - name: Validate product code exists
-            description: Validate that the product code exists in Kraken.
-            possible_errors:
-            - product_code_does_not_exist
-        supply_point_identifier:
-          type:
-          - string
-          - 'null'
-          description: <p>The external identifier of the supply point that this bespoke rate schedule targets.</p>
-          minLength: 1
-        valid_from:
-          type: string
-          format: date-time
-          description: <p>The date the schedule of bespoke rates is valid from (inclusive).</p>
-        valid_to:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: <p>The date the schedule of bespoke rates is valid to (exclusive).</p>
-      required:
-      - items
-      - product_code
-      - valid_from
-      x-validators:
-      - name: Validate <code>⁨valid_to⁩</code> not before or equal to <code>⁨valid_from⁩</code>
-        description: Validates that <code>⁨valid_to⁩</code>, if given, is strictly later than ⁨valid_from⁩.
-        possible_errors:
-        - start_date_same_as_end_date
-      - name: Validate each item represents a possible rate for the product
-        description: Validate each item's rate specification, characteristic values, and scheme labels represent a rate defned on the product.
-        possible_errors:
-        - characteristic_code_not_found
-        - invalid_characteristic_value
-        - invalid_profile_variant_for_specification
-        - product_specification_not_found_for_product
-        - rate_specification_not_found_for_product
-        - shared_rate_not_found
-        - shared_rate_not_found_for_product
-      - name: Validate that all required bespoke rates are present and no non-overridable rates are supplied
-        description: Validates that bespoke rate schedules include all rate specifications marked as must-be-overridden and mandatory, and do not include any rate specifications marked as cannot-be-overridden.
-        possible_errors:
-        - bespoke_rate_cannot_be_overridden
-        - missing_required_bespoke_rate
-    EffectivePeriod:
-      type: object
-      properties:
-        end_date:
-          type: string
-          format: date
-          description: <p>The effective period end date (exclusive).</p>
-        start_date:
-          type: string
-          format: date
-          description: <p>The effective period start date (inclusive).</p>
-      required:
-      - start_date
-    PaymentInstructionCard:
-      type: object
-      properties:
-        card_payment_network:
-          enum:
-          - MASTERCARD
-          - VISA
-          - AMEX
-          - JCB
-          - DISCOVER
-          - DANKORT
-          type: string
-          x-spec-enum-id: c8ed471949510265
-          description: <p>The card payment network for the payment instruction.</p>
-          x-enum-descriptions:
-            MASTERCARD: Mastercard
-            VISA: Visa
-            AMEX: American Express
-            JCB: JCB
-            DISCOVER: Discover
-            DANKORT: Dankort
-        card_type:
-          enum:
-          - CREDIT
-          - DEBIT
-          - PREPAID
-          type: string
-          x-spec-enum-id: 90bbc4bed8c0c0e8
-          description: <p>The card type for the payment instruction.</p>
-          x-enum-descriptions:
-            CREDIT: Credit
-            DEBIT: Debit
-            PREPAID: Prepaid
-        expiry_month:
-          type: integer
-          maximum: 12
-          minimum: 1
-          description: <p>The expiry month of the card in MM format.</p>
-        expiry_year:
-          type: integer
-          minimum: 1000
-          description: <p>The expiry year of the card in YYYY format.</p>
-        last_digits:
-          type: string
-          description: <p>The last 3 or 4 digits of the card number.</p>
-          pattern: ^[0-9]{3,4}$
-      required:
-      - card_payment_network
-      - card_type
-    PromotionAssignmentTarget:
-      type: object
-      properties:
-        displayed_on_bill:
-          type: boolean
-          default: true
-          description: <p>Whether this discount should be displayed as a line item on customer bills. Defaults to <code>true</code>. Set to <code>false</code> to hide the discount from bills while still applying it.</p>
-        identifier:
-          type: string
-          description: <p>The identifier for the target. Format is <code>&lt;product_specification_identifier&gt;:&lt;specification_code&gt;</code> (e.g., for rate specifications or shared rates).</p>
-        source_data:
-          type: object
-          description: '<p>Optional configuration data used by rate providers to resolve discount rates. The structure depends on the rate provider (e.g., <code>&#123;"bespoke_amount": "0.05"&#125;</code> for bespoke rates).</p>'
-        target_type:
-          type: string
-          description: <p>The type of target being discounted. Use <code>rate_specification</code> to target a product catalog rate specification, or <code>shared_rate</code> to target a shared rate.</p>
-      required:
-      - identifier
-      - target_type
     BillingDocumentIssuanceFrequencyTerm:
       type: object
       properties:
@@ -1838,608 +1848,52 @@ components:
       - period_start_day
       - period_start_month
       - term_type
-    BusinessUser:
+    ProductRateOverrideItemByVariantProfile:
       type: object
       properties:
-        address:
-          allOf:
-          - $ref: '#/components/schemas/AusPropertyRichAddress'
-          description: <p>The customer's address. If provided, this will be stored on the account user record.</p>
-        alternative_phone_numbers:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerAlternativeNumber'
-          description: <p>A list of the customer's alternative phone numbers.</p>
-        business_roles:
-          type: array
-          items:
-            enum:
-            - EZ_CUSTOMER
-            - TRUSTEE_MAND
-            - MSP_USER
-            - BUSI_FINANCIALLY
-            - EZ_DFPP_RW
-            - NOMINATED_NONE
-            - ADMIN
-            - RECEIVES_SALES
-            - EZ_ADMIN
-            - LIFE_SUPPORT_CONTACT
-            - RECEIVES_DUNNING
-            - FLAGGED_LS
-            - RECEIVES_SERVICE
-            - NO_EMAIL
-            - MSBG_COMMS
-            - EZ_DFPP_RO
-            - TRUSTEE_BILL
-            - RECEIVES_INVOICES
-            - TRUSTEE_NONE
-            - RESI_SECONDARY
-            - BUSINESS_NO_COMMS
-            - NOMINATED_MAND
-            - MSBG_NO_COMMS
-            - BSP_USER
-            - OUTAGE_CONTACT
-            - NOMINATED_BILL
-            - EZ_BROKER
-            - TRUSTEE
-            - PRIMARY_NO_COMMS
-            - CDR_REPRESENTATIVE
-            - BUSINESS_COMMS
-            type: string
-            description: '* `EZ_CUSTOMER` - EZ_CUSTOMER
-
-              * `TRUSTEE_MAND` - TRUSTEE_MAND
-
-              * `MSP_USER` - MSP_USER
-
-              * `BUSI_FINANCIALLY` - BUSI_FINANCIALLY
-
-              * `EZ_DFPP_RW` - EZ_DFPP_RW
-
-              * `NOMINATED_NONE` - NOMINATED_NONE
-
-              * `ADMIN` - ADMIN
-
-              * `RECEIVES_SALES` - RECEIVES_SALES
-
-              * `EZ_ADMIN` - EZ_ADMIN
-
-              * `LIFE_SUPPORT_CONTACT` - LIFE_SUPPORT_CONTACT
-
-              * `RECEIVES_DUNNING` - RECEIVES_DUNNING
-
-              * `FLAGGED_LS` - FLAGGED_LS
-
-              * `RECEIVES_SERVICE` - RECEIVES_SERVICE
-
-              * `NO_EMAIL` - NO_EMAIL
-
-              * `MSBG_COMMS` - MSBG_COMMS
-
-              * `EZ_DFPP_RO` - EZ_DFPP_RO
-
-              * `TRUSTEE_BILL` - TRUSTEE_BILL
-
-              * `RECEIVES_INVOICES` - RECEIVES_INVOICES
-
-              * `TRUSTEE_NONE` - TRUSTEE_NONE
-
-              * `RESI_SECONDARY` - RESI_SECONDARY
-
-              * `BUSINESS_NO_COMMS` - BUSINESS_NO_COMMS
-
-              * `NOMINATED_MAND` - NOMINATED_MAND
-
-              * `MSBG_NO_COMMS` - MSBG_NO_COMMS
-
-              * `BSP_USER` - BSP_USER
-
-              * `OUTAGE_CONTACT` - OUTAGE_CONTACT
-
-              * `NOMINATED_BILL` - NOMINATED_BILL
-
-              * `EZ_BROKER` - EZ_BROKER
-
-              * `TRUSTEE` - TRUSTEE
-
-              * `PRIMARY_NO_COMMS` - PRIMARY_NO_COMMS
-
-              * `CDR_REPRESENTATIVE` - CDR_REPRESENTATIVE
-
-              * `BUSINESS_COMMS` - BUSINESS_COMMS'
-            x-spec-enum-id: a9dfece01fff4a96
-            x-enum-descriptions:
-              EZ_CUSTOMER: EZ_CUSTOMER
-              TRUSTEE_MAND: TRUSTEE_MAND
-              MSP_USER: MSP_USER
-              BUSI_FINANCIALLY: BUSI_FINANCIALLY
-              EZ_DFPP_RW: EZ_DFPP_RW
-              NOMINATED_NONE: NOMINATED_NONE
-              ADMIN: ADMIN
-              RECEIVES_SALES: RECEIVES_SALES
-              EZ_ADMIN: EZ_ADMIN
-              LIFE_SUPPORT_CONTACT: LIFE_SUPPORT_CONTACT
-              RECEIVES_DUNNING: RECEIVES_DUNNING
-              FLAGGED_LS: FLAGGED_LS
-              RECEIVES_SERVICE: RECEIVES_SERVICE
-              NO_EMAIL: NO_EMAIL
-              MSBG_COMMS: MSBG_COMMS
-              EZ_DFPP_RO: EZ_DFPP_RO
-              TRUSTEE_BILL: TRUSTEE_BILL
-              RECEIVES_INVOICES: RECEIVES_INVOICES
-              TRUSTEE_NONE: TRUSTEE_NONE
-              RESI_SECONDARY: RESI_SECONDARY
-              BUSINESS_NO_COMMS: BUSINESS_NO_COMMS
-              NOMINATED_MAND: NOMINATED_MAND
-              MSBG_NO_COMMS: MSBG_NO_COMMS
-              BSP_USER: BSP_USER
-              OUTAGE_CONTACT: OUTAGE_CONTACT
-              NOMINATED_BILL: NOMINATED_BILL
-              EZ_BROKER: EZ_BROKER
-              TRUSTEE: TRUSTEE
-              PRIMARY_NO_COMMS: PRIMARY_NO_COMMS
-              CDR_REPRESENTATIVE: CDR_REPRESENTATIVE
-              BUSINESS_COMMS: BUSINESS_COMMS
-          description: <p>A list of business roles to be assigned to the customer. These apply to all accounts the business has access to.</p>
-        contact_emails:
-          type: array
-          items:
-            type: string
-            format: email
-          description: <p>A list of additional email addresses to associate with the customer account. These can be used for sending communications to the customer. Each email must be a valid email address.</p>
-        credit_assessment_id:
-          type:
-          - string
-          - 'null'
-          description: <p>Customers credit assessment id.</p>
-        credit_result:
-          type:
-          - string
-          - 'null'
-          description: <p>The credit result from the provider.</p>
-        credit_risk_bracket:
-          enum:
-          - LOW
-          - MID
-          - HIGH
-          - UNKNOWN
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: e6b98b6c312ff7bf
-          description: <p>The deemed credit risk bracket for this customer.</p>
-          x-enum-descriptions:
-            LOW: Low
-            MID: Medium
-            HIGH: High
-            UNKNOWN: Unknown
-            ? ''
-            : ''
-            None: None
-        credit_score:
-          type:
-          - integer
-          - 'null'
-          maximum: 9999
-          minimum: 0
-          description: <p>Customers credit score.</p>
-        date_of_birth:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: <p>The customer's date of birth.</p>
-        deceased:
-          enum:
-          - Reported
-          - Confirmed
-          - ''
-          type: string
-          x-spec-enum-id: f90e7d899a971044
-          default: ''
-          description: <p>Whether the customer is deceased or not. Defaults to an empty string if not provided.</p>
-          x-enum-descriptions:
-            Reported: Reported
-            Confirmed: Confirmed
-            ? ''
-            : ''
-        details:
-          description: <p>Generic solution for storing additional customer data that is not covered by the other fields in the payload. This is often in the form of market or territory specific information. For example, in much of Europe it is a requirement to store the user's fiscal code. Namespaces (the keys in the object) need to be registered before import. If a value is provided for a namespace that is not registered then an error will be raised.</p>
-          deprecated: true
-          x-use-instead: user_details
+        characteristic_values:
+          type: object
+          description: <p>The characteristic values of the product rate override item.</p>
           x-validators:
-          - name: Validate user details
-            description: Validates that the user detail namespace and value are allowed for the customer. The user detail namespace (the key in the JSON object) must already have been set up in Kraken. The value (the value in the JSON object) must be the correct data type.
-            possible_errors:
-            - customer_detail_failed_validation
-            - customer_detail_incorrect_value_type
-            - customer_detail_not_registered
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-          description: <p>The customer's email address. This is the email address they will use to log into their online portal. Defaults to an empty string if not provided. Cannot be longer that 254 characters.</p>
-          maxLength: 254
-          x-validators:
-          - name: Validate email address is not test address
-            description: Validates that a customer email address is not a test email address. An email address is considered a test address if it starts with "test@"" or "xxx@"" or ends with "@test.com", "@test.co.uk", ".xxx" or ".xx".
-            possible_errors:
-            - possible_test_email_address
-          - name: Validate email is not internal
-            description: Validates that a customer email address does not use an internal Kraken handler. For example, if an instance of Kraken has registered <code>info@kraken.info</code> as an internal email address, then the customer email address must not match this.
-            possible_errors:
-            - internal_email_address
-        family_name:
-          type: string
-          default: ''
-          description: <p>The customer's family name.</p>
-          maxLength: 255
-        given_name:
-          type: string
-          default: ''
-          description: <p>The customer's given name.</p>
-          maxLength: 255
-        label:
-          type:
-          - string
-          - 'null'
-          description: <p>A free text field to help identify the user (e.g. a job title).</p>
-        landline:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: <p>The customer's landline phone number.</p>
-          maxLength: 32
-          x-validators:
-          - name: Validate phone number
-            description: Validates that a phone number conforms to the norms of the region from which the migration is taking place.
-            possible_errors:
-            - invalid_phone_number
-        mobile:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: <p>The customer's personal mobile number.</p>
-          maxLength: 32
-          x-validators:
-          - name: Validate phone number
-            description: Validates that a phone number conforms to the norms of the region from which the migration is taking place.
-            possible_errors:
-            - invalid_phone_number
-        salutation:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: <p>The customer's preferred salutation.</p>
-          maxLength: 128
-        title:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: <p>The customer's preferred title.</p>
-          maxLength: 20
-        unable_to_read_meters:
-          type: boolean
-          default: false
-          description: <p>Whether the customer is unable to read their meters themselves. Defaults to False.</p>
-        user_details:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerUserDetail'
-          description: <p>Generic solution for storing additional customer data that is not covered by the other fields in the payload. This is often in the form of market or territory specific information. For example, in much of Europe it is a requirement to store the user's fiscal code. Namespaces (the keys in the object) need to be registered before import. If a value is provided for a namespace that is not registered then an error will be raised.</p>
-          x-validators:
-          - name: Validate required customer details namespaces provided
-            description: No required namespaces configured. Validation skipped.
-            possible_errors:
-            - required_customer_details_namespace_missing
-      required:
-      - business_roles
-      x-validators:
-      - name: Ensures only <code>user_details</code> or <code>details</code> are provided
-        description: Ensures that only <code>user_details</code> or <code>details</code> are provided, not both.
-        possible_errors:
-        - customer_details_and_user_details_both_provided
-      - name: Validate no contact details for occupier
-        description: Validates that a customer identified as "The Occupier" does not have contact details. If contact details are provided it implies that the identity of the customer is known, and it therefore not an unknown occupier.
-        possible_errors:
-        - contact_details_for_occupier
-      - name: Validate that the customer's name is not "The Occupier"
-        description: Validate that the customer's name is not "The Occupier". To indicate an occupier account, use the <code>unknown_occupier</code> flag at the account-level.
-        possible_errors:
-        - customer_may_not_be_named_the_occupier
-    Terms:
-      oneOf:
-      - $ref: '#/components/schemas/BespokeRateConfiguration'
-      - $ref: '#/components/schemas/BillDueDate'
-      - $ref: '#/components/schemas/BillingDocumentIssuanceFrequencyTerm'
-      - $ref: '#/components/schemas/CharacteristicOverrideConfiguration'
-      - $ref: '#/components/schemas/CollateralRequired'
-      - $ref: '#/components/schemas/ContractMetaData'
-      - $ref: '#/components/schemas/ContractedVolumeConfiguration'
-      - $ref: '#/components/schemas/CorrectivePeriod'
-      - $ref: '#/components/schemas/DelayerDays'
-      - $ref: '#/components/schemas/GuaranteeOfOriginConfiguration'
-      - $ref: '#/components/schemas/LatePaymentFees'
-      - $ref: '#/components/schemas/MinimumContractLength'
-      - $ref: '#/components/schemas/PartnerCommission'
-      - $ref: '#/components/schemas/PaysByDirectDebitTerm'
-      - $ref: '#/components/schemas/ProductRateOverrideConfiguration'
-      - $ref: '#/components/schemas/PromotionAssignmentTerm'
-      - $ref: '#/components/schemas/RateGroupEligibilityConfiguration'
-      - $ref: '#/components/schemas/TrancheTargetResidualFee'
-      - $ref: '#/components/schemas/TaxAdjustmentConfiguration'
-      - $ref: '#/components/schemas/TerminationFee'
-      - $ref: '#/components/schemas/AusEEPAExportContractedVolumeConfiguration'
-      discriminator:
-        propertyName: term_type
-        mapping:
-          BESPOKE_RATE_CONFIGURATION: '#/components/schemas/BespokeRateConfiguration'
-          BILL_DUE_DATE: '#/components/schemas/BillDueDate'
-          ISSUANCE_FREQUENCY: '#/components/schemas/BillingDocumentIssuanceFrequencyTerm'
-          CHARACTERISTIC_OVERRIDE: '#/components/schemas/CharacteristicOverrideConfiguration'
-          COLLATERAL_REQUIRED: '#/components/schemas/CollateralRequired'
-          CONTRACT_METADATA: '#/components/schemas/ContractMetaData'
-          CONTRACTED_VOLUME_CONFIGURATION: '#/components/schemas/ContractedVolumeConfiguration'
-          CORRECTIVE_PERIOD: '#/components/schemas/CorrectivePeriod'
-          DELAYER_DAYS: '#/components/schemas/DelayerDays'
-          GUARANTEE_OF_ORIGIN_CONFIGURATION: '#/components/schemas/GuaranteeOfOriginConfiguration'
-          LATE_PAYMENT_FEES: '#/components/schemas/LatePaymentFees'
-          MINIMUM_CONTRACT_LENGTH: '#/components/schemas/MinimumContractLength'
-          PARTNER_COMMISSION: '#/components/schemas/PartnerCommission'
-          PAYS_BY_DIRECT_DEBIT: '#/components/schemas/PaysByDirectDebitTerm'
-          PRODUCT_RATE_OVERRIDE_SCHEDULE: '#/components/schemas/ProductRateOverrideConfiguration'
-          PROMOTION_ASSIGNMENT: '#/components/schemas/PromotionAssignmentTerm'
-          RATE_GROUP_ELIGIBILITY: '#/components/schemas/RateGroupEligibilityConfiguration'
-          TRANCHE_TARGET_RESIDUAL_FEE: '#/components/schemas/TrancheTargetResidualFee'
-          TAX_ADJUSTMENT_CONFIGURATION: '#/components/schemas/TaxAdjustmentConfiguration'
-          TERMINATION_FEE: '#/components/schemas/TerminationFee'
-          EEPA_EXPORT_CONTRACTED_VOLUME: '#/components/schemas/AusEEPAExportContractedVolumeConfiguration'
-    BusinessDetail:
-      type: object
-      properties:
-        key:
-          enum:
-          - abn
-          - acn
-          - frmp
-          - anzsic
-          type: string
-          x-spec-enum-id: cf8b0ced1c78b621
-          description: <p>The key for the business detail. Keys need to be registered before import. If a value is provided for a key that is not registered then an error will be raised.</p>
-          x-enum-descriptions:
-            abn: abn
-            acn: acn
-            frmp: frmp
-            anzsic: anzsic
-        value:
-          description: <p>The value for the business detail. This must match the type the registered key is expecting.</p>
-      required:
-      - key
-      - value
-      x-validators:
-      - name: Validate that the value for the business details key has the correct type
-        description: Validate that the value given has the type that matches the type configured for the registered business detail key.
-        possible_errors:
-        - business_detail_incorrect_value_type
-      - name: Validate the business details value
-        description: Validate that business detail value complies with any validation required by their corresponding detail key.
-        possible_errors:
-        - business_detail_failed_validation
-    SupplyPointTaxAdjustment:
-      type: object
-      properties:
-        adjustment_type:
-          enum:
-          - EXEMPTION
-          - REDUCTION
-          type: string
-          x-spec-enum-id: '7048963418647159'
-          description: <p>The type of tax adjustment (EXEMPTION or REDUCTION).</p>
-          x-enum-descriptions:
-            EXEMPTION: Exemption
-            REDUCTION: Reduction
-        effective_from_date:
-          type: string
-          format: date
-          description: <p>The date the tax adjustment is effective from.</p>
-        effective_to_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: <p>The date the tax adjustment is effective to (inclusive, optional).</p>
-        qualifying_usage:
+          - name: Validate provided dictionary content types
+            description: Validates that provided dictionary contents are of the specified key type and value type.
+            possible_errors: []
+        price_per_unit:
           type: string
           format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,2})?$
-          description: <p>The normalised percentage of energy use on the supply point that qualifies for the tax adjustment (between 0 and 1).</p>
-        supply_point_external_identifier:
+          pattern: ^-?\d{0,10}(?:\.\d{0,5})?$
+          description: <p>The override rate of the item.</p>
+        product_code:
           type: string
-          description: <p>The external identifier of the supply point this tax adjustment applies to.</p>
-          maxLength: 255
-        tax_category:
+          description: <p>The product code of the item.</p>
+          x-validators:
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
+            possible_errors:
+            - product_code_does_not_exist
+        rate_specification_code:
           type: string
-          description: <p>The category of tax this adjustment applies to.</p>
-          maxLength: 50
-        tax_subcategory:
-          type: string
-          default: ''
-          description: <p>The subcategory of tax this adjustment applies to (optional).</p>
-          maxLength: 50
-      required:
-      - adjustment_type
-      - effective_from_date
-      - qualifying_usage
-      - supply_point_external_identifier
-      - tax_category
-      x-validators:
-      - name: Convert supply point external identifier to ID
-        description: Convert the supply point external identifier to the internal supply point ID by looking up the supply point in the database.
-        possible_errors:
-        - supply_point_not_found
-      - name: Validate <code>⁨effective_to⁩</code> not before <code>⁨effective_from⁩</code>
-        description: Validates that <code>⁨effective_to⁩</code>, if given, is on or later than <code>⁨effective_from⁩</code>.
-        possible_errors:
-        - start_date_later_than_end_date
-    ContractMetaData:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        metadata:
+          description: <p>The rate specification code of the item.</p>
+        scheme_labels:
           type: object
-          description: <p> Additional metadata about the contract.</p>
+          description: <p>The scheme labels of the product rate override item.</p>
           x-validators:
           - name: Validate provided dictionary content types
             description: Validates that provided dictionary contents are of the specified key type and value type.
             possible_errors: []
       required:
-      - metadata
-      - term_type
-    ContractSalesRecord:
-      type: object
-      properties:
-        affiliate_organisation_name:
-          type: string
-          description: <p>The affiliate organisation name associated with the contract.</p>
-          maxLength: 128
-          x-validators:
-          - name: Validate affiliate organisation exists
-            description: Validate that an affiliate organisation exists in Kraken for the given name.
-            possible_errors:
-            - affiliate_organisation_does_not_exist
-        sales_channel:
-          enum:
-          - DIRECT
-          - PRICE_COMPARISON
-          - TELESALES
-          - DIGI_TELESALES
-          - EVENTS
-          - FIELD_SALES
-          - AGGREGATOR
-          - PARTNERSHIPS
-          - NEW_TENANT
-          - MOVE_IN
-          - WORKPLACE_POP_UP
-          - BROKER
-          - PARENT_POWER
-          - PEOPLE_POWER
-          - GIFT_OF_KIT
-          - HIGH_REFERRER
-          - SUPPLIER_OF_LAST_RESORT
-          - ACQUISITION
-          - WORKS_WITH_OCTOPUS
-          - LANDLORD
-          - DEBT_COLLECTION_AGENCY
-          type: string
-          x-spec-enum-id: f4ccf4dcda60c174
-          description: <p>The sales channel associated with the contract</p>
-          x-enum-descriptions:
-            DIRECT: Direct
-            PRICE_COMPARISON: Price comparison
-            TELESALES: Telesales
-            DIGI_TELESALES: Digital telesales
-            EVENTS: Events
-            FIELD_SALES: Field sales
-            AGGREGATOR: Aggregator
-            PARTNERSHIPS: Partnerships
-            NEW_TENANT: New tenant
-            MOVE_IN: Move in
-            WORKPLACE_POP_UP: Workplace pop-up
-            BROKER: Broker
-            PARENT_POWER: Parent power
-            PEOPLE_POWER: People power
-            GIFT_OF_KIT: Gift of kit
-            HIGH_REFERRER: High referrer
-            SUPPLIER_OF_LAST_RESORT: Supplier of last resort
-            ACQUISITION: Acquisition
-            WORKS_WITH_OCTOPUS: Works with octopus
-            LANDLORD: Landlord
-            DEBT_COLLECTION_AGENCY: Debt collection agency
+      - price_per_unit
+      - product_code
+      - rate_specification_code
       x-validators:
-      - name: Sales channel matches affiliate organisation
-        description: Validates that when an affiliate_organisation_name is provided, the sales_channel is in the set of channels configured for that organisation.
+      - name: Validate that the rate band is valid for the product code
+        description: Validate that the rate band provided matches the rate band for the product's rates with the provided product code.
         possible_errors:
-        - sales_channel_does_not_match_affiliate_organisation
-    BillDueDate:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        number_of_days:
-          type: integer
-          minimum: 0
-          description: <p>The number of days added to the issuance date to determine the due date.</p>
-        type_of_days:
-          enum:
-          - WORKING
-          - CALENDAR
-          type: string
-          x-spec-enum-id: ca64884b18199022
-          description: data-import--field-definition--bill-due-date--type-of-days--html
-          x-enum-descriptions:
-            WORKING: Working days
-            CALENDAR: Calendar days
-      required:
-      - number_of_days
-      - term_type
-      - type_of_days
-    CustomerUserDetail:
-      type: object
-      properties:
-        namespace:
-          enum:
-          - external_user_id
-          type: string
-          x-spec-enum-id: 6bb07f5044ea9b8a
-          description: <p>The namespace of the customer user detail.</p>
-          x-enum-descriptions:
-            external_user_id: external_user_id
-        value:
-          description: <p>The value of the customer user detail.</p>
-      required:
-      - namespace
-      - value
-      x-validators:
-      - name: Validate user details
-        description: Validates that the user detail namespace and value are allowed for the customer. The user detail namespace (the key in the JSON object) must already have been set up in Kraken. The value (the value in the JSON object) must be the correct data type.
-        possible_errors:
-        - customer_detail_failed_validation
-        - customer_detail_incorrect_value_type
-        - customer_detail_not_registered
-    PaysByDirectDebitTerm:
-      type: object
-      properties:
-        term_type:
-          type: string
-          description: <p>The type of the contract term.</p>
-        is_variable:
-          type: boolean
-          default: true
-          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
-        pays_by_direct_debit:
-          type: boolean
-          description: <p>Whether the customer pays by direct debit.</p>
-      required:
-      - pays_by_direct_debit
-      - term_type
+        - characteristic_code_not_found
+        - invalid_characteristic_value
+        - invalid_variant_profile_for_product
+        - product_specification_not_found_for_product
+        - rate_specification_not_found_for_product
     AusStructuredStreetAddress:
       type: object
       properties:
@@ -3301,56 +2755,602 @@ components:
             WDS: Woods
             WYND: Wynd
             YARD: Yard
-    GuaranteeOfOriginConfiguration:
+    CardAndBankAccountPaymentInstruction:
+      type: object
+      properties:
+        bank_account:
+          allOf:
+          - $ref: '#/components/schemas/PaymentInstructionBankAccount'
+          description: <p>Bank account payment instruction details.</p>
+        card:
+          allOf:
+          - $ref: '#/components/schemas/PaymentInstructionCard'
+          description: <p>Card payment instruction details.</p>
+        customer_reference:
+          type: string
+          description: <p>The customer reference of the payment instruction.</p><p>Although not required for payment instructions to take payments, if provided it keeps Kraken's data in sync with the customer's account in the payment vendor's systems.</p>
+          maxLength: 512
+        instruction_identifier:
+          type: string
+          description: <p>Unique identifier for the payment instruction. Used for cross referencing the payment instruction within other parts of the payload.</p>
+        ledger_code:
+          type: string
+          description: <p>The code of the relevant Kraken ledger type for the payment instruction. This code must exist in Kraken.</p>
+          x-validators:
+          - name: Validate ledger code
+            description: Validates that the ledger code provided in the payload matches an available ledger type in Kraken.
+            possible_errors:
+            - ledger_code_does_not_exist
+        reference:
+          type: string
+          description: <p>The reference of the mandate as known by the vendor.</p>
+          maxLength: 512
+        type:
+          enum:
+          - BPAY
+          - CARD
+          - CUSTOM
+          - DIRECT_DEBIT
+          - GMO_REFUND
+          - PAYMENT_SLIP
+          type: string
+          x-spec-enum-id: 601d0b035869d4dd
+          description: <p>The payment type of the payment instruction.</p>
+          x-enum-descriptions:
+            BPAY: BPAY
+            CARD: Card
+            CUSTOM: Custom
+            DIRECT_DEBIT: Direct Debit
+            GMO_REFUND: GMO Refund
+            PAYMENT_SLIP: Payment slip
+        use_for_scheduled_payments:
+          type: boolean
+          description: <p>Whether this payment instruction should be used for scheduled payments on a given ledger. If true, this instruction will be set as the payment method for the account's payment schedule.</p>
+        valid_from:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: <p>The date from which the payment instruction is valid.</p>
+        vendor:
+          enum:
+          - WESTPAC
+          type: string
+          x-spec-enum-id: 19baa89b6ef9d00c
+          description: <p>The vendor for the payment instruction.</p>
+          x-enum-descriptions:
+            WESTPAC: Westpac
+      required:
+      - reference
+      - type
+      - vendor
+      x-validators:
+      - name: null
+        description: null
+        possible_errors:
+        - incomplete_payments_not_enabled
+      - name: Validate card details are provided for card payment instruction
+        description: Validate that if the payment instruction is of type CARD then card payment details are provided in the payload. This may not be enforced if client is using cashflow instructions as card details are obtained from the vendor in this case.
+        possible_errors:
+        - card_details_not_provided_for_card_payment_instruction
+    TrancheTargetResidualFeeMarket:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,8})?$
+          description: <p>Residual fee amount</p>
+        market_name:
+          type: string
+          description: <p>The market the residual fee applies to</p>
+        unit:
+          type: string
+          description: <p>Residual fee unit</p>
+      required:
+      - amount
+      - market_name
+      - unit
+    IndexationOption:
+      type: object
+      properties:
+        escalation_start_date:
+          type: string
+          format: date
+          description: <p>Date the indexation applies from.</p>
+        index_code:
+          type: string
+          description: <p>The code for the relevant index.</p>
+      required:
+      - escalation_start_date
+      - index_code
+    BusinessPortfolio:
+      type: object
+      properties:
+        billing_name:
+          type: string
+          description: <p>Optional billing name to be used on the account. If provided, it will be used for producing statements. If not, the customer names will be used.</p>
+          maxLength: 510
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
+          description: <p>List of notes that should be applied at the portfolio level instead of the individual account.</p>
+        portfolio_references:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioReference'
+          description: <p>List of references to the portfolio that this account belongs to.</p>
+          minItems: 1
+        portfolio_settings:
+          allOf:
+          - $ref: '#/components/schemas/PortfolioSettings'
+          description: <p>This object allows for setting portfolio settings during data migration. This object is only available where the <code>is_portfolio_lead</code> flag is true. Any other account type will fail validation.</p>
+      required:
+      - portfolio_references
+      x-validators:
+      - name: Validate portfolio reference provided correctly
+        description: Validate that a portfolio reference is provided if portfolio settings have been provided and that a portfolio reference is not provided if the import supplier is set to create new portfolios.
+        possible_errors:
+        - portfolio_references_missing
+        - portfolio_references_provided
+      - name: Validate no duplicate portfolio reference namespaces
+        description: Validate that there are no duplicate portfolio reference namespaces in the payload.
+        possible_errors:
+        - duplicate_portfolio_references
+    BespokeRateItem:
+      type: object
+      properties:
+        identifier:
+          type:
+          - string
+          - 'null'
+          description: <p>A unique identifier for the bespoke rate item.</p>
+        price_per_unit:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,11}(?:\.\d{0,8})?$
+          description: <p>The price per unit of the bespoke rate.</p>
+        rate_specification_code:
+          type: string
+          description: <p>The rate specification code for the bespoke rate.</p>
+        rate_specification_type:
+          enum:
+          - PRODUCT_RATE
+          - SHARED_RATE
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 94c4191a865cda34
+          default: PRODUCT_RATE
+          description: <p>The rate specification type for the bespoke rate.</p>
+          x-enum-descriptions:
+            PRODUCT_RATE: Product rate
+            SHARED_RATE: Shared rate
+            None: None
+        variant_profile:
+          allOf:
+          - $ref: '#/components/schemas/VariantProfile'
+          description: <p>The variant profile which the rate applies to.</p>
+      required:
+      - price_per_unit
+      - rate_specification_code
+      - variant_profile
+    ContractVersion:
+      type: object
+      properties:
+        applicable_at_date:
+          type: string
+          format: date
+          description: <p>The date on which this contract version become applicable at.</p>
+        terms:
+          type: array
+          items:
+            $ref: '#/components/schemas/Terms'
+          description: <p>The terms for this version of the contract.</p>
+      required:
+      - applicable_at_date
+      - terms
+    ContractMetaData:
       type: object
       properties:
         term_type:
           type: string
           description: <p>The type of the contract term.</p>
-        guarantee_of_origin_percentage:
-          enum:
-          - 0
-          - 25
-          - 50
-          - 75
-          - 100
-          type: integer
-          x-spec-enum-id: fb9427e17f642d36
-          description: data-import--field-definition--guarantee-of-origin-configuration--guarantee-of-origin-percentage-help
-          x-enum-descriptions:
-            '0': '0'
-            '25': '25'
-            '50': '50'
-            '75': '75'
-            '100': '100'
         is_variable:
           type: boolean
           default: true
           description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+        metadata:
+          type: object
+          description: <p> Additional metadata about the contract.</p>
+          x-validators:
+          - name: Validate provided dictionary content types
+            description: Validates that provided dictionary contents are of the specified key type and value type.
+            possible_errors: []
       required:
-      - guarantee_of_origin_percentage
+      - metadata
       - term_type
-    VariantProfile:
+    DRFError:
+      type: object
+      description: Simplistic and mostly inaccurate Serializer that should represent DRF's ValidationError details
+      properties:
+        field_name:
+          type: array
+          items:
+            type: string
+          description: Validation error messages.
+    TimeSeriesSpecificationEligibilitySchedule:
       type: object
       properties:
-        characteristic_values:
-          type: object
-          description: <p>A dictionary of characteristic values which the rate applies to.</p>
+        effective_period:
+          allOf:
+          - $ref: '#/components/schemas/EffectivePeriod'
+          description: <p>The effective period of the schedule.</p>
+        is_eligible:
+          type: boolean
+          description: <p>Whether the rate group is eligible for charging to the customer.</p>
+        product_code:
+          type: string
+          description: <p>Product code. </p>
           x-validators:
-          - name: Validate provided dictionary content types
-            description: Validates that provided dictionary contents are of the specified key type and value type.
-            possible_errors: []
-        scheme_labels:
-          type: object
-          description: <p>A dictionary of scheme labels which the rate applies to.</p>
-          x-validators:
-          - name: Validate provided dictionary content types
-            description: Validates that provided dictionary contents are of the specified key type and value type.
-            possible_errors: []
-          - name: Validate that scheme labels have the correct format
-            description: Validate that scheme labels have the the following format 'scheme-type:identifier' where 'scheme-type' is one of 'time_of_use', 'register'.
+          - name: Validate product code exists
+            description: Validate that the product code exists in Kraken.
             possible_errors:
-            - invalid_scheme_label_format
+            - product_code_does_not_exist
+        supply_point_identifier:
+          type: string
+          description: <p>Optional supply point identifier to restrict this schedule to a specific supply point.</p>
+        time_series_specification_code:
+          type: string
+          description: <p>The unique shared rate code for the product.</p>
+      required:
+      - effective_period
+      - is_eligible
+      - product_code
+      - time_series_specification_code
+      x-validators:
+      - name: data-import--validation--shared-rate-exists-for-product
+        description: Validate that the shared rate code provided matches the shared rate for the product with the provided product code.
+        possible_errors:
+        - product_specification_not_found_for_product
+        - time_series_not_found_for_product
+    BusinessUser:
+      type: object
+      properties:
+        address:
+          allOf:
+          - $ref: '#/components/schemas/AusPropertyRichAddress'
+          description: <p>The customer's address. If provided, this will be stored on the account user record.</p>
+        alternative_phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerAlternativeNumber'
+          description: <p>A list of the customer's alternative phone numbers.</p>
+        business_roles:
+          type: array
+          items:
+            enum:
+            - EZ_CUSTOMER
+            - TRUSTEE_MAND
+            - MSP_USER
+            - BUSI_FINANCIALLY
+            - EZ_DFPP_RW
+            - NOMINATED_NONE
+            - ADMIN
+            - RECEIVES_SALES
+            - EZ_ADMIN
+            - LIFE_SUPPORT_CONTACT
+            - RECEIVES_DUNNING
+            - FLAGGED_LS
+            - RECEIVES_SERVICE
+            - NO_EMAIL
+            - MSBG_COMMS
+            - EZ_DFPP_RO
+            - TRUSTEE_BILL
+            - RECEIVES_INVOICES
+            - TRUSTEE_NONE
+            - RESI_SECONDARY
+            - BUSINESS_NO_COMMS
+            - NOMINATED_MAND
+            - MSBG_NO_COMMS
+            - BSP_USER
+            - OUTAGE_CONTACT
+            - NOMINATED_BILL
+            - EZ_BROKER
+            - TRUSTEE
+            - PRIMARY_NO_COMMS
+            - CDR_REPRESENTATIVE
+            - BUSINESS_COMMS
+            type: string
+            description: '* `EZ_CUSTOMER` - EZ_CUSTOMER
+
+              * `TRUSTEE_MAND` - TRUSTEE_MAND
+
+              * `MSP_USER` - MSP_USER
+
+              * `BUSI_FINANCIALLY` - BUSI_FINANCIALLY
+
+              * `EZ_DFPP_RW` - EZ_DFPP_RW
+
+              * `NOMINATED_NONE` - NOMINATED_NONE
+
+              * `ADMIN` - ADMIN
+
+              * `RECEIVES_SALES` - RECEIVES_SALES
+
+              * `EZ_ADMIN` - EZ_ADMIN
+
+              * `LIFE_SUPPORT_CONTACT` - LIFE_SUPPORT_CONTACT
+
+              * `RECEIVES_DUNNING` - RECEIVES_DUNNING
+
+              * `FLAGGED_LS` - FLAGGED_LS
+
+              * `RECEIVES_SERVICE` - RECEIVES_SERVICE
+
+              * `NO_EMAIL` - NO_EMAIL
+
+              * `MSBG_COMMS` - MSBG_COMMS
+
+              * `EZ_DFPP_RO` - EZ_DFPP_RO
+
+              * `TRUSTEE_BILL` - TRUSTEE_BILL
+
+              * `RECEIVES_INVOICES` - RECEIVES_INVOICES
+
+              * `TRUSTEE_NONE` - TRUSTEE_NONE
+
+              * `RESI_SECONDARY` - RESI_SECONDARY
+
+              * `BUSINESS_NO_COMMS` - BUSINESS_NO_COMMS
+
+              * `NOMINATED_MAND` - NOMINATED_MAND
+
+              * `MSBG_NO_COMMS` - MSBG_NO_COMMS
+
+              * `BSP_USER` - BSP_USER
+
+              * `OUTAGE_CONTACT` - OUTAGE_CONTACT
+
+              * `NOMINATED_BILL` - NOMINATED_BILL
+
+              * `EZ_BROKER` - EZ_BROKER
+
+              * `TRUSTEE` - TRUSTEE
+
+              * `PRIMARY_NO_COMMS` - PRIMARY_NO_COMMS
+
+              * `CDR_REPRESENTATIVE` - CDR_REPRESENTATIVE
+
+              * `BUSINESS_COMMS` - BUSINESS_COMMS'
+            x-spec-enum-id: a9dfece01fff4a96
+            x-enum-descriptions:
+              EZ_CUSTOMER: EZ_CUSTOMER
+              TRUSTEE_MAND: TRUSTEE_MAND
+              MSP_USER: MSP_USER
+              BUSI_FINANCIALLY: BUSI_FINANCIALLY
+              EZ_DFPP_RW: EZ_DFPP_RW
+              NOMINATED_NONE: NOMINATED_NONE
+              ADMIN: ADMIN
+              RECEIVES_SALES: RECEIVES_SALES
+              EZ_ADMIN: EZ_ADMIN
+              LIFE_SUPPORT_CONTACT: LIFE_SUPPORT_CONTACT
+              RECEIVES_DUNNING: RECEIVES_DUNNING
+              FLAGGED_LS: FLAGGED_LS
+              RECEIVES_SERVICE: RECEIVES_SERVICE
+              NO_EMAIL: NO_EMAIL
+              MSBG_COMMS: MSBG_COMMS
+              EZ_DFPP_RO: EZ_DFPP_RO
+              TRUSTEE_BILL: TRUSTEE_BILL
+              RECEIVES_INVOICES: RECEIVES_INVOICES
+              TRUSTEE_NONE: TRUSTEE_NONE
+              RESI_SECONDARY: RESI_SECONDARY
+              BUSINESS_NO_COMMS: BUSINESS_NO_COMMS
+              NOMINATED_MAND: NOMINATED_MAND
+              MSBG_NO_COMMS: MSBG_NO_COMMS
+              BSP_USER: BSP_USER
+              OUTAGE_CONTACT: OUTAGE_CONTACT
+              NOMINATED_BILL: NOMINATED_BILL
+              EZ_BROKER: EZ_BROKER
+              TRUSTEE: TRUSTEE
+              PRIMARY_NO_COMMS: PRIMARY_NO_COMMS
+              CDR_REPRESENTATIVE: CDR_REPRESENTATIVE
+              BUSINESS_COMMS: BUSINESS_COMMS
+          description: <p>A list of business roles to be assigned to the customer. These apply to all accounts the business has access to.</p>
+        contact_emails:
+          type: array
+          items:
+            type: string
+            format: email
+          description: <p>A list of additional email addresses to associate with the customer account. These can be used for sending communications to the customer. Each email must be a valid email address.</p>
+        credit_assessment_id:
+          type:
+          - string
+          - 'null'
+          description: <p>Customers credit assessment id.</p>
+        credit_result:
+          type:
+          - string
+          - 'null'
+          description: <p>The credit result from the provider.</p>
+        credit_risk_bracket:
+          enum:
+          - LOW
+          - MID
+          - HIGH
+          - UNKNOWN
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: e6b98b6c312ff7bf
+          description: <p>The deemed credit risk bracket for this customer.</p>
+          x-enum-descriptions:
+            LOW: Low
+            MID: Medium
+            HIGH: High
+            UNKNOWN: Unknown
+            ? ''
+            : ''
+            None: None
+        credit_score:
+          type:
+          - integer
+          - 'null'
+          maximum: 9999
+          minimum: 0
+          description: <p>Customers credit score.</p>
+        date_of_birth:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: <p>The customer's date of birth.</p>
+        deceased:
+          enum:
+          - Reported
+          - Confirmed
+          - ''
+          type: string
+          x-spec-enum-id: f90e7d899a971044
+          default: ''
+          description: <p>Whether the customer is deceased or not. Defaults to an empty string if not provided.</p>
+          x-enum-descriptions:
+            Reported: Reported
+            Confirmed: Confirmed
+            ? ''
+            : ''
+        details:
+          description: <p>Generic solution for storing additional customer data that is not covered by the other fields in the payload. This is often in the form of market or territory specific information. For example, in much of Europe it is a requirement to store the user's fiscal code. Namespaces (the keys in the object) need to be registered before import. If a value is provided for a namespace that is not registered then an error will be raised.</p>
+          deprecated: true
+          x-use-instead: user_details
+          x-validators:
+          - name: Validate user details
+            description: Validates that the user detail namespace and value are allowed for the customer. The user detail namespace (the key in the JSON object) must already have been set up in Kraken. The value (the value in the JSON object) must be the correct data type.
+            possible_errors:
+            - customer_detail_failed_validation
+            - customer_detail_incorrect_value_type
+            - customer_detail_not_registered
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: <p>The customer's email address. This is the email address they will use to log into their online portal. Defaults to an empty string if not provided. Cannot be longer that 254 characters.</p>
+          maxLength: 254
+          x-validators:
+          - name: Validate email address is not test address
+            description: Validates that a customer email address is not a test email address. An email address is considered a test address if it starts with "test@"" or "xxx@"" or ends with "@test.com", "@test.co.uk", ".xxx" or ".xx".
+            possible_errors:
+            - possible_test_email_address
+          - name: Validate email is not internal
+            description: Validates that a customer email address does not use an internal Kraken handler. For example, if an instance of Kraken has registered <code>info@kraken.info</code> as an internal email address, then the customer email address must not match this.
+            possible_errors:
+            - internal_email_address
+        family_name:
+          type: string
+          default: ''
+          description: <p>The customer's family name.</p>
+          maxLength: 255
+        given_name:
+          type: string
+          default: ''
+          description: <p>The customer's given name.</p>
+          maxLength: 255
+        label:
+          type:
+          - string
+          - 'null'
+          description: <p>A free text field to help identify the user (e.g. a job title).</p>
+        landline:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: <p>The customer's landline phone number.</p>
+          maxLength: 32
+          x-validators:
+          - name: Validate phone number
+            description: Validates that a phone number conforms to the norms of the region from which the migration is taking place.
+            possible_errors:
+            - invalid_phone_number
+        mobile:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: <p>The customer's personal mobile number.</p>
+          maxLength: 32
+          x-validators:
+          - name: Validate phone number
+            description: Validates that a phone number conforms to the norms of the region from which the migration is taking place.
+            possible_errors:
+            - invalid_phone_number
+        salutation:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: <p>The customer's preferred salutation.</p>
+          maxLength: 128
+        title:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: <p>The customer's preferred title.</p>
+          maxLength: 20
+        unable_to_read_meters:
+          type: boolean
+          default: false
+          description: <p>Whether the customer is unable to read their meters themselves. Defaults to False.</p>
+        user_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerUserDetail'
+          description: <p>Generic solution for storing additional customer data that is not covered by the other fields in the payload. This is often in the form of market or territory specific information. For example, in much of Europe it is a requirement to store the user's fiscal code. Namespaces (the keys in the object) need to be registered before import. If a value is provided for a namespace that is not registered then an error will be raised.</p>
+          x-validators:
+          - name: Validate required customer details namespaces provided
+            description: No required namespaces configured. Validation skipped.
+            possible_errors:
+            - required_customer_details_namespace_missing
+      required:
+      - business_roles
+      x-validators:
+      - name: Ensures only <code>user_details</code> or <code>details</code> are provided
+        description: Ensures that only <code>user_details</code> or <code>details</code> are provided, not both.
+        possible_errors:
+        - customer_details_and_user_details_both_provided
+      - name: Validate no contact details for occupier
+        description: Validates that a customer identified as "The Occupier" does not have contact details. If contact details are provided it implies that the identity of the customer is known, and it therefore not an unknown occupier.
+        possible_errors:
+        - contact_details_for_occupier
+      - name: Validate that the customer's name is not "The Occupier"
+        description: Validate that the customer's name is not "The Occupier". To indicate an occupier account, use the <code>unknown_occupier</code> flag at the account-level.
+        possible_errors:
+        - customer_may_not_be_named_the_occupier
+    PromotionAssignmentTerm:
+      type: object
+      properties:
+        term_type:
+          type: string
+          description: <p>The type of the contract term.</p>
+        is_variable:
+          type: boolean
+          default: true
+          description: <p>Whether the contract term is variable in Kraken or not. If not, it must be amended by a new contract.</p>
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionAssignmentSchedule'
+          description: <p>The list of promotion assignment schedules.</p>
+          minItems: 1
+      required:
+      - schedules
+      - term_type
     ContractedVolumeConfiguration:
       type: object
       properties:
