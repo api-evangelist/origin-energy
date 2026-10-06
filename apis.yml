@@ -62,7 +62,7 @@ tags:
 - Demand Response
 - Energy Markets
 created: '2026-07-27'
-modified: '2026-09-16'
+modified: '2026-10-06'
 specificationVersion: '0.23'
 apis:
 - aid: origin-energy:origin-energy-kraken-graphql-api
@@ -1150,6 +1150,8 @@ apis:
   - type: Documentation
     url: https://developer.origin-kraken.energy/rest/guides/data-import/
 common:
+- url: https://www.originenergy.com.au/blog/feed/
+  type: BlogRSS
 - type: CapabilityMap
   url: capabilities/origin-energy-capability-edges.yml
   name: Origin Energy Business Capability Map
