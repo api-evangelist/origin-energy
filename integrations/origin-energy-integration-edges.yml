@@ -1,3 +1,24 @@
+generated: '2026-10-20'
+method: searched
+source:
+- https://zapier.com/apps/origin-energy/integrations
+- https://n8n.io/integrations/origin-energy/
+- https://composio.dev/toolkits/origin-energy
+- https://monid.ai/tools/origin-energy
+checked:
+- https://api.cdr.gov.au/cdr-register/v1/all/data-holders/brands/summary
+- https://composio.dev/toolkits/origin-energy
+- https://monid.ai/tools/origin-energy
+- https://n8n.io/integrations/origin-energy/
+- https://zapier.com/apps/origin-energy/integrations
+- https://carbonaccountingfinancials.com/en/signatories
+- https://files.sciencebasedtargets.org/production/files/companies-excel.xlsx
+- https://ghgprotocol.org/built-ghg-protocol
+- https://ghgprotocol.org/tools-built-ghg-protocol
+- https://sciencebasedtargets.org/target-dashboard
+- https://www.cdp.net/en/find-accredited-solutions-providers
+summary: null
+marketplace_apps: []
 edges:
 - partner_name: Consumer Data Right
   partner: null
@@ -16,7 +37,34 @@ edges:
     api_families: null
     detected_by: sweep-standard-registers.py
     detected: '2026-10-14'
-generated: '2026-10-12'
-method: searched
-checked:
-- https://api.cdr.gov.au/cdr-register/v1/all/data-holders/brands/summary
+- partner_name: Science Based Targets initiative (SBTi)
+  partner: null
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://sciencebasedtargets.org/target-dashboard
+  category: climate target-setting standard participation
+  contract_reference:
+    register: SBTi Target Dashboard (sciencebasedtargets.org/target-dashboard, companies-excel.xlsx)
+    standard: Science Based Targets initiative (SBTi) corporate net-zero / near-term target standard
+    spec_file: null
+    role: sbti-company
+    registered_name: Origin Energy
+    register_id: '40012214'
+    register_country: Australia
+    organization_type: Corporate
+    near_term_status: Validated Targets
+    net_zero_status: null
+    matched_domain: originenergy.com.au
+    matched_by: domain
+    signal_note: 'participation only: the company filed a commitment or had targets validated by SBTi; target status
+      is context, not a certified product (the standard certifies no API or product)'
+    detected_by: sweep-carbon-accounting-sbti-pcaf.py
+    detected: '2026-10-21'
+    identity: wikidata Q847931 'Origin Energy' P856 https://www.originenergy.com.au
+    identity_source: wikidata P856 (labelled provenance step; Kin 2026-10-15 decision 1)
+  detected_by: sweep-carbon-accounting-sbti-pcaf.py
+  first_seen: '2026-10-21'
+templates: []
