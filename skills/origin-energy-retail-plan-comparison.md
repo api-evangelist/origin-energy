@@ -1,5 +1,5 @@
 ---
-name: Compare Origin Energy retail electricity and gas plans
+name: origin-energy-retail-plan-comparison
 description: Pull Origin Energy's published electricity and gas plan reference data anonymously from the
   AER Energy Made Easy CDR gateway and read a single plan's full tariff detail. This is the only Origin
   Energy surface reachable with no credentials at all.
@@ -7,8 +7,9 @@ api: openapi/consumer-data-standards-energy-api-openapi.json
 operations:
 - listEnergyPlans
 - getEnergyPlanDetail
-generated: '2026-07-27'
+generated: '2026-10-20'
 method: generated
+title: Compare Origin Energy retail electricity and gas plans
 ---
 
 # Compare Origin Energy retail plans

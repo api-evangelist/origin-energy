@@ -2,7 +2,7 @@ overlay: 1.0.0
 info:
   title: API Evangelist enhancements for Consumer Data Standards Common API as implemented by Origin Energy
   version: 1.0.0
-extends: openapi/consumer-data-standards-common-api-openapi.json
+extends: ../openapi/_original/consumer-data-standards-common-api-openapi.json
 x-generated: '2026-07-27'
 x-method: generated
 x-source: API Evangelist enrichment pipeline; every value below is evidenced by a probe or an artifact

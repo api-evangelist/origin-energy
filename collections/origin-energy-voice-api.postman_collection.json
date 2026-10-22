@@ -1,0 +1,237 @@
+{
+  "info": {
+    "_postman_id": "79b3c344-d406-4082-a249-4995c7b77df2",
+    "name": "Kraken Voice API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:11:54.000Z",
+    "updatedAt": "2026-10-22T02:11:54.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-79b3c344-d406-4082-a249-4995c7b77df2"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "voice",
+          "item": [
+            {
+              "name": "twilio",
+              "item": [
+                {
+                  "name": "enqueue-audio",
+                  "item": [
+                    {
+                      "name": "Twilio enqueue audio",
+                      "id": "daa63eef-b32e-4095-8104-813041738fa4",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Authorization",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/voice/twilio/enqueue-audio/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "voice",
+                            "twilio",
+                            "enqueue-audio",
+                            ""
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "f3e0eff4-1d8a-4c9e-a813-e08617060141",
+                          "name": "No response body",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/voice/twilio/enqueue-audio/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "voice",
+                                "twilio",
+                                "enqueue-audio",
+                                ""
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:11:55.000Z",
+                          "updatedAt": "2026-10-22T02:11:55.000Z",
+                          "uid": "35240-f3e0eff4-1d8a-4c9e-a813-e08617060141"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:11:55.000Z",
+                      "updatedAt": "2026-10-22T02:11:55.000Z",
+                      "uid": "35240-daa63eef-b32e-4095-8104-813041738fa4"
+                    }
+                  ],
+                  "id": "9f4b523e-cd31-4cf0-a65c-3edd9b3b6ec1",
+                  "createdAt": "2026-10-22T02:11:55.000Z",
+                  "updatedAt": "2026-10-22T02:11:55.000Z",
+                  "uid": "35240-9f4b523e-cd31-4cf0-a65c-3edd9b3b6ec1"
+                },
+                {
+                  "name": "voice-announcement",
+                  "item": [
+                    {
+                      "name": "Voice announcement",
+                      "id": "60fd80d8-5f8b-4b70-ae03-567cc9929df3",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Authorization",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/voice/twilio/voice-announcement/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "voice",
+                            "twilio",
+                            "voice-announcement",
+                            ""
+                          ]
+                        },
+                        "description": "Return TwiML that speaks a translated message to the caller.\n\nQuery parameters:\n\n- ``translation_key``: required if ``announcement`` is not provided \u2014 the FTL message identifier to translate.\n- ``announcement``: required if ``translation_key`` is not provided \u2014 the message to speak to the caller.\n- ``language_code``: optional \u2014 BCP-47 / Django language code to use for\nthe translation and Twilio TTS voice. Defaults to the client's configured\nlanguage when omitted."
+                      },
+                      "response": [
+                        {
+                          "id": "f0a09ff5-a4b2-4177-98e6-afd15e329c0f",
+                          "name": "No response body",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/voice/twilio/voice-announcement/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "voice",
+                                "twilio",
+                                "voice-announcement",
+                                ""
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:11:55.000Z",
+                          "updatedAt": "2026-10-22T02:11:55.000Z",
+                          "uid": "35240-f0a09ff5-a4b2-4177-98e6-afd15e329c0f"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:11:55.000Z",
+                      "updatedAt": "2026-10-22T02:11:55.000Z",
+                      "uid": "35240-60fd80d8-5f8b-4b70-ae03-567cc9929df3"
+                    }
+                  ],
+                  "id": "df6bfa98-9c95-482a-8bc8-df3ec6268138",
+                  "createdAt": "2026-10-22T02:11:55.000Z",
+                  "updatedAt": "2026-10-22T02:11:55.000Z",
+                  "uid": "35240-df6bfa98-9c95-482a-8bc8-df3ec6268138"
+                }
+              ],
+              "id": "e88433e0-c567-4ea0-a7da-fcfe7e1020aa",
+              "createdAt": "2026-10-22T02:11:55.000Z",
+              "updatedAt": "2026-10-22T02:11:55.000Z",
+              "uid": "35240-e88433e0-c567-4ea0-a7da-fcfe7e1020aa"
+            }
+          ],
+          "id": "14d74677-5e05-4425-8363-03065f7ebfe5",
+          "createdAt": "2026-10-22T02:11:55.000Z",
+          "updatedAt": "2026-10-22T02:11:55.000Z",
+          "uid": "35240-14d74677-5e05-4425-8363-03065f7ebfe5"
+        }
+      ],
+      "id": "ac61cace-fdba-4b10-9121-7b5a07da8497",
+      "createdAt": "2026-10-22T02:11:55.000Z",
+      "updatedAt": "2026-10-22T02:11:55.000Z",
+      "uid": "35240-ac61cace-fdba-4b10-9121-7b5a07da8497"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.origin-kraken.energy/v1"
+    }
+  ]
+}

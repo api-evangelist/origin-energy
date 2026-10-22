@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/origin-energy/main/json-schema/origin-energy-business-payment-instruction-schema.json",
+  "title": "BusinessPaymentInstruction",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/origin-energy-post-business-import-api-openapi.yml#/components/schemas/BusinessPaymentInstruction",
+  "type": "object",
+  "properties": {
+    "accounts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BusinessPaymentInstructionAccount"
+      },
+      "description": "<p>Accounts for the business to set preference for.</p>"
+    },
+    "external_business_identifier": {
+      "type": "string",
+      "description": "<p>The unique identifier of a business in the external system. This id is used to link an imported business in Kraken to the external system</p>",
+      "maxLength": 128
+    },
+    "import_supplier_code": {
+      "enum": [
+        "ORIGIN_SOLARFLEX_INACTIVE",
+        "ORIGIN",
+        "WIN_CONNECT_PARENT",
+        "ORIGIN_CNI",
+        "ORIGIN_BUSINESS",
+        "WIN_CONNECT",
+        "ORIGIN_SOLARFLEX",
+        "ORIGIN_BUSINESS_NO_CONTRACT"
+      ],
+      "type": "string",
+      "x-spec-enum-id": "9572ea198e3a9787",
+      "description": "<p>The code of an existing <code>ImportSupplier</code> in the database.</p>",
+      "x-enum-descriptions": {
+        "ORIGIN_SOLARFLEX_INACTIVE": "Origin SolarFlex Inactive",
+        "ORIGIN": "Origin",
+        "WIN_CONNECT_PARENT": "Win Connect Parent",
+        "ORIGIN_CNI": "Origin CNI",
+        "ORIGIN_BUSINESS": "Origin Zero Business Import Supplier",
+        "WIN_CONNECT": "WinConnect",
+        "ORIGIN_SOLARFLEX": "Origin SolarFlex",
+        "ORIGIN_BUSINESS_NO_CONTRACT": "Origin Business - No Contracts e.g. trustee"
+      }
+    },
+    "reference": {
+      "type": "string",
+      "description": "<p>The reference of the mandate as known by the vendor.</p>",
+      "maxLength": 512
+    },
+    "type": {
+      "enum": [
+        "BPAY",
+        "CARD",
+        "CUSTOM",
+        "DIRECT_DEBIT",
+        "GMO_REFUND",
+        "PAYMENT_SLIP"
+      ],
+      "type": "string",
+      "x-spec-enum-id": "601d0b035869d4dd",
+      "description": "<p>The payment type of the payment instruction.</p>",
+      "x-enum-descriptions": {
+        "BPAY": "BPAY",
+        "CARD": "Card",
+        "CUSTOM": "Custom",
+        "DIRECT_DEBIT": "Direct Debit",
+        "GMO_REFUND": "GMO Refund",
+        "PAYMENT_SLIP": "Payment slip"
+      }
+    },
+    "valid_from": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "<p>The date from which the payment instruction is valid.</p>"
+    },
+    "vendor": {
+      "enum": [
+        "WESTPAC"
+      ],
+      "type": "string",
+      "x-spec-enum-id": "19baa89b6ef9d00c",
+      "description": "<p>The vendor for the payment instruction.</p>",
+      "x-enum-descriptions": {
+        "WESTPAC": "Westpac"
+      }
+    }
+  },
+  "required": [
+    "external_business_identifier",
+    "import_supplier_code",
+    "type",
+    "vendor"
+  ],
+  "x-validators": [
+    {
+      "name": "Validate that migration is ongoing",
+      "description": "Validate whether or not an import supplier is open for further data migration.",
+      "possible_errors": [
+        "import_supplier_migration_not_ongoing"
+      ]
+    }
+  ],
+  "$defs": {
+    "BusinessPaymentInstructionAccount": {
+      "type": "object",
+      "properties": {
+        "external_account_number": {
+          "type": "string",
+          "description": "<p>The account number in the source system. This, along with the <code>import_supplier</code>, will be used to find the account in Kraken.</p>"
+        }
+      },
+      "required": [
+        "external_account_number"
+      ]
+    }
+  }
+}

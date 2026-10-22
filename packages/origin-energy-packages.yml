@@ -1,5 +1,5 @@
 generated: '2026-07-27'
-method: searched
+method: none
 source: npm registry search, PyPI, RubyGems, crates.io, GitHub org listings, developer.origin-kraken.energy
 packages: []
 official_sdk_count: 0

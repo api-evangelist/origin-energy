@@ -1,0 +1,86 @@
+{
+  "info": {
+    "_postman_id": "25aa7441-2cee-4487-a50a-7eb61d76d2d5",
+    "name": "Kraken External Client Healthcheck API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:10:58.000Z",
+    "updatedAt": "2026-10-22T02:10:58.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-25aa7441-2cee-4487-a50a-7eb61d76d2d5"
+  },
+  "item": [
+    {
+      "name": "external-client-healthcheck",
+      "item": [
+        {
+          "name": "External client health check",
+          "id": "9761a1cd-2e65-4514-bd2d-6c598be3c718",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/external-client-healthcheck/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "external-client-healthcheck",
+                ""
+              ]
+            },
+            "description": "Healthcheck endpoint for external clients.\n\nWhen called, this API will return a 200 status and increment a metric.\n\nThis endpoint allows clients to implement a healthcheck that is also supported\nby monitoring on the Kraken side."
+          },
+          "response": [
+            {
+              "id": "33654285-4fa5-424f-9daf-726f691ac478",
+              "name": "No response body",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/external-client-healthcheck/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "external-client-healthcheck",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-10-22T02:10:59.000Z",
+              "updatedAt": "2026-10-22T02:10:59.000Z",
+              "uid": "35240-33654285-4fa5-424f-9daf-726f691ac478"
+            }
+          ],
+          "createdAt": "2026-10-22T02:10:59.000Z",
+          "updatedAt": "2026-10-22T02:10:59.000Z",
+          "uid": "35240-9761a1cd-2e65-4514-bd2d-6c598be3c718"
+        }
+      ],
+      "id": "3319aed0-f03f-4b50-881d-61af7f00be99",
+      "createdAt": "2026-10-22T02:10:59.000Z",
+      "updatedAt": "2026-10-22T02:10:59.000Z",
+      "uid": "35240-3319aed0-f03f-4b50-881d-61af7f00be99"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.origin-kraken.energy/v1"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/origin-energy/main/json-schema/origin-energy-create-account-notes-response-schema.json",
+  "title": "CreateAccountNotesResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/origin-energy-post-account-import-api-openapi.yml#/components/schemas/CreateAccountNotesResponse",
+  "type": "object",
+  "properties": {
+    "body": {
+      "type": "string",
+      "description": "<p>The body of the note. Should include who/what created the note if this is required.</p>"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "<p>The date and time the note was created.</p>"
+    },
+    "document_paths": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/NoteDocument"
+      },
+      "description": "<p>A list of relative paths in S3 for documents to be attached to the note.</p><p>More details on document path parameters can be found <a href=\"/rest/guides/data-import/basics#document-paths\">here</a>.</p>"
+    },
+    "external_id": {
+      "type": "string",
+      "description": "<p>Unique identifier for this note to avoid duplicate entries.</p>"
+    },
+    "is_archived": {
+      "type": "boolean",
+      "description": "<p>If set to true, this will archive the note in the Kraken account support site page.</p>"
+    },
+    "is_pinned": {
+      "type": "boolean",
+      "description": "<p>If set to true, this will pin the note to the top of the Kraken account support site page.</p>"
+    },
+    "status": {
+      "enum": [
+        "NOTE_CREATION_SUCCESS",
+        "NOTE_ALREADY_EXISTS"
+      ],
+      "type": "string",
+      "x-spec-enum-id": "31aeae5ed4ff8531",
+      "description": "<p>The creation status for each note attempted to be imported.</p>",
+      "x-enum-descriptions": {
+        "NOTE_CREATION_SUCCESS": "The note has been successfully created.",
+        "NOTE_ALREADY_EXISTS": "A similar note has been found preventing the creation of a new note."
+      }
+    },
+    "unpin_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "<p>When the pinned note should be unpinned. Has to be later than <code>created_at</code> if this is provided. Has no effect if the note is not pinned.</p>"
+    }
+  },
+  "required": [
+    "status"
+  ],
+  "x-validators": [
+    {
+      "name": "Validate note body or document paths provided",
+      "description": "Validate that at least a note body or document paths are provided.",
+      "possible_errors": [
+        "note_body_or_document_path_not_found"
+      ]
+    },
+    {
+      "name": "Validate note created at is equal to or before unpin at",
+      "description": "Validate that the note's created at date is equal to or before the unpin at date if both are provided.",
+      "possible_errors": [
+        "note_unpin_at_earlier_than_creation_date"
+      ]
+    }
+  ],
+  "$defs": {
+    "NoteDocument": {
+      "type": "object",
+      "properties": {
+        "document_path": {
+          "type": "string",
+          "description": "<p>The S3 relative path to the document to be attached to the note.</p>",
+          "x-validators": [
+            {
+              "name": "Validate path exists in file store",
+              "description": "Validate that the given path corresponds to a file that has previously been uploaded to the migration file store. Note that this validation is disabled by default and can be enabled using the relevant feature flag.",
+              "possible_errors": [
+                "path_does_not_exist_in_file_store"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "document_path"
+      ]
+    }
+  }
+}

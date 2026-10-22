@@ -1,0 +1,446 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/origin-energy-account-import-api-openapi.yml
+- openapi/origin-energy-accounts-api-openapi.yml
+- openapi/origin-energy-business-import-api-openapi.yml
+- openapi/origin-energy-data-holder-customers-api-openapi.yml
+- openapi/origin-energy-data-holder-operations-api-openapi.yml
+vocabulary:
+  name: Origin Energy Domain Vocabulary
+  description: 'Terms declared by Origin Energy''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-20'
+  terms:
+  - term: account_import
+    definition: APIs for importing accounts.
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-account-import-api-openapi.yml
+  - term: business_import
+    definition: APIs for importing businesses with business contracts
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-business-import-api-openapi.yml
+  - term: Data Holder Customers
+    definition: Data Holder Customer endpoints
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-data-holder-customers-api-openapi.yml
+  - term: Data Holder Operations
+    definition: Data Holder Operations endpoints
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-data-holder-operations-api-openapi.yml
+  - term: Distributed Energy Resources
+    definition: Distributed Energy Resource endpoints
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-distributed-energy-resources-api-openapi.yml
+  - term: Electricity Service Points
+    definition: Electricity Service Point endpoints
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-electricity-service-points-api-openapi.yml
+  - term: Electricity Usage
+    definition: Electricity Usage endpoints
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-electricity-usage-api-openapi.yml
+  - term: Energy Account Balances
+    definition: Energy Account Balance endpoints
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-energy-account-balances-api-openapi.yml
+  - term: Energy Account Billing
+    definition: Energy Account Billing endpoints
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-energy-account-billing-api-openapi.yml
+  - term: Energy Accounts
+    definition: Energy Account endpoints
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-energy-accounts-api-openapi.yml
+  - term: Energy Plans
+    definition: Energy Plan endpoints
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-energy-plans-api-openapi.yml
+  - term: post_account_import
+    definition: APIs for importing additional data after an account has been imported.
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-post-account-import-api-openapi.yml
+  - term: post_business_import
+    definition: APIs for importing additional data after a business has been imported.
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-post-business-import-api-openapi.yml
+  - term: Query
+    definition: APIs for querying import status and retrieving data
+    tags:
+    - Resource Group
+    source: openapi/origin-energy-query-api-openapi.yml
+  - term: SupplyPointTaxAdjustment
+    definition: 'Object declared by the contract with fields: adjustment_type, effective_from_date, effective_to_date, qualifying_usage, supply_point_external_identifier,
+      tax_category, tax_subcategory.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/SupplyPointTaxAdjustment
+  - term: AusBillingAddress
+    definition: 'Object declared by the contract with fields: administrative_area, country, delivery_point_identifier, dependent_locality, locality,
+      name, organization, postal_code, sorting_code, street_address, structured_street_address.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusBillingAddress
+  - term: AusEEPAExportContractedVolumePeriod
+    definition: 'Object declared by the contract with fields: supply_point_external_identifiers, unit, valid_from_date, valid_to_date, value.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusEEPAExportContractedVolumePeriod
+  - term: BillingDocumentIssuanceFrequencyTerm
+    definition: 'Object declared by the contract with fields: term_type, frequency, is_variable, multiplier, period_start_day, period_start_month.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/BillingDocumentIssuanceFrequencyTerm
+  - term: CommonStreet
+    definition: 'Object declared by the contract with fields: street_name, street_suffix, street_type.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/CommonStreet
+  - term: EmbeddedElecNMIStatusPeriod
+    definition: 'Object declared by the contract with fields: active_from, active_to, status.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/EmbeddedElecNMIStatusPeriod
+  - term: ContractSalesRecord
+    definition: 'Object declared by the contract with fields: affiliate_organisation_name, sales_channel.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/ContractSalesRecord
+  - term: StandardizedError
+    definition: 'Object declared by the contract with fields: attr, code, detail.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/StandardizedError
+  - term: PaysByDirectDebitTerm
+    definition: 'Object declared by the contract with fields: term_type, is_variable, pays_by_direct_debit.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/PaysByDirectDebitTerm
+  - term: PropertyAdministrator
+    definition: 'Object declared by the contract with fields: address1, address2, address3, address4, address5, billing_name, date_of_birth, deceased,
+      effective_from, effective_to, email, family_name. (7 more)'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/PropertyAdministrator
+  - term: AccountTransferStatus
+    definition: 'Object declared by the contract with fields: account_number, kraken_account_number, status.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AccountTransferStatus
+  - term: AusCustomer
+    definition: 'Object declared by the contract with fields: account_roles, address, alternative_phone_numbers, concession_cards, concession_credits_paid_current_year,
+      consents, contact_emails, credit_assessment_id, credit_result, credit_risk_bracket, credit_score, customer_preferences. (24 more)'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusCustomer
+  - term: CreateOrUpdateAccountImportProcess
+    definition: 'Object declared by the contract with fields: external_account_number, import_supplier_code.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/CreateOrUpdateAccountImportProcess
+  - term: OriginLedgerRecordWithTransactions
+    definition: 'Object declared by the contract with fields: current_statement_transactions, historical_statement_transactions, identifiers,
+      last_statement_balance, last_statement_closing_date, last_statement_issue_date, ledger_balance, ledger_code, ledger_identifier.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/OriginLedgerRecordWithTransactions
+  - term: BusinessWithExistingContracts
+    definition: 'Object declared by the contract with fields: business_contract_identifier, business_contract_identifiers, business_type, company_name,
+      company_number, details, portfolios, segment_name, users.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/BusinessWithExistingContracts
+  - term: AusPaymentInstruction
+    definition: 'Object declared by the contract with fields: bank_account, card, customer_reference, instruction_identifier, ledger_code, reference,
+      type, use_for_scheduled_payments, valid_from, valid_to, vendor.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusPaymentInstruction
+  - term: GasHistoricalReading
+    definition: 'Object declared by the contract with fields: average_heating_value, billed, common_factor, consumed_energy, estimation_substitution_reason_code,
+      estimation_substitution_type, gas_meter_units, pressure_correction_factor, prev_reading_date, reading_date, reading_type, reading_value.
+      (3 more)'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/GasHistoricalReading
+  - term: EmbeddedWaterConnectionPeriod
+    definition: 'Object declared by the contract with fields: end_at, start_at, status.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/EmbeddedWaterConnectionPeriod
+  - term: AusSupplyCharge
+    definition: 'Object declared by the contract with fields: type, amount, billing_document_identifier, display_note, line_items, note, product_code,
+      supply_point_identifier, tax_items, transaction_date, transaction_id.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusSupplyCharge
+  - term: TaxAdjustmentConfiguration
+    definition: 'Object declared by the contract with fields: term_type, adjustments, is_variable.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/TaxAdjustmentConfiguration
+  - term: LatePaymentFees
+    definition: 'Object declared by the contract with fields: term_type, flat_fee_amount, interest_policy_name, is_variable, percentage_fee, percentage_interval_days.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/LatePaymentFees
+  - term: PartnerOrganisation
+    definition: 'Object declared by the contract with fields: organisation_number, role, source_reference_s3_key, valid_from, valid_to.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/PartnerOrganisation
+  - term: ComplaintContact
+    definition: 'Object declared by the contract with fields: body, communication_method, communication_source, created_at, status.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/ComplaintContact
+  - term: EmbeddedElecHistoricalReading
+    definition: 'Object declared by the contract with fields: billed, quality_method, reading_date, reading_quality, reading_value, register_id.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/EmbeddedElecHistoricalReading
+  - term: BusinessUser
+    definition: 'Object declared by the contract with fields: address, alternative_phone_numbers, business_roles, contact_emails, credit_assessment_id,
+      credit_result, credit_risk_bracket, credit_score, date_of_birth, deceased, details, email. (9 more)'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/BusinessUser
+  - term: TerminationFee
+    definition: 'Object declared by the contract with fields: term_type, amount, fee_type, is_variable, supply_type.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/TerminationFee
+  - term: BusinessPortfolio
+    definition: 'Object declared by the contract with fields: billing_name, notes, portfolio_references, portfolio_settings.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/BusinessPortfolio
+  - term: Note
+    definition: 'Object declared by the contract with fields: body, created_at, document_paths, external_id, is_archived, is_pinned, unpin_at.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/Note
+  - term: PaymentPromise
+    definition: 'Object declared by the contract with fields: amount, ledger_code, payment_date.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/PaymentPromise
+  - term: EmbeddedWaterMeter
+    definition: 'Object declared by the contract with fields: access_details, connection_periods, construction_date, installed_on, key_details,
+      last_billed_to_date, location, make_and_model, meter_measurement_unit, meter_serial_number, number_of_dials_on_device, read_method. (4 more)'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/EmbeddedWaterMeter
+  - term: UnmeteredElectricitySupplyPoint
+    definition: 'Object declared by the contract with fields: supply_type, access_details, address, agreements, appliance_type, dog_code, hazard_details,
+      identifier, last_billed_to_date, meter_position, mpxn, multiplier. (4 more)'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/UnmeteredElectricitySupplyPoint
+  - term: AusPropertyRichAddress
+    definition: 'Object declared by the contract with fields: administrative_area, country, delivery_point_identifier, dependent_locality, locality,
+      name, organization, postal_code, sorting_code, street_address, structured_street_address.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusPropertyRichAddress
+  - term: PaymentPreferencesWithNewInstructionReferences
+    definition: 'Object declared by the contract with fields: type, instruction_reference_params, ledger_identifier.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/PaymentPreferencesWithNewInstructionReferences
+  - term: EmbeddedGasMeter
+    definition: 'Object declared by the contract with fields: access_details, active_from, active_to, key_details, kpa_value, location, measurement_type,
+      meter_serial_number, model_number, multiplier, number_of_dials, reading_history. (4 more)'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/EmbeddedGasMeter
+  - term: ContributionSchemePeriod
+    definition: 'Object declared by the contract with fields: end_date, fulfilled_at, start_date.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/ContributionSchemePeriod
+  - term: BillDueDate
+    definition: 'Object declared by the contract with fields: term_type, is_variable, number_of_days, type_of_days.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/BillDueDate
+  - term: CommonStructuredAddress
+    definition: 'Object declared by the contract with fields: building_or_property_name, delivery_point_identifier, flat_or_unit_number, flat_or_unit_type,
+      floor_or_level_number, floor_or_level_type, house, location_descriptor, lot_number, melway_grid_reference, postcode, state_or_territory.
+      (2 more)'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/CommonStructuredAddress
+  - term: ContractVersion
+    definition: 'Object declared by the contract with fields: applicable_at_date, terms.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/ContractVersion
+  - term: EmbeddedElecDistributor
+    definition: 'Object declared by the contract with fields: from_date, lnsp_id, to_date.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/EmbeddedElecDistributor
+  - term: ElectricityMeter
+    definition: 'Object declared by the contract with fields: installation_type, installed_on, last_billed_to_date, market_type, meter_read_type,
+      meter_serial_number, reading_history, registers, removed_on, transfer_readings.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/ElectricityMeter
+  - term: AusLineItem
+    definition: 'Object declared by the contract with fields: end_date, external_rate_identifier, net_amount, number_of_units, params, price_per_unit,
+      rate_band, rate_specification_code, start_date, time_series_specification_code, units.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusLineItem
+  - term: OriginAccount
+    definition: 'Object declared by the contract with fields: account_billing_options, account_campaigns, account_contracts, account_type, affiliate_subdomain,
+      billing_address, billing_address1, billing_address2, billing_address3, billing_address4, billing_address5, billing_attention_of. (57 more)'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/OriginAccount
+  - term: GasTransferReading
+    definition: 'Object declared by the contract with fields: average_heating_value, common_factor, consumed_energy, estimation_substitution_reason_code,
+      estimation_substitution_type, gas_meter_units, pressure_correction_factor, prev_reading_date, reading_date, reading_type, reading_value,
+      register_id. (1 more)'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/GasTransferReading
+  - term: NewPaymentInstructionReference
+    definition: 'Object declared by the contract with fields: instruction_identifier.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/NewPaymentInstructionReference
+  - term: TaxItem
+    definition: 'Object declared by the contract with fields: amount, params, rate, tax_type, unit_type, value_taxed.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/TaxItem
+  - term: Metadata
+    definition: 'Object declared by the contract with fields: key, value.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/Metadata
+  - term: AusPaymentPlan
+    definition: 'Object declared by the contract with fields: additional_information, debt_amount, initial_schedule_type, is_hardship, last_payment_date,
+      next_payment_date, number_of_remaining_instalments, ongoing_amount, payment_frequency, payment_frequency_multiplier, plan_type.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusPaymentPlan
+  - term: BaseBusiness
+    definition: 'Object declared by the contract with fields: business_type, company_name, company_number, details, portfolios, segment_name,
+      users.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/BaseBusiness
+  - term: PaymentSchedule
+    definition: 'Object declared by the contract with fields: amount, balance_threshold, day_of_month, debt_repayment_element, debt_repayment_end_date,
+      delay_days, delay_strategy, end_date, exempt_from_payment_adequacy, frequency, instalments, is_debt_repayment_plan. (5 more)'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/PaymentSchedule
+  - term: GasMasterData
+    definition: 'Object declared by the contract with fields: baseload, customer_characterisation, customer_classification_code, customer_classification_threshold,
+      distribution_tariff, heating_value_zone, market, mirn_status, network_id, temperature_sensitivity_factor, transmission_zone.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/GasMasterData
+  - term: BespokeRateConfiguration
+    definition: 'Object declared by the contract with fields: term_type, is_variable, schedules.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/BespokeRateConfiguration
+  - term: ElectricityReading
+    definition: 'Object declared by the contract with fields: estimated_reason_code, reading_date, reading_type, reading_value, register_id.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/ElectricityReading
+  - term: HardshipAgreement
+    definition: 'Object declared by the contract with fields: end_date, exit_reason, exit_reason_details, hardship_details, hardship_entry_reason,
+      hardship_type, payment_plan_details, start_date.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/HardshipAgreement
+  - term: Ledger
+    definition: 'Object declared by the contract with fields: ledger_code, ledger_identifier.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/Ledger
+  - term: PartnerFileAttachment
+    definition: 'Object declared by the contract with fields: category, filename, partner_number, s3_key.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/PartnerFileAttachment
+  - term: AusAgreement
+    definition: 'Object declared by the contract with fields: agreed_at, business_contract_identifier, characteristics, effective_from, effective_to,
+      intermediary, product_addons, rate_overrides, rates_agreed_at, tariff_code.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusAgreement
+  - term: AusAccountBillingOptions
+    definition: 'Object declared by the contract with fields: period_length, period_length_multiplier, period_start_day, period_start_month, use_industry_billing.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusAccountBillingOptions
+  - term: OriginSupplyCharge
+    definition: 'Object declared by the contract with fields: type, amount, billing_document_identifier, display_note, line_items, note, product_code,
+      supply_point_identifier, tax_items, transaction_date, transaction_id.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/OriginSupplyCharge
+  - term: RateGroupEligibilityConfiguration
+    definition: 'Object declared by the contract with fields: term_type, is_variable, schedules, time_series_specification_schedules.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/RateGroupEligibilityConfiguration
+  - term: AusCharge
+    definition: 'Object declared by the contract with fields: type, amount, billing_document_identifier, display_note, note, reason, tax_items,
+      transaction_date, transaction_id.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusCharge
+  - term: AusEEPAExportContractedVolumeConfiguration
+    definition: 'Object declared by the contract with fields: term_type, is_variable, periods.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusEEPAExportContractedVolumeConfiguration
+  - term: PromotionAssignmentTerm
+    definition: 'Object declared by the contract with fields: term_type, is_variable, schedules.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/PromotionAssignmentTerm
+  - term: AusNetEmissions
+    definition: 'Object declared by the contract with fields: from_time, kg_co2_net_emissions, to_time.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/AusNetEmissions
+  - term: ElectricityHistoricalReading
+    definition: 'Object declared by the contract with fields: billed, estimated_reason_code, reading_date, reading_type, reading_value, register_id,
+      validation_status.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/ElectricityHistoricalReading
+  - term: EmbeddedElecMeterDataProvider
+    definition: 'Object declared by the contract with fields: from_date, mdp_id, to_date.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/EmbeddedElecMeterDataProvider
+  - term: LatestError
+    definition: 'Object declared by the contract with fields: code, detail, domain.'
+    tags:
+    - Object
+    source: openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/LatestError

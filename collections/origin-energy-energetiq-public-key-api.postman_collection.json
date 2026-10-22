@@ -1,0 +1,93 @@
+{
+  "info": {
+    "_postman_id": "ca5a734b-3d32-471c-b715-762794e71ae0",
+    "name": "Kraken Energetiq Public Key API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:11:42.000Z",
+    "updatedAt": "2026-10-22T02:11:42.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-ca5a734b-3d32-471c-b715-762794e71ae0"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "energetiq-public-key",
+          "item": [
+            {
+              "name": "Get energetiq public key",
+              "id": "a7c28304-3aba-460c-a816-83adae77794a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/energetiq-public-key/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "energetiq-public-key",
+                    ""
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "be91d5b9-7897-4ec7-a1ca-fc267e121905",
+                  "name": "No response body",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/energetiq-public-key/",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "energetiq-public-key",
+                        ""
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T02:11:42.000Z",
+                  "updatedAt": "2026-10-22T02:11:42.000Z",
+                  "uid": "35240-be91d5b9-7897-4ec7-a1ca-fc267e121905"
+                }
+              ],
+              "createdAt": "2026-10-22T02:11:42.000Z",
+              "updatedAt": "2026-10-22T02:11:42.000Z",
+              "uid": "35240-a7c28304-3aba-460c-a816-83adae77794a"
+            }
+          ],
+          "id": "accef907-3f7c-43fc-a83f-d980b415ce0c",
+          "createdAt": "2026-10-22T02:11:42.000Z",
+          "updatedAt": "2026-10-22T02:11:42.000Z",
+          "uid": "35240-accef907-3f7c-43fc-a83f-d980b415ce0c"
+        }
+      ],
+      "id": "56ef5e8d-beec-468b-a093-5f1147ae4650",
+      "createdAt": "2026-10-22T02:11:42.000Z",
+      "updatedAt": "2026-10-22T02:11:42.000Z",
+      "uid": "35240-56ef5e8d-beec-468b-a093-5f1147ae4650"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.origin-kraken.energy/v1"
+    }
+  ]
+}

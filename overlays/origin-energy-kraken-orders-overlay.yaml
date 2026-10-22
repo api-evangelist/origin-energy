@@ -2,7 +2,7 @@ overlay: 1.0.0
 info:
   title: API Evangelist enhancements for Origin Energy Kraken REST (order management namespace)
   version: 1.0.0
-extends: openapi/origin-energy-kraken-orders-openapi.yml
+extends: ../openapi/_original/origin-energy-kraken-orders-openapi.yml
 x-generated: '2026-07-27'
 x-method: generated
 x-source: API Evangelist enrichment pipeline; every value below is evidenced by a probe or an artifact

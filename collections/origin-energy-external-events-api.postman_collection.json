@@ -1,0 +1,124 @@
+{
+  "info": {
+    "_postman_id": "090bd77c-5921-4b23-818e-512c25301a7b",
+    "name": "Kraken External Events API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:11:03.000Z",
+    "updatedAt": "2026-10-22T02:11:04.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-090bd77c-5921-4b23-818e-512c25301a7b"
+  },
+  "item": [
+    {
+      "name": "external-events",
+      "item": [
+        {
+          "name": "schema",
+          "item": [
+            {
+              "name": "Open api schema",
+              "id": "3bf2240b-2799-4c61-b901-8deb210b2836",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.oai.openapi"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/external-events/schema/?format=yaml",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "external-events",
+                    "schema",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "format",
+                      "value": "yaml"
+                    }
+                  ]
+                },
+                "description": "OpenApi3 schema for this API. Format can be selected via content negotiation.\n\n- YAML: application/vnd.oai.openapi\n- JSON: application/vnd.oai.openapi+json"
+              },
+              "response": [
+                {
+                  "id": "305005c5-7dca-43b2-8dbd-1fcdc5d37c7c",
+                  "name": "New Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.oai.openapi"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/external-events/schema/?format=yaml",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "external-events",
+                        "schema",
+                        ""
+                      ],
+                      "query": [
+                        {
+                          "key": "format",
+                          "value": "yaml"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-10-22T02:11:04.000Z",
+                  "updatedAt": "2026-10-22T02:11:04.000Z",
+                  "uid": "35240-305005c5-7dca-43b2-8dbd-1fcdc5d37c7c"
+                }
+              ],
+              "createdAt": "2026-10-22T02:11:04.000Z",
+              "updatedAt": "2026-10-22T02:11:04.000Z",
+              "uid": "35240-3bf2240b-2799-4c61-b901-8deb210b2836"
+            }
+          ],
+          "id": "708bab45-6f3a-4d1e-8b61-933e1a625c94",
+          "createdAt": "2026-10-22T02:11:04.000Z",
+          "updatedAt": "2026-10-22T02:11:04.000Z",
+          "uid": "35240-708bab45-6f3a-4d1e-8b61-933e1a625c94"
+        }
+      ],
+      "id": "facbed07-53b1-41ad-9500-1b2f6c9755e2",
+      "createdAt": "2026-10-22T02:11:04.000Z",
+      "updatedAt": "2026-10-22T02:11:04.000Z",
+      "uid": "35240-facbed07-53b1-41ad-9500-1b2f6c9755e2"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.origin-kraken.energy/v1"
+    }
+  ]
+}

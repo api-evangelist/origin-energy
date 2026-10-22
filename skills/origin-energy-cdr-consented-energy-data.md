@@ -1,5 +1,5 @@
 ---
-name: Retrieve an Origin Energy customer's energy data under Consumer Data Right consent
+name: origin-energy-cdr-consented-energy-data
 description: Operate the Consumer Data Right energy APIs against Origin Energy's data holder endpoint
   as an accredited data recipient with a consumer's consent — accounts, balances, invoices, billing, concessions,
   payment schedules, electricity service points, usage and DER.
@@ -21,8 +21,9 @@ operations:
 - getCustomer
 - getStatus
 - getOutages
-generated: '2026-07-27'
+generated: '2026-10-20'
 method: generated
+title: Retrieve an Origin Energy customer's energy data under Consumer Data Right consent
 ---
 
 # Retrieve Origin Energy customer data under Consumer Data Right consent

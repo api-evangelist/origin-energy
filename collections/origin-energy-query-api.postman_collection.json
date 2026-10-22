@@ -1,0 +1,434 @@
+{
+  "info": {
+    "_postman_id": "569c4bc8-5109-4fe3-b2d6-e9715237009b",
+    "name": "Kraken Query API",
+    "description": "APIs for querying import status and retrieving data",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:11:30.000Z",
+    "updatedAt": "2026-10-22T02:11:30.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-569c4bc8-5109-4fe3-b2d6-e9715237009b"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "data-import",
+          "item": [
+            {
+              "name": "all-account-import-processes",
+              "item": [
+                {
+                  "name": "{import_supplier_code}",
+                  "item": [
+                    {
+                      "name": "List all accounts for import",
+                      "id": "e09c2a26-119e-41a4-a388-84c14671a6ff",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Authorization",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/data-import/all-account-import-processes/:import_supplier_code/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "data-import",
+                            "all-account-import-processes",
+                            ":import_supplier_code",
+                            ""
+                          ],
+                          "variable": [
+                            {
+                              "id": "ac183e8e-6ba4-48fc-a9a4-1a5c00de7a7d",
+                              "key": "import_supplier_code",
+                              "value": "<string>",
+                              "description": "(Required) The code of an existing Import Supplier."
+                            }
+                          ]
+                        },
+                        "description": "Use this endpoint to list all accounts for import, whether they are pending (their data has been staged) or have had a Kraken account created."
+                      },
+                      "response": [
+                        {
+                          "id": "1c6a10e4-a17b-4676-9d08-3113d9c5c427",
+                          "name": "If any pending or imported accounts are found for the given `import_supplier_code`, they will be returned in the response. If the account is pending import then the `kraken_account_number` and `account_created_at will` be null.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/all-account-import-processes/:import_supplier_code/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "all-account-import-processes",
+                                ":import_supplier_code",
+                                ""
+                              ],
+                              "variable": [
+                                {
+                                  "key": "import_supplier_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"external_account_number\": \"<string>\",\n    \"account_created_at\": \"<dateTime>\",\n    \"kraken_account_number\": \"<string>\"\n  },\n  {\n    \"external_account_number\": \"<string>\",\n    \"account_created_at\": \"<dateTime>\",\n    \"kraken_account_number\": \"<string>\"\n  }\n]",
+                          "createdAt": "2026-10-22T02:11:30.000Z",
+                          "updatedAt": "2026-10-22T02:11:30.000Z",
+                          "uid": "35240-1c6a10e4-a17b-4676-9d08-3113d9c5c427"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:11:30.000Z",
+                      "updatedAt": "2026-10-22T02:11:30.000Z",
+                      "uid": "35240-e09c2a26-119e-41a4-a388-84c14671a6ff"
+                    }
+                  ],
+                  "id": "e91fa904-6c7a-4b4e-a2b2-54116fa3c86f",
+                  "createdAt": "2026-10-22T02:11:30.000Z",
+                  "updatedAt": "2026-10-22T02:11:30.000Z",
+                  "uid": "35240-e91fa904-6c7a-4b4e-a2b2-54116fa3c86f"
+                }
+              ],
+              "id": "ffcf150f-3647-4715-b81f-6584dcc8c218",
+              "createdAt": "2026-10-22T02:11:30.000Z",
+              "updatedAt": "2026-10-22T02:11:30.000Z",
+              "uid": "35240-ffcf150f-3647-4715-b81f-6584dcc8c218"
+            },
+            {
+              "name": "imported-account-import-processes",
+              "item": [
+                {
+                  "name": "{import_supplier_code}",
+                  "item": [
+                    {
+                      "name": "List all accounts that have been imported",
+                      "id": "27c22803-7ce8-4ec9-9d99-3b3edf527ece",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Authorization",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/data-import/imported-account-import-processes/:import_supplier_code/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "data-import",
+                            "imported-account-import-processes",
+                            ":import_supplier_code",
+                            ""
+                          ],
+                          "variable": [
+                            {
+                              "id": "8eca5852-3824-4106-b4b4-a3ded089edcc",
+                              "key": "import_supplier_code",
+                              "value": "<string>",
+                              "description": "(Required) The code of an existing Import Supplier."
+                            }
+                          ]
+                        },
+                        "description": "Use this endpoint to list all accounts that have been imported and now have a Kraken account."
+                      },
+                      "response": [
+                        {
+                          "id": "7e22c21c-1112-48a0-b4bf-6d4371502c7a",
+                          "name": "If any imported accounts are found for the given `import_supplier_code`, they will be returned in the response.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/imported-account-import-processes/:import_supplier_code/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "imported-account-import-processes",
+                                ":import_supplier_code",
+                                ""
+                              ],
+                              "variable": [
+                                {
+                                  "key": "import_supplier_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"external_account_number\": \"<string>\",\n    \"account_created_at\": \"<dateTime>\",\n    \"kraken_account_number\": \"<string>\"\n  },\n  {\n    \"external_account_number\": \"<string>\",\n    \"account_created_at\": \"<dateTime>\",\n    \"kraken_account_number\": \"<string>\"\n  }\n]",
+                          "createdAt": "2026-10-22T02:11:30.000Z",
+                          "updatedAt": "2026-10-22T02:11:30.000Z",
+                          "uid": "35240-7e22c21c-1112-48a0-b4bf-6d4371502c7a"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:11:30.000Z",
+                      "updatedAt": "2026-10-22T02:11:30.000Z",
+                      "uid": "35240-27c22803-7ce8-4ec9-9d99-3b3edf527ece"
+                    }
+                  ],
+                  "id": "d180b67c-54b9-41e8-beec-d71743675ef4",
+                  "createdAt": "2026-10-22T02:11:30.000Z",
+                  "updatedAt": "2026-10-22T02:11:30.000Z",
+                  "uid": "35240-d180b67c-54b9-41e8-beec-d71743675ef4"
+                }
+              ],
+              "id": "6dd794f1-1879-4145-ae5c-b513658ab264",
+              "createdAt": "2026-10-22T02:11:30.000Z",
+              "updatedAt": "2026-10-22T02:11:30.000Z",
+              "uid": "35240-6dd794f1-1879-4145-ae5c-b513658ab264"
+            },
+            {
+              "name": "pending-account-import-processes",
+              "item": [
+                {
+                  "name": "{import_supplier_code}",
+                  "item": [
+                    {
+                      "name": "List all accounts pending import",
+                      "id": "b119ca6d-9638-4fc9-8853-db6f48167cfc",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Authorization",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/data-import/pending-account-import-processes/:import_supplier_code/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "data-import",
+                            "pending-account-import-processes",
+                            ":import_supplier_code",
+                            ""
+                          ],
+                          "variable": [
+                            {
+                              "id": "58997a58-2a0b-4648-b266-2254c4ade088",
+                              "key": "import_supplier_code",
+                              "value": "<string>",
+                              "description": "(Required) The code of an existing Import Supplier."
+                            }
+                          ]
+                        },
+                        "description": "Use this endpoint to list all accounts pending import (their data has been staged)."
+                      },
+                      "response": [
+                        {
+                          "id": "fd1a89ae-a21d-4c4e-a092-02268d14dab9",
+                          "name": "Pending import processes matching request parameters.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/pending-account-import-processes/:import_supplier_code/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "pending-account-import-processes",
+                                ":import_supplier_code",
+                                ""
+                              ],
+                              "variable": [
+                                {
+                                  "key": "import_supplier_code"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"external_account_number\": \"<string>\",\n    \"account_created_at\": \"<dateTime>\",\n    \"kraken_account_number\": \"<string>\"\n  },\n  {\n    \"external_account_number\": \"<string>\",\n    \"account_created_at\": \"<dateTime>\",\n    \"kraken_account_number\": \"<string>\"\n  }\n]",
+                          "createdAt": "2026-10-22T02:11:30.000Z",
+                          "updatedAt": "2026-10-22T02:11:30.000Z",
+                          "uid": "35240-fd1a89ae-a21d-4c4e-a092-02268d14dab9"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:11:30.000Z",
+                      "updatedAt": "2026-10-22T02:11:30.000Z",
+                      "uid": "35240-b119ca6d-9638-4fc9-8853-db6f48167cfc"
+                    }
+                  ],
+                  "id": "1e19a791-d859-46b5-a539-75f2f25ec660",
+                  "createdAt": "2026-10-22T02:11:30.000Z",
+                  "updatedAt": "2026-10-22T02:11:30.000Z",
+                  "uid": "35240-1e19a791-d859-46b5-a539-75f2f25ec660"
+                }
+              ],
+              "id": "012c8ab8-e1fc-4675-a637-68f05109190e",
+              "createdAt": "2026-10-22T02:11:30.000Z",
+              "updatedAt": "2026-10-22T02:11:30.000Z",
+              "uid": "35240-012c8ab8-e1fc-4675-a637-68f05109190e"
+            }
+          ],
+          "id": "a0cb7548-6074-4046-b35e-b2c8f820de17",
+          "createdAt": "2026-10-22T02:11:30.000Z",
+          "updatedAt": "2026-10-22T02:11:30.000Z",
+          "uid": "35240-a0cb7548-6074-4046-b35e-b2c8f820de17"
+        }
+      ],
+      "id": "96bb10fd-bfc3-43dd-8de0-2ba842059ce2",
+      "createdAt": "2026-10-22T02:11:30.000Z",
+      "updatedAt": "2026-10-22T02:11:30.000Z",
+      "uid": "35240-96bb10fd-bfc3-43dd-8de0-2ba842059ce2"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.origin-kraken.energy/v1"
+    }
+  ]
+}

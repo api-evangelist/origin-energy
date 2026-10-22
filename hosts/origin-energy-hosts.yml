@@ -1,0 +1,220 @@
+generated: '2026-10-20'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 18
+  own: 4
+  other_domain: 11
+  platform: 3
+  roles:
+  - api
+  - docs
+  - identity
+  - other
+  - portal
+  - security
+  - source
+  - status
+  - website
+hosts:
+- host: api.bugcrowd.com
+  found_by:
+  - contract-discovery
+  types: []
+  serves: []
+  registrable_domain: bugcrowd.com
+  role: api
+  relation: other-domain
+- host: api.com.au
+  found_by:
+  - contract-discovery
+  types: []
+  serves: []
+  registrable_domain: api.com.au
+  role: api
+  relation: other-domain
+- host: api.gov.au
+  found_by:
+  - contract-discovery
+  types: []
+  serves: []
+  registrable_domain: api.gov.au
+  role: api
+  relation: other-domain
+- host: api.mydata.cdr.originenergy.com.au
+  found_by:
+  - apis[]
+  - probed
+  - contract-discovery
+  - well-known
+  types: []
+  serves:
+  - api
+  registrable_domain: originenergy.com.au
+  role: api
+  relation: own
+- host: api.origin-kraken.energy
+  found_by:
+  - apis[]
+  - probed
+  - docs-index
+  - contract-discovery
+  - well-known
+  types: []
+  serves:
+  - api
+  - docs
+  registrable_domain: origin-kraken.energy
+  role: api
+  relation: other-domain
+- host: auth.origin-kraken.energy
+  found_by:
+  - apis[]
+  - probed
+  - well-known
+  types: []
+  serves:
+  - api
+  registrable_domain: origin-kraken.energy
+  role: identity
+  relation: other-domain
+- host: bugcrowd.com
+  found_by:
+  - pointer
+  - probed
+  - well-known
+  types:
+  - Security
+  serves: []
+  registrable_domain: bugcrowd.com
+  role: security
+  relation: other-domain
+- host: careers.originenergy.com.au
+  found_by:
+  - probed
+  - site-links
+  types: []
+  serves: []
+  registrable_domain: originenergy.com.au
+  role: other
+  relation: own
+- host: cdr.energymadeeasy.gov.au
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: energymadeeasy.gov.au
+  role: other
+  relation: other-domain
+- host: consumerdatastandardsaustralia.github.io
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - docs
+  registrable_domain: github.io
+  role: other
+  relation: platform
+- host: developer.origin-kraken.energy
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - namespace-probe
+  - docs-index
+  - well-known
+  types:
+  - DeveloperPortal
+  - Documentation
+  - ChangeLog
+  - APIReference
+  - GettingStarted
+  - Deprecation
+  serves:
+  - docs
+  title: Home | API docs
+  status: 200
+  registrable_domain: origin-kraken.energy
+  role: portal
+  relation: other-domain
+- host: developer.origin-kraken.energy:443
+  found_by:
+  - docs-index
+  types: []
+  serves:
+  - docs
+  registrable_domain: origin-kraken.energy:443
+  role: portal
+  relation: other-domain
+- host: docs.origin-kraken.energy
+  found_by:
+  - probed
+  - site-links
+  - namespace-probe
+  types: []
+  serves: []
+  title: Home | API docs
+  status: 200
+  registrable_domain: origin-kraken.energy
+  role: docs
+  relation: other-domain
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: public.mydata.cdr.originenergy.com.au
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - well-known
+  types:
+  - StatusPage
+  serves:
+  - api
+  registrable_domain: originenergy.com.au
+  role: status
+  relation: own
+- host: www.cdr.gov.au
+  found_by:
+  - pointer
+  - probed
+  - well-known
+  types:
+  - Registration
+  - Regulation
+  serves: []
+  registrable_domain: cdr.gov.au
+  role: other
+  relation: other-domain
+- host: www.linkedin.com
+  found_by:
+  - pointer
+  types:
+  - LinkedIn
+  serves: []
+  registrable_domain: linkedin.com
+  role: other
+  relation: platform
+- host: www.originenergy.com.au
+  found_by:
+  - pointer
+  - probed
+  - well-known
+  - vendor-detect
+  types:
+  - BlogRSS
+  - Website
+  serves:
+  - cdn
+  vendor: cloudfront
+  registrable_domain: originenergy.com.au
+  role: website
+  relation: own

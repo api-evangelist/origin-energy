@@ -1,0 +1,1127 @@
+{
+  "info": {
+    "_postman_id": "02a46065-f8d8-475a-9602-b2ca94e1ae2b",
+    "name": "Kraken Post Account Import API",
+    "description": "APIs for importing additional data after an account has been imported.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:11:14.000Z",
+    "updatedAt": "2026-10-22T02:11:14.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-02a46065-f8d8-475a-9602-b2ca94e1ae2b"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "data-import",
+          "item": [
+            {
+              "name": "historical-statements",
+              "item": [
+                {
+                  "name": "create",
+                  "item": [
+                    {
+                      "name": "Use this endpoint to import historical PDF statements onto an account",
+                      "id": "45e74fc4-54d4-4c07-9bc9-f70459d64798",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Authorization",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"external_account_number\": \"<string>\",\n  \"import_supplier\": \"ORIGIN_CNI\",\n  \"statements\": [\n    {\n      \"bill_period_from_date\": \"<date>\",\n      \"bill_period_to_date\": \"<date>\",\n      \"statement_id\": \"<string>\",\n      \"average_daily_usage\": \"-2.19\",\n      \"gross_amount\": \"<integer,null>\",\n      \"is_reversed\": \"<boolean>\",\n      \"issued_date\": \"<string,null-date>\",\n      \"net_emissions\": \"<array,null>\",\n      \"number\": \"<string>\",\n      \"statement_path\": \"<string>\",\n      \"total_consumption\": \"\",\n      \"total_consumption_cost\": \"14\",\n      \"total_feed_in_cost\": \"9691.1\",\n      \"total_feed_in_energy\": \"-101538.1239797217\",\n      \"total_supply_cost\": \"-702\"\n    },\n    {\n      \"bill_period_from_date\": \"<date>\",\n      \"bill_period_to_date\": \"<date>\",\n      \"statement_id\": \"<string>\",\n      \"average_daily_usage\": \"-.598056186\",\n      \"gross_amount\": \"<integer,null>\",\n      \"is_reversed\": \"<boolean>\",\n      \"issued_date\": \"<string,null-date>\",\n      \"net_emissions\": \"<array,null>\",\n      \"number\": \"<string>\",\n      \"statement_path\": \"<string>\",\n      \"total_consumption\": \"546\",\n      \"total_consumption_cost\": \"447.406953603\",\n      \"total_feed_in_cost\": \"-629\",\n      \"total_feed_in_energy\": \"7409523225.19339809\",\n      \"total_supply_cost\": \"-1664690158\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/data-import/historical-statements/create/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "data-import",
+                            "historical-statements",
+                            "create",
+                            ""
+                          ]
+                        },
+                        "description": "Use this endpoint to import historical PDF statements onto an account."
+                      },
+                      "response": [
+                        {
+                          "id": "d494b3fe-7bea-4fe0-9d78-5a36105f0aca",
+                          "name": "If the payload is valid, the validated data will be returned in the body of the response.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"external_account_number\": \"<string>\",\n  \"import_supplier\": \"ORIGIN_CNI\",\n  \"statements\": [\n    {\n      \"bill_period_from_date\": \"<date>\",\n      \"bill_period_to_date\": \"<date>\",\n      \"statement_id\": \"<string>\",\n      \"average_daily_usage\": \"-2.19\",\n      \"gross_amount\": \"<integer,null>\",\n      \"is_reversed\": \"<boolean>\",\n      \"issued_date\": \"<string,null-date>\",\n      \"net_emissions\": \"<array,null>\",\n      \"number\": \"<string>\",\n      \"statement_path\": \"<string>\",\n      \"total_consumption\": \"\",\n      \"total_consumption_cost\": \"14\",\n      \"total_feed_in_cost\": \"9691.1\",\n      \"total_feed_in_energy\": \"-101538.1239797217\",\n      \"total_supply_cost\": \"-702\"\n    },\n    {\n      \"bill_period_from_date\": \"<date>\",\n      \"bill_period_to_date\": \"<date>\",\n      \"statement_id\": \"<string>\",\n      \"average_daily_usage\": \"-.598056186\",\n      \"gross_amount\": \"<integer,null>\",\n      \"is_reversed\": \"<boolean>\",\n      \"issued_date\": \"<string,null-date>\",\n      \"net_emissions\": \"<array,null>\",\n      \"number\": \"<string>\",\n      \"statement_path\": \"<string>\",\n      \"total_consumption\": \"546\",\n      \"total_consumption_cost\": \"447.406953603\",\n      \"total_feed_in_cost\": \"-629\",\n      \"total_feed_in_energy\": \"7409523225.19339809\",\n      \"total_supply_cost\": \"-1664690158\"\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/historical-statements/create/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "historical-statements",
+                                "create",
+                                ""
+                              ]
+                            }
+                          },
+                          "status": "Created",
+                          "code": 201,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"external_account_number\": \"<string>\",\n  \"import_supplier\": \"ORIGIN_CNI\",\n  \"statements\": [\n    {\n      \"bill_period_from_date\": \"<date>\",\n      \"bill_period_to_date\": \"<date>\",\n      \"statement_id\": \"<string>\",\n      \"average_daily_usage\": \"-2.19\",\n      \"gross_amount\": \"<integer,null>\",\n      \"is_reversed\": \"<boolean>\",\n      \"issued_date\": \"<string,null-date>\",\n      \"net_emissions\": \"<array,null>\",\n      \"number\": \"<string>\",\n      \"statement_path\": \"<string>\",\n      \"total_consumption\": \"\",\n      \"total_consumption_cost\": \"14\",\n      \"total_feed_in_cost\": \"9691.1\",\n      \"total_feed_in_energy\": \"-101538.1239797217\",\n      \"total_supply_cost\": \"-702\"\n    },\n    {\n      \"bill_period_from_date\": \"<date>\",\n      \"bill_period_to_date\": \"<date>\",\n      \"statement_id\": \"<string>\",\n      \"average_daily_usage\": \"-.598056186\",\n      \"gross_amount\": \"<integer,null>\",\n      \"is_reversed\": \"<boolean>\",\n      \"issued_date\": \"<string,null-date>\",\n      \"net_emissions\": \"<array,null>\",\n      \"number\": \"<string>\",\n      \"statement_path\": \"<string>\",\n      \"total_consumption\": \"546\",\n      \"total_consumption_cost\": \"447.406953603\",\n      \"total_feed_in_cost\": \"-629\",\n      \"total_feed_in_energy\": \"7409523225.19339809\",\n      \"total_supply_cost\": \"-1664690158\"\n    }\n  ]\n}",
+                          "createdAt": "2026-10-22T02:11:15.000Z",
+                          "updatedAt": "2026-10-22T02:11:15.000Z",
+                          "uid": "35240-d494b3fe-7bea-4fe0-9d78-5a36105f0aca"
+                        },
+                        {
+                          "id": "c15be055-b75a-499d-85cd-5fa050ab2338",
+                          "name": "Validation error.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"external_account_number\": \"<string>\",\n  \"import_supplier\": \"ORIGIN_CNI\",\n  \"statements\": [\n    {\n      \"bill_period_from_date\": \"<date>\",\n      \"bill_period_to_date\": \"<date>\",\n      \"statement_id\": \"<string>\",\n      \"average_daily_usage\": \"-2.19\",\n      \"gross_amount\": \"<integer,null>\",\n      \"is_reversed\": \"<boolean>\",\n      \"issued_date\": \"<string,null-date>\",\n      \"net_emissions\": \"<array,null>\",\n      \"number\": \"<string>\",\n      \"statement_path\": \"<string>\",\n      \"total_consumption\": \"\",\n      \"total_consumption_cost\": \"14\",\n      \"total_feed_in_cost\": \"9691.1\",\n      \"total_feed_in_energy\": \"-101538.1239797217\",\n      \"total_supply_cost\": \"-702\"\n    },\n    {\n      \"bill_period_from_date\": \"<date>\",\n      \"bill_period_to_date\": \"<date>\",\n      \"statement_id\": \"<string>\",\n      \"average_daily_usage\": \"-.598056186\",\n      \"gross_amount\": \"<integer,null>\",\n      \"is_reversed\": \"<boolean>\",\n      \"issued_date\": \"<string,null-date>\",\n      \"net_emissions\": \"<array,null>\",\n      \"number\": \"<string>\",\n      \"statement_path\": \"<string>\",\n      \"total_consumption\": \"546\",\n      \"total_consumption_cost\": \"447.406953603\",\n      \"total_feed_in_cost\": \"-629\",\n      \"total_feed_in_energy\": \"7409523225.19339809\",\n      \"total_supply_cost\": \"-1664690158\"\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/historical-statements/create/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "historical-statements",
+                                "create",
+                                ""
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"non_field_errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "createdAt": "2026-10-22T02:11:15.000Z",
+                          "updatedAt": "2026-10-22T02:11:15.000Z",
+                          "uid": "35240-c15be055-b75a-499d-85cd-5fa050ab2338"
+                        },
+                        {
+                          "id": "ff50e329-e61d-4cc2-8bc9-f22da089051a",
+                          "name": "The account import process or account have not been found. To resolve the error, check that the account has been imported (not just staged) and that the `import_supplier code` and `external_account_number` are correct.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"external_account_number\": \"<string>\",\n  \"import_supplier\": \"ORIGIN_CNI\",\n  \"statements\": [\n    {\n      \"bill_period_from_date\": \"<date>\",\n      \"bill_period_to_date\": \"<date>\",\n      \"statement_id\": \"<string>\",\n      \"average_daily_usage\": \"-2.19\",\n      \"gross_amount\": \"<integer,null>\",\n      \"is_reversed\": \"<boolean>\",\n      \"issued_date\": \"<string,null-date>\",\n      \"net_emissions\": \"<array,null>\",\n      \"number\": \"<string>\",\n      \"statement_path\": \"<string>\",\n      \"total_consumption\": \"\",\n      \"total_consumption_cost\": \"14\",\n      \"total_feed_in_cost\": \"9691.1\",\n      \"total_feed_in_energy\": \"-101538.1239797217\",\n      \"total_supply_cost\": \"-702\"\n    },\n    {\n      \"bill_period_from_date\": \"<date>\",\n      \"bill_period_to_date\": \"<date>\",\n      \"statement_id\": \"<string>\",\n      \"average_daily_usage\": \"-.598056186\",\n      \"gross_amount\": \"<integer,null>\",\n      \"is_reversed\": \"<boolean>\",\n      \"issued_date\": \"<string,null-date>\",\n      \"net_emissions\": \"<array,null>\",\n      \"number\": \"<string>\",\n      \"statement_path\": \"<string>\",\n      \"total_consumption\": \"546\",\n      \"total_consumption_cost\": \"447.406953603\",\n      \"total_feed_in_cost\": \"-629\",\n      \"total_feed_in_energy\": \"7409523225.19339809\",\n      \"total_supply_cost\": \"-1664690158\"\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/historical-statements/create/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "historical-statements",
+                                "create",
+                                ""
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:11:15.000Z",
+                          "updatedAt": "2026-10-22T02:11:15.000Z",
+                          "uid": "35240-ff50e329-e61d-4cc2-8bc9-f22da089051a"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:11:14.000Z",
+                      "updatedAt": "2026-10-22T02:11:14.000Z",
+                      "uid": "35240-45e74fc4-54d4-4c07-9bc9-f70459d64798"
+                    }
+                  ],
+                  "id": "f4a831eb-d6dc-47a6-8836-d7c7b78d0c17",
+                  "createdAt": "2026-10-22T02:11:14.000Z",
+                  "updatedAt": "2026-10-22T02:11:14.000Z",
+                  "uid": "35240-f4a831eb-d6dc-47a6-8836-d7c7b78d0c17"
+                }
+              ],
+              "id": "81038654-40d1-4cbe-9993-bec1ae2bebe4",
+              "createdAt": "2026-10-22T02:11:14.000Z",
+              "updatedAt": "2026-10-22T02:11:14.000Z",
+              "uid": "35240-81038654-40d1-4cbe-9993-bec1ae2bebe4"
+            },
+            {
+              "name": "notes",
+              "item": [
+                {
+                  "name": "create",
+                  "item": [
+                    {
+                      "name": "Use this endpoint to add notes to an account",
+                      "id": "380cfecf-35d1-4916-a514-e0f4f69103e8",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Authorization",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"import_supplier\": \"WIN_CONNECT\",\n  \"notes\": [\n    {\n      \"body\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"document_paths\": [\n        {\n          \"document_path\": \"<string>\"\n        },\n        {\n          \"document_path\": \"<string>\"\n        }\n      ],\n      \"external_id\": \"<string>\",\n      \"is_archived\": \"<boolean>\",\n      \"is_pinned\": \"<boolean>\",\n      \"unpin_at\": \"<dateTime>\"\n    },\n    {\n      \"body\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"document_paths\": [\n        {\n          \"document_path\": \"<string>\"\n        },\n        {\n          \"document_path\": \"<string>\"\n        }\n      ],\n      \"external_id\": \"<string>\",\n      \"is_archived\": \"<boolean>\",\n      \"is_pinned\": \"<boolean>\",\n      \"unpin_at\": \"<dateTime>\"\n    }\n  ],\n  \"account_number\": \"<string>\",\n  \"external_account_number\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/data-import/notes/create/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "data-import",
+                            "notes",
+                            "create",
+                            ""
+                          ]
+                        },
+                        "description": "Some points to note:\n- A note must contain at least one of the fields `body` or `document_paths`.\n- A `created_at` datetime may optionally be provided. Otherwise, it will default to the current local time.\n- The `document_paths` refer to the locations in S3 where attached documents are stored.\n- An optional `is_pinned` boolean can be passed in the payload to control whether this note will be pinned to the top of the Kraken account support site page."
+                      },
+                      "response": [
+                        {
+                          "id": "afc999f8-a708-4543-b04d-7436be877c14",
+                          "name": "If the payload is valid, a list of the posted notes and their creation status will be returned in the response. A new note will only be created if a note on the account with the same body (and `created_at`, if provided) does not already exist.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"import_supplier\": \"WIN_CONNECT\",\n  \"notes\": [\n    {\n      \"body\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"document_paths\": [\n        {\n          \"document_path\": \"<string>\"\n        },\n        {\n          \"document_path\": \"<string>\"\n        }\n      ],\n      \"external_id\": \"<string>\",\n      \"is_archived\": \"<boolean>\",\n      \"is_pinned\": \"<boolean>\",\n      \"unpin_at\": \"<dateTime>\"\n    },\n    {\n      \"body\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"document_paths\": [\n        {\n          \"document_path\": \"<string>\"\n        },\n        {\n          \"document_path\": \"<string>\"\n        }\n      ],\n      \"external_id\": \"<string>\",\n      \"is_archived\": \"<boolean>\",\n      \"is_pinned\": \"<boolean>\",\n      \"unpin_at\": \"<dateTime>\"\n    }\n  ],\n  \"account_number\": \"<string>\",\n  \"external_account_number\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/notes/create/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "notes",
+                                "create",
+                                ""
+                              ]
+                            }
+                          },
+                          "status": "Created",
+                          "code": 201,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"status\": \"NOTE_ALREADY_EXISTS\",\n  \"body\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"document_paths\": [\n    {\n      \"document_path\": \"<string>\"\n    },\n    {\n      \"document_path\": \"<string>\"\n    }\n  ],\n  \"external_id\": \"<string>\",\n  \"is_archived\": \"<boolean>\",\n  \"is_pinned\": \"<boolean>\",\n  \"unpin_at\": \"<dateTime>\"\n}",
+                          "createdAt": "2026-10-22T02:11:15.000Z",
+                          "updatedAt": "2026-10-22T02:11:15.000Z",
+                          "uid": "35240-afc999f8-a708-4543-b04d-7436be877c14"
+                        },
+                        {
+                          "id": "642e13a0-4763-4ea9-918d-bb2df09d0c48",
+                          "name": "Validation error.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"import_supplier\": \"WIN_CONNECT\",\n  \"notes\": [\n    {\n      \"body\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"document_paths\": [\n        {\n          \"document_path\": \"<string>\"\n        },\n        {\n          \"document_path\": \"<string>\"\n        }\n      ],\n      \"external_id\": \"<string>\",\n      \"is_archived\": \"<boolean>\",\n      \"is_pinned\": \"<boolean>\",\n      \"unpin_at\": \"<dateTime>\"\n    },\n    {\n      \"body\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"document_paths\": [\n        {\n          \"document_path\": \"<string>\"\n        },\n        {\n          \"document_path\": \"<string>\"\n        }\n      ],\n      \"external_id\": \"<string>\",\n      \"is_archived\": \"<boolean>\",\n      \"is_pinned\": \"<boolean>\",\n      \"unpin_at\": \"<dateTime>\"\n    }\n  ],\n  \"account_number\": \"<string>\",\n  \"external_account_number\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/notes/create/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "notes",
+                                "create",
+                                ""
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"non_field_errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "createdAt": "2026-10-22T02:11:15.000Z",
+                          "updatedAt": "2026-10-22T02:11:15.000Z",
+                          "uid": "35240-642e13a0-4763-4ea9-918d-bb2df09d0c48"
+                        },
+                        {
+                          "id": "d0d853e0-274b-42d8-ac35-ee4cf39cc688",
+                          "name": "The account import process or account have not been found. To resolve the error, check that the account has been imported (not just staged) and that the `import_supplier code` and `external_account_number` are correct.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"import_supplier\": \"WIN_CONNECT\",\n  \"notes\": [\n    {\n      \"body\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"document_paths\": [\n        {\n          \"document_path\": \"<string>\"\n        },\n        {\n          \"document_path\": \"<string>\"\n        }\n      ],\n      \"external_id\": \"<string>\",\n      \"is_archived\": \"<boolean>\",\n      \"is_pinned\": \"<boolean>\",\n      \"unpin_at\": \"<dateTime>\"\n    },\n    {\n      \"body\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"document_paths\": [\n        {\n          \"document_path\": \"<string>\"\n        },\n        {\n          \"document_path\": \"<string>\"\n        }\n      ],\n      \"external_id\": \"<string>\",\n      \"is_archived\": \"<boolean>\",\n      \"is_pinned\": \"<boolean>\",\n      \"unpin_at\": \"<dateTime>\"\n    }\n  ],\n  \"account_number\": \"<string>\",\n  \"external_account_number\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/notes/create/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "notes",
+                                "create",
+                                ""
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:11:15.000Z",
+                          "updatedAt": "2026-10-22T02:11:15.000Z",
+                          "uid": "35240-d0d853e0-274b-42d8-ac35-ee4cf39cc688"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:11:14.000Z",
+                      "updatedAt": "2026-10-22T02:11:14.000Z",
+                      "uid": "35240-380cfecf-35d1-4916-a514-e0f4f69103e8"
+                    }
+                  ],
+                  "id": "5f4e6f0e-2ea2-4461-b704-f7272a182b3d",
+                  "createdAt": "2026-10-22T02:11:14.000Z",
+                  "updatedAt": "2026-10-22T02:11:14.000Z",
+                  "uid": "35240-5f4e6f0e-2ea2-4461-b704-f7272a182b3d"
+                }
+              ],
+              "id": "6bb90ed7-bcf4-4dbf-a21e-0e5a6d1b30b1",
+              "createdAt": "2026-10-22T02:11:14.000Z",
+              "updatedAt": "2026-10-22T02:11:14.000Z",
+              "uid": "35240-6bb90ed7-bcf4-4dbf-a21e-0e5a6d1b30b1"
+            },
+            {
+              "name": "payment-instruction",
+              "item": [
+                {
+                  "name": "create",
+                  "item": [
+                    {
+                      "name": "Create a payment instruction",
+                      "id": "548ca0dc-49ed-4592-a0dc-3f454c994df8",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Authorization",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"external_account_number\": \"<string>\",\n  \"import_supplier\": \"ORIGIN_BUSINESS\",\n  \"type\": \"PAYMENT_SLIP\",\n  \"vendor\": \"WESTPAC\",\n  \"instruction_reference\": \"<string>\",\n  \"ledger_code\": \"<string>\",\n  \"reference\": \"<string>\",\n  \"use_for_scheduled_payments\": \"<boolean,null>\",\n  \"valid_from\": \"<string,null-date>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/data-import/payment-instruction/create/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "data-import",
+                            "payment-instruction",
+                            "create",
+                            ""
+                          ]
+                        },
+                        "description": "Create a payment instruction."
+                      },
+                      "response": [
+                        {
+                          "id": "f236e6c4-811d-464f-a5a0-80f36a780669",
+                          "name": "If the payload is valid, the Kraken account number and the reference will be returned.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"external_account_number\": \"<string>\",\n  \"import_supplier\": \"ORIGIN_BUSINESS\",\n  \"type\": \"PAYMENT_SLIP\",\n  \"vendor\": \"WESTPAC\",\n  \"instruction_reference\": \"<string>\",\n  \"ledger_code\": \"<string>\",\n  \"reference\": \"<string>\",\n  \"use_for_scheduled_payments\": \"<boolean,null>\",\n  \"valid_from\": \"<string,null-date>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/payment-instruction/create/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "payment-instruction",
+                                "create",
+                                ""
+                              ]
+                            }
+                          },
+                          "status": "Created",
+                          "code": 201,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"account_number\": \"<string>\",\n  \"kraken_account_number\": \"<string>\",\n  \"reference\": \"<string>\"\n}",
+                          "createdAt": "2026-10-22T02:11:15.000Z",
+                          "updatedAt": "2026-10-22T02:11:15.000Z",
+                          "uid": "35240-f236e6c4-811d-464f-a5a0-80f36a780669"
+                        },
+                        {
+                          "id": "115b9478-e4e8-4b8d-8348-d3eaaa9d83e5",
+                          "name": "\nIf there are validation errors, the errors will be detailed in the body of the response. To\nresolve the error, refer to the field definitions and validation rules.\n\nThis error can be returned if we have persistent issues communicating with the upstream p",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"external_account_number\": \"<string>\",\n  \"import_supplier\": \"ORIGIN_BUSINESS\",\n  \"type\": \"PAYMENT_SLIP\",\n  \"vendor\": \"WESTPAC\",\n  \"instruction_reference\": \"<string>\",\n  \"ledger_code\": \"<string>\",\n  \"reference\": \"<string>\",\n  \"use_for_scheduled_payments\": \"<boolean,null>\",\n  \"valid_from\": \"<string,null-date>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/payment-instruction/create/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "payment-instruction",
+                                "create",
+                                ""
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error_detail\": \"<string>\",\n  \"external_account_number\": \"<string>\",\n  \"import_supplier\": \"ORIGIN_SOLARFLEX_INACTIVE\",\n  \"reference\": \"<string>\"\n}",
+                          "createdAt": "2026-10-22T02:11:15.000Z",
+                          "updatedAt": "2026-10-22T02:11:15.000Z",
+                          "uid": "35240-115b9478-e4e8-4b8d-8348-d3eaaa9d83e5"
+                        },
+                        {
+                          "id": "5e10264f-b0e5-4fd6-8ebd-ee02ae4bbbf4",
+                          "name": "\nThis error can be returned if we have intermittent issues communicating with the upstream payment\nvendor (we call their API to verify the instruction exists, and retrieve the details to store in\nKraken). In this case, **the request should be retried as-i",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"external_account_number\": \"<string>\",\n  \"import_supplier\": \"ORIGIN_BUSINESS\",\n  \"type\": \"PAYMENT_SLIP\",\n  \"vendor\": \"WESTPAC\",\n  \"instruction_reference\": \"<string>\",\n  \"ledger_code\": \"<string>\",\n  \"reference\": \"<string>\",\n  \"use_for_scheduled_payments\": \"<boolean,null>\",\n  \"valid_from\": \"<string,null-date>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/payment-instruction/create/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "payment-instruction",
+                                "create",
+                                ""
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error_detail\": \"<string>\",\n  \"external_account_number\": \"<string>\",\n  \"import_supplier\": \"ORIGIN_SOLARFLEX_INACTIVE\",\n  \"reference\": \"<string>\"\n}",
+                          "createdAt": "2026-10-22T02:11:15.000Z",
+                          "updatedAt": "2026-10-22T02:11:15.000Z",
+                          "uid": "35240-5e10264f-b0e5-4fd6-8ebd-ee02ae4bbbf4"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:11:14.000Z",
+                      "updatedAt": "2026-10-22T02:11:14.000Z",
+                      "uid": "35240-548ca0dc-49ed-4592-a0dc-3f454c994df8"
+                    }
+                  ],
+                  "id": "d292df9d-e955-41f8-8703-8299b502680a",
+                  "createdAt": "2026-10-22T02:11:14.000Z",
+                  "updatedAt": "2026-10-22T02:11:14.000Z",
+                  "uid": "35240-d292df9d-e955-41f8-8703-8299b502680a"
+                }
+              ],
+              "id": "53399fa1-d691-488d-851b-c5fde0146a70",
+              "createdAt": "2026-10-22T02:11:14.000Z",
+              "updatedAt": "2026-10-22T02:11:14.000Z",
+              "uid": "35240-53399fa1-d691-488d-851b-c5fde0146a70"
+            },
+            {
+              "name": "transactions",
+              "item": [
+                {
+                  "name": "create",
+                  "item": [
+                    {
+                      "name": "Use this endpoint to import financial transactions to an account",
+                      "id": "e6126605-a20d-4a9c-ac73-1d9867842e9d",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Authorization",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"import_supplier\": \"ORIGIN_BUSINESS_NO_CONTRACT\",\n  \"account_number\": \"<string>\",\n  \"dry_run\": false,\n  \"external_account_number\": \"<string>\",\n  \"transactions\": [\n    {\n      \"amount\": \"-156761\",\n      \"transaction_date\": \"<date>\",\n      \"transaction_id\": \"<string>\",\n      \"type\": \"REPAYMENT\",\n      \"billing_document_identifier\": \"<string>\",\n      \"display_note\": \"<string>\",\n      \"note\": \"<string>\",\n      \"reason\": \"<string>\"\n    },\n    {\n      \"amount\": \"-\",\n      \"transaction_date\": \"<date>\",\n      \"transaction_id\": \"<string>\",\n      \"type\": \"REPAYMENT\",\n      \"billing_document_identifier\": \"<string>\",\n      \"display_note\": \"<string>\",\n      \"note\": \"<string>\",\n      \"reason\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/data-import/transactions/create/?check_previously_added=true&force_add_to_current_statement=true",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "data-import",
+                            "transactions",
+                            "create",
+                            ""
+                          ],
+                          "query": [
+                            {
+                              "description": "Boolean flag indicating whether to check if a transaction has already been added.",
+                              "key": "check_previously_added",
+                              "value": "true"
+                            },
+                            {
+                              "description": "boolean flag. If set to true and the payload contains a transaction that is outside the currently-open statement period, this will modify the transaction date so that it is within the currently-open statement period. This then allows the transaction to be added to the statement instead of throwing an error. A description is added to the transaction to explain this, and a note is pinned to the account.",
+                              "key": "force_add_to_current_statement",
+                              "value": "true"
+                            }
+                          ]
+                        },
+                        "description": "Use this endpoint to import financial transactions to an account."
+                      },
+                      "response": [
+                        {
+                          "id": "2b41f249-35af-4962-91f2-0691f7095309",
+                          "name": "If the payload is valid, and there were no errors while importing the transactions, an object will be returned with a list of transactions that were passed in along with their creation statuses.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"import_supplier\": \"ORIGIN_BUSINESS_NO_CONTRACT\",\n  \"account_number\": \"<string>\",\n  \"dry_run\": false,\n  \"external_account_number\": \"<string>\",\n  \"transactions\": [\n    {\n      \"amount\": \"-156761\",\n      \"transaction_date\": \"<date>\",\n      \"transaction_id\": \"<string>\",\n      \"type\": \"REPAYMENT\",\n      \"billing_document_identifier\": \"<string>\",\n      \"display_note\": \"<string>\",\n      \"note\": \"<string>\",\n      \"reason\": \"<string>\"\n    },\n    {\n      \"amount\": \"-\",\n      \"transaction_date\": \"<date>\",\n      \"transaction_id\": \"<string>\",\n      \"type\": \"REPAYMENT\",\n      \"billing_document_identifier\": \"<string>\",\n      \"display_note\": \"<string>\",\n      \"note\": \"<string>\",\n      \"reason\": \"<string>\"\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/transactions/create/?check_previously_added=true&force_add_to_current_statement=true",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "transactions",
+                                "create",
+                                ""
+                              ],
+                              "query": [
+                                {
+                                  "description": "Boolean flag indicating whether to check if a transaction has already been added.",
+                                  "key": "check_previously_added",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "boolean flag. If set to true and the payload contains a transaction that is outside the currently-open statement period, this will modify the transaction date so that it is within the currently-open statement period. This then allows the transaction to be added to the statement instead of throwing an error. A description is added to the transaction to explain this, and a note is pinned to the account.",
+                                  "key": "force_add_to_current_statement",
+                                  "value": "true"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Created",
+                          "code": 201,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"results\": [\n    {\n      \"status\": \"TRANSACTION_IMPORT_ERROR\",\n      \"transaction_data\": {\n        \"amount\": \"2.721221145\",\n        \"transaction_date\": \"<date>\",\n        \"transaction_id\": \"<string>\",\n        \"type\": \"PAYMENT\",\n        \"billing_document_identifier\": \"<string>\",\n        \"display_note\": \"<string>\",\n        \"note\": \"<string>\",\n        \"reason\": \"<string>\"\n      },\n      \"added_transaction_id\": \"<integer>\"\n    },\n    {\n      \"status\": \"TRANSACTION_ALREADY_EXISTS\",\n      \"transaction_data\": {\n        \"amount\": \"8357\",\n        \"transaction_date\": \"<date>\",\n        \"transaction_id\": \"<string>\",\n        \"type\": \"CREDIT\",\n        \"billing_document_identifier\": \"<string>\",\n        \"display_note\": \"<string>\",\n        \"note\": \"<string>\",\n        \"reason\": \"<string>\"\n      },\n      \"added_transaction_id\": \"<integer>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-10-22T02:11:15.000Z",
+                          "updatedAt": "2026-10-22T02:11:15.000Z",
+                          "uid": "35240-2b41f249-35af-4962-91f2-0691f7095309"
+                        },
+                        {
+                          "id": "4702415b-d124-4886-8a33-9e3d1563c3b8",
+                          "name": "Could not create transactions",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"import_supplier\": \"ORIGIN_BUSINESS_NO_CONTRACT\",\n  \"account_number\": \"<string>\",\n  \"dry_run\": false,\n  \"external_account_number\": \"<string>\",\n  \"transactions\": [\n    {\n      \"amount\": \"-156761\",\n      \"transaction_date\": \"<date>\",\n      \"transaction_id\": \"<string>\",\n      \"type\": \"REPAYMENT\",\n      \"billing_document_identifier\": \"<string>\",\n      \"display_note\": \"<string>\",\n      \"note\": \"<string>\",\n      \"reason\": \"<string>\"\n    },\n    {\n      \"amount\": \"-\",\n      \"transaction_date\": \"<date>\",\n      \"transaction_id\": \"<string>\",\n      \"type\": \"REPAYMENT\",\n      \"billing_document_identifier\": \"<string>\",\n      \"display_note\": \"<string>\",\n      \"note\": \"<string>\",\n      \"reason\": \"<string>\"\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/transactions/create/?check_previously_added=true&force_add_to_current_statement=true",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "transactions",
+                                "create",
+                                ""
+                              ],
+                              "query": [
+                                {
+                                  "description": "Boolean flag indicating whether to check if a transaction has already been added.",
+                                  "key": "check_previously_added",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "boolean flag. If set to true and the payload contains a transaction that is outside the currently-open statement period, this will modify the transaction date so that it is within the currently-open statement period. This then allows the transaction to be added to the statement instead of throwing an error. A description is added to the transaction to explain this, and a note is pinned to the account.",
+                                  "key": "force_add_to_current_statement",
+                                  "value": "true"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"non_field_errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "createdAt": "2026-10-22T02:11:15.000Z",
+                          "updatedAt": "2026-10-22T02:11:15.000Z",
+                          "uid": "35240-4702415b-d124-4886-8a33-9e3d1563c3b8"
+                        },
+                        {
+                          "id": "59d17864-6039-45cc-a5d7-02218bae142e",
+                          "name": "The account import process or account have not been found. To resolve the error, check that the account has been imported (not just staged) and that the `import_supplier code` and `external_account_number` are correct.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"import_supplier\": \"ORIGIN_BUSINESS_NO_CONTRACT\",\n  \"account_number\": \"<string>\",\n  \"dry_run\": false,\n  \"external_account_number\": \"<string>\",\n  \"transactions\": [\n    {\n      \"amount\": \"-156761\",\n      \"transaction_date\": \"<date>\",\n      \"transaction_id\": \"<string>\",\n      \"type\": \"REPAYMENT\",\n      \"billing_document_identifier\": \"<string>\",\n      \"display_note\": \"<string>\",\n      \"note\": \"<string>\",\n      \"reason\": \"<string>\"\n    },\n    {\n      \"amount\": \"-\",\n      \"transaction_date\": \"<date>\",\n      \"transaction_id\": \"<string>\",\n      \"type\": \"REPAYMENT\",\n      \"billing_document_identifier\": \"<string>\",\n      \"display_note\": \"<string>\",\n      \"note\": \"<string>\",\n      \"reason\": \"<string>\"\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/data-import/transactions/create/?check_previously_added=true&force_add_to_current_statement=true",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "data-import",
+                                "transactions",
+                                "create",
+                                ""
+                              ],
+                              "query": [
+                                {
+                                  "description": "Boolean flag indicating whether to check if a transaction has already been added.",
+                                  "key": "check_previously_added",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "boolean flag. If set to true and the payload contains a transaction that is outside the currently-open statement period, this will modify the transaction date so that it is within the currently-open statement period. This then allows the transaction to be added to the statement instead of throwing an error. A description is added to the transaction to explain this, and a note is pinned to the account.",
+                                  "key": "force_add_to_current_statement",
+                                  "value": "true"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:11:15.000Z",
+                          "updatedAt": "2026-10-22T02:11:15.000Z",
+                          "uid": "35240-59d17864-6039-45cc-a5d7-02218bae142e"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:11:14.000Z",
+                      "updatedAt": "2026-10-22T02:11:14.000Z",
+                      "uid": "35240-e6126605-a20d-4a9c-ac73-1d9867842e9d"
+                    }
+                  ],
+                  "id": "914d869f-fa55-4157-a98b-48521d19ff8b",
+                  "createdAt": "2026-10-22T02:11:14.000Z",
+                  "updatedAt": "2026-10-22T02:11:14.000Z",
+                  "uid": "35240-914d869f-fa55-4157-a98b-48521d19ff8b"
+                }
+              ],
+              "id": "6f152d0f-b0f4-44d1-ab2d-47cce2f6b0d6",
+              "createdAt": "2026-10-22T02:11:14.000Z",
+              "updatedAt": "2026-10-22T02:11:14.000Z",
+              "uid": "35240-6f152d0f-b0f4-44d1-ab2d-47cce2f6b0d6"
+            }
+          ],
+          "id": "e2970876-f849-491e-a601-3860625aa097",
+          "createdAt": "2026-10-22T02:11:14.000Z",
+          "updatedAt": "2026-10-22T02:11:14.000Z",
+          "uid": "35240-e2970876-f849-491e-a601-3860625aa097"
+        }
+      ],
+      "id": "078c26c7-9025-4cf4-8e31-ae671dc3666b",
+      "createdAt": "2026-10-22T02:11:14.000Z",
+      "updatedAt": "2026-10-22T02:11:14.000Z",
+      "uid": "35240-078c26c7-9025-4cf4-8e31-ae671dc3666b"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.origin-kraken.energy/v1"
+    }
+  ]
+}

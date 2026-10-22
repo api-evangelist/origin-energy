@@ -1,0 +1,548 @@
+{
+  "info": {
+    "_postman_id": "d5dd42d6-59ce-4236-bf03-5d76623ecef2",
+    "name": "Origin Energy Orders API",
+    "description": "Operations tagged Orders across 2 of this provider's published API definitions: origin-energy-kraken-default-openapi.yml, origin-energy-kraken-orders-openapi.yml. Each path carries the servers of the definition it was published in.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:11:09.000Z",
+    "updatedAt": "2026-10-22T02:11:10.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-d5dd42d6-59ce-4236-bf03-5d76623ecef2"
+  },
+  "item": [
+    {
+      "name": "v2",
+      "item": [
+        {
+          "name": "orders",
+          "item": [
+            {
+              "name": "schema",
+              "item": [
+                {
+                  "name": "Order management open api schema",
+                  "id": "f8a34f1c-6aaa-4ad5-8d17-d06c1b217ce8",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "basic",
+                      "basic": [
+                        {
+                          "key": "username",
+                          "value": "{{basicAuthUsername}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "password",
+                          "value": "{{basicAuthPassword}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.oai.openapi"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/orders/schema/?format=json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "orders",
+                        "schema",
+                        ""
+                      ],
+                      "query": [
+                        {
+                          "key": "format",
+                          "value": "json"
+                        }
+                      ]
+                    },
+                    "description": "Base OpenAPI schema endpoint that filters URL patterns by namespace.\n\nSubclasses must define ``schema_namespaces`` to control which URL\nnamespaces appear in the generated schema."
+                  },
+                  "response": [
+                    {
+                      "id": "653716e0-e15c-425f-972d-f06e8ba7fa17",
+                      "name": "New Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/vnd.oai.openapi"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/orders/schema/?format=json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "orders",
+                            "schema",
+                            ""
+                          ],
+                          "query": [
+                            {
+                              "key": "format",
+                              "value": "json"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{}",
+                      "createdAt": "2026-10-22T02:11:10.000Z",
+                      "updatedAt": "2026-10-22T02:11:10.000Z",
+                      "uid": "35240-653716e0-e15c-425f-972d-f06e8ba7fa17"
+                    }
+                  ],
+                  "createdAt": "2026-10-22T02:11:10.000Z",
+                  "updatedAt": "2026-10-22T02:11:10.000Z",
+                  "uid": "35240-f8a34f1c-6aaa-4ad5-8d17-d06c1b217ce8"
+                }
+              ],
+              "id": "d8621d74-18a0-4fea-84d8-b87704a94c14",
+              "createdAt": "2026-10-22T02:11:10.000Z",
+              "updatedAt": "2026-10-22T02:11:10.000Z",
+              "uid": "35240-d8621d74-18a0-4fea-84d8-b87704a94c14"
+            },
+            {
+              "name": "{external_order_id}",
+              "item": [
+                {
+                  "name": "Return the status of an order process",
+                  "id": "67254e43-f6a1-48f4-ab9b-c671db6815a9",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "key",
+                          "value": "Authorization",
+                          "type": "string"
+                        },
+                        {
+                          "key": "value",
+                          "value": "{{apiKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/orders/:external_order_id/",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "orders",
+                        ":external_order_id",
+                        ""
+                      ],
+                      "variable": [
+                        {
+                          "id": "f28b33a5-b969-4d90-8cbf-1ddc9f64e997",
+                          "key": "external_order_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Use this endpoint to retrieve the current status of an order. The order is identified by its external_order_id."
+                  },
+                  "response": [
+                    {
+                      "id": "dae091c8-07ef-456e-9bad-0286e965ac81",
+                      "name": "The status of the order.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/orders/:external_order_id/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "orders",
+                            ":external_order_id",
+                            ""
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_order_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"created_at\": \"<dateTime>\",\n  \"latest_event\": {\n    \"event\": \"<string>\",\n    \"occurred_at\": \"<dateTime>\",\n    \"data\": \"<object,null>\"\n  },\n  \"modified_at\": \"<dateTime>\",\n  \"status\": \"<string>\",\n  \"kraken_identifier\": \"<string,null>\",\n  \"latest_error\": {\n    \"code\": \"<string,null>\",\n    \"detail\": \"<string,null>\",\n    \"domain\": \"<string,null>\"\n  }\n}",
+                      "createdAt": "2026-10-22T02:11:10.000Z",
+                      "updatedAt": "2026-10-22T02:11:10.000Z",
+                      "uid": "35240-dae091c8-07ef-456e-9bad-0286e965ac81"
+                    },
+                    {
+                      "id": "ff808b23-03e0-4e68-9613-2e514cc35b76",
+                      "name": "Order not found for the given external_order_id.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/orders/:external_order_id/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "orders",
+                            ":external_order_id",
+                            ""
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_order_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"detail\": \"<string>\"\n}",
+                      "createdAt": "2026-10-22T02:11:10.000Z",
+                      "updatedAt": "2026-10-22T02:11:10.000Z",
+                      "uid": "35240-ff808b23-03e0-4e68-9613-2e514cc35b76"
+                    },
+                    {
+                      "id": "e99bc208-a970-46b7-9849-17cb3cf4f6e6",
+                      "name": "The order process has an invalid or missing status.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v2/orders/:external_order_id/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v2",
+                            "orders",
+                            ":external_order_id",
+                            ""
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_order_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"detail\": \"<string>\"\n}",
+                      "createdAt": "2026-10-22T02:11:10.000Z",
+                      "updatedAt": "2026-10-22T02:11:10.000Z",
+                      "uid": "35240-e99bc208-a970-46b7-9849-17cb3cf4f6e6"
+                    }
+                  ],
+                  "createdAt": "2026-10-22T02:11:10.000Z",
+                  "updatedAt": "2026-10-22T02:11:10.000Z",
+                  "uid": "35240-67254e43-f6a1-48f4-ab9b-c671db6815a9"
+                }
+              ],
+              "id": "7d22ed5f-4b14-42bb-a896-0b5dc28cc9ac",
+              "createdAt": "2026-10-22T02:11:10.000Z",
+              "updatedAt": "2026-10-22T02:11:10.000Z",
+              "uid": "35240-7d22ed5f-4b14-42bb-a896-0b5dc28cc9ac"
+            },
+            {
+              "name": "Schedule the placement of an order in Kraken",
+              "id": "2bea9283-c0f8-4386-aca0-0e134c253138",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "key",
+                      "value": "Authorization",
+                      "type": "string"
+                    },
+                    {
+                      "key": "value",
+                      "value": "{{apiKey}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "in",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payload\": {\n    \"accounts\": [\n      {\n        \"account_identifier\": \"<string>\",\n        \"account_number\": \"<string>\",\n        \"type\": \"NEW\",\n        \"business_reference\": \"<string>\"\n      }\n    ],\n    \"businesses\": [\n      {\n        \"business_identifier\": \"<string>\",\n        \"type\": \"EXISTING\",\n        \"business_type\": \"TRUST\",\n        \"company_name\": \"<string>\",\n        \"company_number\": \"<string>\",\n        \"details\": [\n          {\n            \"key\": \"acn\",\n            \"value\": {\n              \"description\": \"<p>The value for the business detail. This must match the type the registered key is expecting.</p>\"\n            }\n          }\n        ],\n        \"parent_business_reference\": \"<string>\",\n        \"portfolios\": [\n          {\n            \"portfolio_references\": [\n              {\n                \"namespace\": \"external-portfolio-reference-id\",\n                \"value\": \"<string>\"\n              }\n            ],\n            \"billing_name\": \"<string>\",\n            \"notes\": [\n              {\n                \"body\": \"<string>\",\n                \"created_at\": \"<dateTime>\",\n                \"document_paths\": [\n                  {\n                    \"document_path\": \"<string>\"\n                  }\n                ],\n                \"external_id\": \"<string>\",\n                \"is_archived\": \"<boolean>\",\n                \"is_pinned\": \"<boolean>\",\n                \"unpin_at\": \"<dateTime>\"\n              }\n            ],\n            \"portfolio_settings\": {\n              \"collective_billing\": false,\n              \"collective_payments\": false,\n              \"delegate_billing_schedule_to_children\": false,\n              \"send_collective_bill_constituent_messages\": false\n            }\n          }\n        ],\n        \"segment_name\": {\n          \"x-spec-enum-id\": \"4f53cda18c2baa0c\",\n          \"description\": \"<p>The segment to which the business belongs.</p>\",\n          \"x-comment\": \"Choices for this field are dynamic, once appropriate values have been configured they will be rendered here.\"\n        },\n        \"users\": [\n          {\n            \"business_roles\": [\n              \"RECEIVES_SERVICE\"\n            ],\n            \"address\": {\n              \"administrative_area\": \"TAS\",\n              \"country\": \"<string>\",\n              \"locality\": \"<string>\",\n              \"postal_code\": \"<string>\",\n              \"structured_street_address\": {\n                \"building_or_property_name\": \"<string>\",\n                \"flat_or_unit_number\": \"<string>\",\n                \"flat_or_unit_type\": \"KSK\",\n                \"floor_or_level_number\": \"<string>\",\n                \"floor_or_level_type\": \"P\",\n                \"house_number_1\": \"<integer>\",\n                \"house_number_2\": \"<integer>\",\n                \"house_number_suffix_1\": \"<string>\",\n                \"house_number_suffix_2\": \"<string>\",\n                \"location_descriptor\": \"<string>\",\n                \"lot_number\": \"<string>\",\n                \"postal_delivery_number_prefix\": \"<string>\",\n                \"postal_delivery_number_suffix\": \"<string>\",\n                \"postal_delivery_number_value\": \"<integer>\",\n                \"postal_delivery_type\": \"PRIVATE BAG\",\n                \"street_name\": \"<string>\",\n                \"street_suffix\": \"ON\",\n                \"street_type\": \"RNGE\"\n              },\n              \"delivery_point_identifier\": \"<string>\",\n              \"dependent_locality\": \"\",\n              \"name\": \"\",\n              \"organization\": \"\",\n              \"sorting_code\": \"\",\n              \"street_address\": \"\"\n            },\n            \"alternative_phone_numbers\": [\n              {\n                \"phone_number\": \"\"\n              }\n            ],\n            \"contact_emails\": [\n              \"<email>\"\n            ],\n            \"credit_assessment_id\": \"<string,null>\",\n            \"credit_result\": \"<string,null>\",\n            \"credit_risk_bracket\": \"HIGH\",\n            \"credit_score\": \"<integer,null>\",\n            \"date_of_birth\": \"<string,null-date>\",\n            \"deceased\": \"\",\n            \"details\": {\n              \"description\": \"<p>Generic solution for storing additional customer data that is not covered by the other fields in the payload. This is often in the form of market or territory specific information. For example, in much of Europe it is a requirement to store the user's fiscal code. Namespaces (the keys in the object) need to be registered before import. If a value is provided for a namespace that is not registered then an error will be raised.</p>\",\n              \"deprecated\": true,\n              \"x-use-instead\": \"user_details\",\n              \"x-validators\": [\n                {\n                  \"name\": \"Validate user details\",\n                  \"description\": \"Validates that the user detail namespace and value are allowed for the customer. The user detail namespace (the key in the JSON object) must already have been set up in Kraken. The value (the value in the JSON object) must be the correct data type.\",\n                  \"possible_errors\": [\n                    \"customer_detail_failed_validation\",\n                    \"customer_detail_incorrect_value_type\",\n                    \"customer_detail_not_registered\"\n                  ]\n                }\n              ]\n            },\n            \"email\": \"<string,null-email>\",\n            \"family_name\": \"\",\n            \"given_name\": \"\",\n            \"label\": \"<string,null>\",\n            \"landline\": \"\",\n            \"mobile\": \"\",\n            \"salutation\": \"\",\n            \"title\": \"\",\n            \"unable_to_read_meters\": false,\n            \"user_details\": [\n              {\n                \"namespace\": \"external_user_id\",\n                \"value\": {\n                  \"description\": \"<p>The value of the customer user detail.</p>\"\n                }\n              }\n            ]\n          }\n        ]\n      }\n    ],\n    \"external_order_id\": \"<string>\",\n    \"order_lines\": [\n      {\n        \"contract\": {\n          \"identifier\": \"<string>\",\n          \"signed_at_date\": \"<date>\",\n          \"subjects\": [\n            {\n              \"identifier\": \"<string>\",\n              \"type\": \"ACCOUNT\",\n              \"effective_from\": \"<date>\",\n              \"effective_to\": \"<string,null-date>\"\n            }\n          ],\n          \"valid_from_date\": \"<date>\",\n          \"sales_record\": {\n            \"affiliate_organisation_name\": \"<string>\",\n            \"sales_channel\": \"NEW_TENANT\"\n          },\n          \"valid_to_date\": \"<string,null-date>\",\n          \"versions\": [\n            {\n              \"applicable_at_date\": \"<date>\",\n              \"terms\": [\n                {\n                  \"schedules\": [\n                    {\n                      \"items\": [\n                        {\n                          \"price_per_unit\": \"-\",\n                          \"rate_specification_code\": \"<string>\",\n                          \"variant_profile\": {\n                            \"characteristic_values\": {\n                              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                            },\n                            \"scheme_labels\": {\n                              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                            }\n                          },\n                          \"identifier\": \"<string,null>\",\n                          \"rate_specification_type\": \"PRODUCT_RATE\"\n                        }\n                      ],\n                      \"product_code\": \"<string>\",\n                      \"valid_from\": \"<dateTime>\",\n                      \"identifier\": \"<string,null>\",\n                      \"supply_point_identifier\": \"<string,null>\",\n                      \"valid_to\": \"<string,null-date-time>\"\n                    }\n                  ],\n                  \"term_type\": \"<string>\",\n                  \"is_variable\": true\n                }\n              ]\n            }\n          ]\n        },\n        \"target_reference\": \"<string>\",\n        \"target_type\": \"ACCOUNT\",\n        \"type\": \"CONTRACT_RENEWAL\",\n        \"agreements\": [\n          {\n            \"account_reference\": \"<string>\",\n            \"effective_from\": \"<date>\",\n            \"market_name\": \"AUS_ELECTRICITY\",\n            \"supply_point_identifier\": \"<string>\",\n            \"tariff_code\": \"<string>\",\n            \"agreed_at\": \"<string,null-date-time>\",\n            \"business_contract_identifier\": \"<string,null>\",\n            \"characteristics\": \"<array,null>\",\n            \"effective_to\": \"<string,null-date>\",\n            \"intermediary\": {\n              \"portfolio_number\": \"<string>\",\n              \"external_id\": \"<string,null>\"\n            },\n            \"product_addons\": \"<array,null>\",\n            \"rate_overrides\": {\n              \"ea_10_\": \"67572886\",\n              \"ullamco_e3\": \"3019578.08\",\n              \"tempor_fe\": \"3163161741.8398\"\n            },\n            \"rates_agreed_at\": \"<string,null-date-time>\"\n          }\n        ]\n      }\n    ],\n    \"sales_info\": {\n      \"date_of_sale\": \"<date>\",\n      \"sales_channel\": \"PARTNERSHIPS\",\n      \"affiliate_link_identifier\": \"<string>\",\n      \"affiliate_organisation_name\": \"<string>\",\n      \"affiliate_query_params\": {\n        \"description\": \"<p>Arbitrary affiliate tracking parameters captured at sign-up, stored as a JSON object.</p>\"\n      },\n      \"offer_group_identifier\": \"<uuid>\",\n      \"referral_code\": \"<string>\",\n      \"sales_subchannel\": \"<string>\",\n      \"urn\": \"<string>\"\n    }\n  },\n  \"task_params\": {\n    \"is_dry_run\": false,\n    \"schedule_window_end\": \"<string,null-date-time>\",\n    \"schedule_window_start\": \"<string,null-date-time>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v2/orders/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v2",
+                    "orders",
+                    ""
+                  ]
+                },
+                "description": "Use this endpoint to schedule the placement of an order in Kraken. It accepts a request containing the necessary information for order placement, validates the data, and creates an order management task to be executed asynchronously."
+              },
+              "response": [
+                {
+                  "id": "9cc7d699-4647-4677-aeec-fc3a92a8fe54",
+                  "name": "The payload has been successfully scheduled.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"payload\": {\n    \"accounts\": [\n      {\n        \"account_identifier\": \"<string>\",\n        \"account_number\": \"<string>\",\n        \"type\": \"NEW\",\n        \"business_reference\": \"<string>\"\n      }\n    ],\n    \"businesses\": [\n      {\n        \"business_identifier\": \"<string>\",\n        \"type\": \"EXISTING\",\n        \"business_type\": \"TRUST\",\n        \"company_name\": \"<string>\",\n        \"company_number\": \"<string>\",\n        \"details\": [\n          {\n            \"key\": \"acn\",\n            \"value\": {\n              \"description\": \"<p>The value for the business detail. This must match the type the registered key is expecting.</p>\"\n            }\n          }\n        ],\n        \"parent_business_reference\": \"<string>\",\n        \"portfolios\": [\n          {\n            \"portfolio_references\": [\n              {\n                \"namespace\": \"external-portfolio-reference-id\",\n                \"value\": \"<string>\"\n              }\n            ],\n            \"billing_name\": \"<string>\",\n            \"notes\": [\n              {\n                \"body\": \"<string>\",\n                \"created_at\": \"<dateTime>\",\n                \"document_paths\": [\n                  {\n                    \"document_path\": \"<string>\"\n                  }\n                ],\n                \"external_id\": \"<string>\",\n                \"is_archived\": \"<boolean>\",\n                \"is_pinned\": \"<boolean>\",\n                \"unpin_at\": \"<dateTime>\"\n              }\n            ],\n            \"portfolio_settings\": {\n              \"collective_billing\": false,\n              \"collective_payments\": false,\n              \"delegate_billing_schedule_to_children\": false,\n              \"send_collective_bill_constituent_messages\": false\n            }\n          }\n        ],\n        \"segment_name\": {\n          \"x-spec-enum-id\": \"4f53cda18c2baa0c\",\n          \"description\": \"<p>The segment to which the business belongs.</p>\",\n          \"x-comment\": \"Choices for this field are dynamic, once appropriate values have been configured they will be rendered here.\"\n        },\n        \"users\": [\n          {\n            \"business_roles\": [\n              \"RECEIVES_SERVICE\"\n            ],\n            \"address\": {\n              \"administrative_area\": \"TAS\",\n              \"country\": \"<string>\",\n              \"locality\": \"<string>\",\n              \"postal_code\": \"<string>\",\n              \"structured_street_address\": {\n                \"building_or_property_name\": \"<string>\",\n                \"flat_or_unit_number\": \"<string>\",\n                \"flat_or_unit_type\": \"KSK\",\n                \"floor_or_level_number\": \"<string>\",\n                \"floor_or_level_type\": \"P\",\n                \"house_number_1\": \"<integer>\",\n                \"house_number_2\": \"<integer>\",\n                \"house_number_suffix_1\": \"<string>\",\n                \"house_number_suffix_2\": \"<string>\",\n                \"location_descriptor\": \"<string>\",\n                \"lot_number\": \"<string>\",\n                \"postal_delivery_number_prefix\": \"<string>\",\n                \"postal_delivery_number_suffix\": \"<string>\",\n                \"postal_delivery_number_value\": \"<integer>\",\n                \"postal_delivery_type\": \"PRIVATE BAG\",\n                \"street_name\": \"<string>\",\n                \"street_suffix\": \"ON\",\n                \"street_type\": \"RNGE\"\n              },\n              \"delivery_point_identifier\": \"<string>\",\n              \"dependent_locality\": \"\",\n              \"name\": \"\",\n              \"organization\": \"\",\n              \"sorting_code\": \"\",\n              \"street_address\": \"\"\n            },\n            \"alternative_phone_numbers\": [\n              {\n                \"phone_number\": \"\"\n              }\n            ],\n            \"contact_emails\": [\n              \"<email>\"\n            ],\n            \"credit_assessment_id\": \"<string,null>\",\n            \"credit_result\": \"<string,null>\",\n            \"credit_risk_bracket\": \"HIGH\",\n            \"credit_score\": \"<integer,null>\",\n            \"date_of_birth\": \"<string,null-date>\",\n            \"deceased\": \"\",\n            \"details\": {\n              \"description\": \"<p>Generic solution for storing additional customer data that is not covered by the other fields in the payload. This is often in the form of market or territory specific information. For example, in much of Europe it is a requirement to store the user's fiscal code. Namespaces (the keys in the object) need to be registered before import. If a value is provided for a namespace that is not registered then an error will be raised.</p>\",\n              \"deprecated\": true,\n              \"x-use-instead\": \"user_details\",\n              \"x-validators\": [\n                {\n                  \"name\": \"Validate user details\",\n                  \"description\": \"Validates that the user detail namespace and value are allowed for the customer. The user detail namespace (the key in the JSON object) must already have been set up in Kraken. The value (the value in the JSON object) must be the correct data type.\",\n                  \"possible_errors\": [\n                    \"customer_detail_failed_validation\",\n                    \"customer_detail_incorrect_value_type\",\n                    \"customer_detail_not_registered\"\n                  ]\n                }\n              ]\n            },\n            \"email\": \"<string,null-email>\",\n            \"family_name\": \"\",\n            \"given_name\": \"\",\n            \"label\": \"<string,null>\",\n            \"landline\": \"\",\n            \"mobile\": \"\",\n            \"salutation\": \"\",\n            \"title\": \"\",\n            \"unable_to_read_meters\": false,\n            \"user_details\": [\n              {\n                \"namespace\": \"external_user_id\",\n                \"value\": {\n                  \"description\": \"<p>The value of the customer user detail.</p>\"\n                }\n              }\n            ]\n          }\n        ]\n      }\n    ],\n    \"external_order_id\": \"<string>\",\n    \"order_lines\": [\n      {\n        \"contract\": {\n          \"identifier\": \"<string>\",\n          \"signed_at_date\": \"<date>\",\n          \"subjects\": [\n            {\n              \"identifier\": \"<string>\",\n              \"type\": \"ACCOUNT\",\n              \"effective_from\": \"<date>\",\n              \"effective_to\": \"<string,null-date>\"\n            }\n          ],\n          \"valid_from_date\": \"<date>\",\n          \"sales_record\": {\n            \"affiliate_organisation_name\": \"<string>\",\n            \"sales_channel\": \"NEW_TENANT\"\n          },\n          \"valid_to_date\": \"<string,null-date>\",\n          \"versions\": [\n            {\n              \"applicable_at_date\": \"<date>\",\n              \"terms\": [\n                {\n                  \"schedules\": [\n                    {\n                      \"items\": [\n                        {\n                          \"price_per_unit\": \"-\",\n                          \"rate_specification_code\": \"<string>\",\n                          \"variant_profile\": {\n                            \"characteristic_values\": {\n                              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                            },\n                            \"scheme_labels\": {\n                              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                            }\n                          },\n                          \"identifier\": \"<string,null>\",\n                          \"rate_specification_type\": \"PRODUCT_RATE\"\n                        }\n                      ],\n                      \"product_code\": \"<string>\",\n                      \"valid_from\": \"<dateTime>\",\n                      \"identifier\": \"<string,null>\",\n                      \"supply_point_identifier\": \"<string,null>\",\n                      \"valid_to\": \"<string,null-date-time>\"\n                    }\n                  ],\n                  \"term_type\": \"<string>\",\n                  \"is_variable\": true\n                }\n              ]\n            }\n          ]\n        },\n        \"target_reference\": \"<string>\",\n        \"target_type\": \"ACCOUNT\",\n        \"type\": \"CONTRACT_RENEWAL\",\n        \"agreements\": [\n          {\n            \"account_reference\": \"<string>\",\n            \"effective_from\": \"<date>\",\n            \"market_name\": \"AUS_ELECTRICITY\",\n            \"supply_point_identifier\": \"<string>\",\n            \"tariff_code\": \"<string>\",\n            \"agreed_at\": \"<string,null-date-time>\",\n            \"business_contract_identifier\": \"<string,null>\",\n            \"characteristics\": \"<array,null>\",\n            \"effective_to\": \"<string,null-date>\",\n            \"intermediary\": {\n              \"portfolio_number\": \"<string>\",\n              \"external_id\": \"<string,null>\"\n            },\n            \"product_addons\": \"<array,null>\",\n            \"rate_overrides\": {\n              \"ea_10_\": \"67572886\",\n              \"ullamco_e3\": \"3019578.08\",\n              \"tempor_fe\": \"3163161741.8398\"\n            },\n            \"rates_agreed_at\": \"<string,null-date-time>\"\n          }\n        ]\n      }\n    ],\n    \"sales_info\": {\n      \"date_of_sale\": \"<date>\",\n      \"sales_channel\": \"PARTNERSHIPS\",\n      \"affiliate_link_identifier\": \"<string>\",\n      \"affiliate_organisation_name\": \"<string>\",\n      \"affiliate_query_params\": {\n        \"description\": \"<p>Arbitrary affiliate tracking parameters captured at sign-up, stored as a JSON object.</p>\"\n      },\n      \"offer_group_identifier\": \"<uuid>\",\n      \"referral_code\": \"<string>\",\n      \"sales_subchannel\": \"<string>\",\n      \"urn\": \"<string>\"\n    }\n  },\n  \"task_params\": {\n    \"is_dry_run\": false,\n    \"schedule_window_end\": \"<string,null-date-time>\",\n    \"schedule_window_start\": \"<string,null-date-time>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/orders/",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "orders",
+                        ""
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T02:11:10.000Z",
+                  "updatedAt": "2026-10-22T02:11:10.000Z",
+                  "uid": "35240-9cc7d699-4647-4677-aeec-fc3a92a8fe54"
+                },
+                {
+                  "id": "ba1acbfe-33a1-44ef-b0e3-9ca3c21cd010",
+                  "name": "Validation errors occurred while processing the request.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"payload\": {\n    \"accounts\": [\n      {\n        \"account_identifier\": \"<string>\",\n        \"account_number\": \"<string>\",\n        \"type\": \"NEW\",\n        \"business_reference\": \"<string>\"\n      }\n    ],\n    \"businesses\": [\n      {\n        \"business_identifier\": \"<string>\",\n        \"type\": \"EXISTING\",\n        \"business_type\": \"TRUST\",\n        \"company_name\": \"<string>\",\n        \"company_number\": \"<string>\",\n        \"details\": [\n          {\n            \"key\": \"acn\",\n            \"value\": {\n              \"description\": \"<p>The value for the business detail. This must match the type the registered key is expecting.</p>\"\n            }\n          }\n        ],\n        \"parent_business_reference\": \"<string>\",\n        \"portfolios\": [\n          {\n            \"portfolio_references\": [\n              {\n                \"namespace\": \"external-portfolio-reference-id\",\n                \"value\": \"<string>\"\n              }\n            ],\n            \"billing_name\": \"<string>\",\n            \"notes\": [\n              {\n                \"body\": \"<string>\",\n                \"created_at\": \"<dateTime>\",\n                \"document_paths\": [\n                  {\n                    \"document_path\": \"<string>\"\n                  }\n                ],\n                \"external_id\": \"<string>\",\n                \"is_archived\": \"<boolean>\",\n                \"is_pinned\": \"<boolean>\",\n                \"unpin_at\": \"<dateTime>\"\n              }\n            ],\n            \"portfolio_settings\": {\n              \"collective_billing\": false,\n              \"collective_payments\": false,\n              \"delegate_billing_schedule_to_children\": false,\n              \"send_collective_bill_constituent_messages\": false\n            }\n          }\n        ],\n        \"segment_name\": {\n          \"x-spec-enum-id\": \"4f53cda18c2baa0c\",\n          \"description\": \"<p>The segment to which the business belongs.</p>\",\n          \"x-comment\": \"Choices for this field are dynamic, once appropriate values have been configured they will be rendered here.\"\n        },\n        \"users\": [\n          {\n            \"business_roles\": [\n              \"RECEIVES_SERVICE\"\n            ],\n            \"address\": {\n              \"administrative_area\": \"TAS\",\n              \"country\": \"<string>\",\n              \"locality\": \"<string>\",\n              \"postal_code\": \"<string>\",\n              \"structured_street_address\": {\n                \"building_or_property_name\": \"<string>\",\n                \"flat_or_unit_number\": \"<string>\",\n                \"flat_or_unit_type\": \"KSK\",\n                \"floor_or_level_number\": \"<string>\",\n                \"floor_or_level_type\": \"P\",\n                \"house_number_1\": \"<integer>\",\n                \"house_number_2\": \"<integer>\",\n                \"house_number_suffix_1\": \"<string>\",\n                \"house_number_suffix_2\": \"<string>\",\n                \"location_descriptor\": \"<string>\",\n                \"lot_number\": \"<string>\",\n                \"postal_delivery_number_prefix\": \"<string>\",\n                \"postal_delivery_number_suffix\": \"<string>\",\n                \"postal_delivery_number_value\": \"<integer>\",\n                \"postal_delivery_type\": \"PRIVATE BAG\",\n                \"street_name\": \"<string>\",\n                \"street_suffix\": \"ON\",\n                \"street_type\": \"RNGE\"\n              },\n              \"delivery_point_identifier\": \"<string>\",\n              \"dependent_locality\": \"\",\n              \"name\": \"\",\n              \"organization\": \"\",\n              \"sorting_code\": \"\",\n              \"street_address\": \"\"\n            },\n            \"alternative_phone_numbers\": [\n              {\n                \"phone_number\": \"\"\n              }\n            ],\n            \"contact_emails\": [\n              \"<email>\"\n            ],\n            \"credit_assessment_id\": \"<string,null>\",\n            \"credit_result\": \"<string,null>\",\n            \"credit_risk_bracket\": \"HIGH\",\n            \"credit_score\": \"<integer,null>\",\n            \"date_of_birth\": \"<string,null-date>\",\n            \"deceased\": \"\",\n            \"details\": {\n              \"description\": \"<p>Generic solution for storing additional customer data that is not covered by the other fields in the payload. This is often in the form of market or territory specific information. For example, in much of Europe it is a requirement to store the user's fiscal code. Namespaces (the keys in the object) need to be registered before import. If a value is provided for a namespace that is not registered then an error will be raised.</p>\",\n              \"deprecated\": true,\n              \"x-use-instead\": \"user_details\",\n              \"x-validators\": [\n                {\n                  \"name\": \"Validate user details\",\n                  \"description\": \"Validates that the user detail namespace and value are allowed for the customer. The user detail namespace (the key in the JSON object) must already have been set up in Kraken. The value (the value in the JSON object) must be the correct data type.\",\n                  \"possible_errors\": [\n                    \"customer_detail_failed_validation\",\n                    \"customer_detail_incorrect_value_type\",\n                    \"customer_detail_not_registered\"\n                  ]\n                }\n              ]\n            },\n            \"email\": \"<string,null-email>\",\n            \"family_name\": \"\",\n            \"given_name\": \"\",\n            \"label\": \"<string,null>\",\n            \"landline\": \"\",\n            \"mobile\": \"\",\n            \"salutation\": \"\",\n            \"title\": \"\",\n            \"unable_to_read_meters\": false,\n            \"user_details\": [\n              {\n                \"namespace\": \"external_user_id\",\n                \"value\": {\n                  \"description\": \"<p>The value of the customer user detail.</p>\"\n                }\n              }\n            ]\n          }\n        ]\n      }\n    ],\n    \"external_order_id\": \"<string>\",\n    \"order_lines\": [\n      {\n        \"contract\": {\n          \"identifier\": \"<string>\",\n          \"signed_at_date\": \"<date>\",\n          \"subjects\": [\n            {\n              \"identifier\": \"<string>\",\n              \"type\": \"ACCOUNT\",\n              \"effective_from\": \"<date>\",\n              \"effective_to\": \"<string,null-date>\"\n            }\n          ],\n          \"valid_from_date\": \"<date>\",\n          \"sales_record\": {\n            \"affiliate_organisation_name\": \"<string>\",\n            \"sales_channel\": \"NEW_TENANT\"\n          },\n          \"valid_to_date\": \"<string,null-date>\",\n          \"versions\": [\n            {\n              \"applicable_at_date\": \"<date>\",\n              \"terms\": [\n                {\n                  \"schedules\": [\n                    {\n                      \"items\": [\n                        {\n                          \"price_per_unit\": \"-\",\n                          \"rate_specification_code\": \"<string>\",\n                          \"variant_profile\": {\n                            \"characteristic_values\": {\n                              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                            },\n                            \"scheme_labels\": {\n                              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                            }\n                          },\n                          \"identifier\": \"<string,null>\",\n                          \"rate_specification_type\": \"PRODUCT_RATE\"\n                        }\n                      ],\n                      \"product_code\": \"<string>\",\n                      \"valid_from\": \"<dateTime>\",\n                      \"identifier\": \"<string,null>\",\n                      \"supply_point_identifier\": \"<string,null>\",\n                      \"valid_to\": \"<string,null-date-time>\"\n                    }\n                  ],\n                  \"term_type\": \"<string>\",\n                  \"is_variable\": true\n                }\n              ]\n            }\n          ]\n        },\n        \"target_reference\": \"<string>\",\n        \"target_type\": \"ACCOUNT\",\n        \"type\": \"CONTRACT_RENEWAL\",\n        \"agreements\": [\n          {\n            \"account_reference\": \"<string>\",\n            \"effective_from\": \"<date>\",\n            \"market_name\": \"AUS_ELECTRICITY\",\n            \"supply_point_identifier\": \"<string>\",\n            \"tariff_code\": \"<string>\",\n            \"agreed_at\": \"<string,null-date-time>\",\n            \"business_contract_identifier\": \"<string,null>\",\n            \"characteristics\": \"<array,null>\",\n            \"effective_to\": \"<string,null-date>\",\n            \"intermediary\": {\n              \"portfolio_number\": \"<string>\",\n              \"external_id\": \"<string,null>\"\n            },\n            \"product_addons\": \"<array,null>\",\n            \"rate_overrides\": {\n              \"ea_10_\": \"67572886\",\n              \"ullamco_e3\": \"3019578.08\",\n              \"tempor_fe\": \"3163161741.8398\"\n            },\n            \"rates_agreed_at\": \"<string,null-date-time>\"\n          }\n        ]\n      }\n    ],\n    \"sales_info\": {\n      \"date_of_sale\": \"<date>\",\n      \"sales_channel\": \"PARTNERSHIPS\",\n      \"affiliate_link_identifier\": \"<string>\",\n      \"affiliate_organisation_name\": \"<string>\",\n      \"affiliate_query_params\": {\n        \"description\": \"<p>Arbitrary affiliate tracking parameters captured at sign-up, stored as a JSON object.</p>\"\n      },\n      \"offer_group_identifier\": \"<uuid>\",\n      \"referral_code\": \"<string>\",\n      \"sales_subchannel\": \"<string>\",\n      \"urn\": \"<string>\"\n    }\n  },\n  \"task_params\": {\n    \"is_dry_run\": false,\n    \"schedule_window_end\": \"<string,null-date-time>\",\n    \"schedule_window_start\": \"<string,null-date-time>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v2/orders/",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v2",
+                        "orders",
+                        ""
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"attr\": \"<string>\",\n      \"code\": \"<string>\",\n      \"detail\": \"<string>\"\n    },\n    {\n      \"attr\": \"<string>\",\n      \"code\": \"<string>\",\n      \"detail\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-10-22T02:11:10.000Z",
+                  "updatedAt": "2026-10-22T02:11:10.000Z",
+                  "uid": "35240-ba1acbfe-33a1-44ef-b0e3-9ca3c21cd010"
+                }
+              ],
+              "createdAt": "2026-10-22T02:11:10.000Z",
+              "updatedAt": "2026-10-22T02:11:10.000Z",
+              "uid": "35240-2bea9283-c0f8-4386-aca0-0e134c253138"
+            }
+          ],
+          "id": "346d335e-86f9-4ba5-a96c-78d0fab42a7c",
+          "createdAt": "2026-10-22T02:11:10.000Z",
+          "updatedAt": "2026-10-22T02:11:10.000Z",
+          "uid": "35240-346d335e-86f9-4ba5-a96c-78d0fab42a7c"
+        }
+      ],
+      "id": "530be25f-b7c3-4b35-8b33-a9262232c1d1",
+      "createdAt": "2026-10-22T02:11:10.000Z",
+      "updatedAt": "2026-10-22T02:11:10.000Z",
+      "uid": "35240-530be25f-b7c3-4b35-8b33-a9262232c1d1"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.origin-kraken.energy/v1"
+    }
+  ]
+}

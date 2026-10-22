@@ -1,0 +1,233 @@
+{
+  "info": {
+    "_postman_id": "d14938f6-80e3-42f5-82af-6b17341692df",
+    "name": "Kraken Business Import API",
+    "description": "APIs for importing businesses with business contracts",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:09:33.000Z",
+    "updatedAt": "2026-10-22T02:09:33.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-d14938f6-80e3-42f5-82af-6b17341692df"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "data-import",
+          "item": [
+            {
+              "name": "business",
+              "item": [
+                {
+                  "name": "Import business to Kraken",
+                  "id": "3f9a20c6-ad62-48be-9207-a758c9aa5410",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "key",
+                          "value": "Authorization",
+                          "type": "string"
+                        },
+                        {
+                          "key": "value",
+                          "value": "{{apiKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"business\": {\n    \"business_contracts\": [\n      {\n        \"identifier\": \"<string>\",\n        \"signed_at_date\": \"<date>\",\n        \"valid_from_date\": \"<date>\",\n        \"sales_record\": {\n          \"affiliate_organisation_name\": \"<string>\",\n          \"sales_channel\": \"FIELD_SALES\"\n        },\n        \"valid_to_date\": \"<string,null-date>\",\n        \"versions\": [\n          {\n            \"applicable_at_date\": \"<date>\",\n            \"terms\": [\n              {\n                \"schedules\": [\n                  {\n                    \"items\": [\n                      {\n                        \"price_per_unit\": \"317431\",\n                        \"rate_specification_code\": \"<string>\",\n                        \"variant_profile\": {\n                          \"characteristic_values\": {},\n                          \"scheme_labels\": {}\n                        },\n                        \"identifier\": \"<string,null>\",\n                        \"rate_specification_type\": \"PRODUCT_RATE\"\n                      }\n                    ],\n                    \"product_code\": \"<string>\",\n                    \"valid_from\": \"<dateTime>\",\n                    \"identifier\": \"<string,null>\",\n                    \"supply_point_identifier\": \"<string,null>\",\n                    \"valid_to\": \"<string,null-date-time>\"\n                  }\n                ],\n                \"term_type\": \"<string>\",\n                \"is_variable\": true\n              }\n            ]\n          }\n        ]\n      }\n    ],\n    \"billing_address\": {\n      \"country\": \"<string>\",\n      \"administrative_area\": \"\",\n      \"delivery_point_identifier\": \"<string>\",\n      \"dependent_locality\": \"\",\n      \"locality\": \"\",\n      \"name\": \"\",\n      \"organization\": \"\",\n      \"postal_code\": \"\",\n      \"sorting_code\": \"\",\n      \"street_address\": \"\",\n      \"structured_street_address\": \"<object,null>\"\n    },\n    \"business_type\": \"GOVERNMENT\",\n    \"company_name\": \"<string>\",\n    \"company_number\": \"<string>\",\n    \"details\": [\n      {\n        \"key\": \"abn\",\n        \"value\": {\n          \"description\": \"<p>The value for the business detail. This must match the type the registered key is expecting.</p>\"\n        }\n      }\n    ],\n    \"legal_address\": {\n      \"country\": \"<string>\",\n      \"administrative_area\": \"\",\n      \"delivery_point_identifier\": \"<string>\",\n      \"dependent_locality\": \"\",\n      \"locality\": \"\",\n      \"name\": \"\",\n      \"organization\": \"\",\n      \"postal_code\": \"\",\n      \"sorting_code\": \"\",\n      \"street_address\": \"\",\n      \"structured_street_address\": \"<object,null>\"\n    },\n    \"partner_file_attachments\": [\n      {\n        \"category\": \"LETTER_OF_AUTHORITY\",\n        \"filename\": \"<string>\",\n        \"partner_number\": \"<string>\",\n        \"s3_key\": \"<string>\"\n      }\n    ],\n    \"partner_organisations\": [\n      {\n        \"organisation_number\": \"<string>\",\n        \"role\": \"G_LOA\",\n        \"valid_from\": \"<dateTime>\",\n        \"valid_to\": \"<dateTime>\",\n        \"source_reference_s3_key\": \"<string>\"\n      }\n    ],\n    \"payment_instructions\": [\n      {\n        \"reference\": \"<string>\",\n        \"type\": \"GMO_REFUND\",\n        \"vendor\": \"WESTPAC\",\n        \"bank_account\": {\n          \"account_holder\": \"<string>\",\n          \"account_number\": \"<string>\",\n          \"iban\": \"<string>\",\n          \"sort_code\": \"<string>\"\n        },\n        \"card\": {\n          \"card_payment_network\": \"DISCOVER\",\n          \"card_type\": \"CREDIT\",\n          \"expiry_month\": \"<integer>\",\n          \"expiry_year\": \"<integer>\",\n          \"last_digits\": \"973\"\n        },\n        \"customer_reference\": \"<string>\",\n        \"instruction_identifier\": \"<string>\",\n        \"ledger_code\": \"<string>\",\n        \"use_for_scheduled_payments\": \"<boolean>\",\n        \"valid_from\": \"<string,null-date>\"\n      }\n    ],\n    \"portfolios\": [\n      {\n        \"portfolio_references\": [\n          {\n            \"namespace\": \"portfolio-label\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"billing_name\": \"<string>\",\n        \"notes\": [\n          {\n            \"body\": \"<string>\",\n            \"created_at\": \"<dateTime>\",\n            \"document_paths\": [\n              {\n                \"document_path\": \"<string>\"\n              }\n            ],\n            \"external_id\": \"<string>\",\n            \"is_archived\": \"<boolean>\",\n            \"is_pinned\": \"<boolean>\",\n            \"unpin_at\": \"<dateTime>\"\n          }\n        ],\n        \"portfolio_settings\": {\n          \"collective_billing\": false,\n          \"collective_payments\": false,\n          \"delegate_billing_schedule_to_children\": false,\n          \"send_collective_bill_constituent_messages\": false\n        }\n      }\n    ],\n    \"segment_name\": {\n      \"x-spec-enum-id\": \"4f53cda18c2baa0c\",\n      \"description\": \"<p>The segment to which the business belongs.</p>\",\n      \"x-comment\": \"Choices for this field are dynamic, once appropriate values have been configured they will be rendered here.\"\n    },\n    \"users\": [\n      {\n        \"business_roles\": [\n          \"EZ_DFPP_RW\"\n        ],\n        \"address\": {\n          \"administrative_area\": \"NSW\",\n          \"country\": \"<string>\",\n          \"locality\": \"<string>\",\n          \"postal_code\": \"<string>\",\n          \"structured_street_address\": {\n            \"building_or_property_name\": \"<string>\",\n            \"flat_or_unit_number\": \"<string>\",\n            \"flat_or_unit_type\": \"F\",\n            \"floor_or_level_number\": \"<string>\",\n            \"floor_or_level_type\": \"LG\",\n            \"house_number_1\": \"<integer>\",\n            \"house_number_2\": \"<integer>\",\n            \"house_number_suffix_1\": \"<string>\",\n            \"house_number_suffix_2\": \"<string>\",\n            \"location_descriptor\": \"<string>\",\n            \"lot_number\": \"<string>\",\n            \"postal_delivery_number_prefix\": \"<string>\",\n            \"postal_delivery_number_suffix\": \"<string>\",\n            \"postal_delivery_number_value\": \"<integer>\",\n            \"postal_delivery_type\": \"CPA\",\n            \"street_name\": \"<string>\",\n            \"street_suffix\": \"E\",\n            \"street_type\": \"MANR\"\n          },\n          \"delivery_point_identifier\": \"<string>\",\n          \"dependent_locality\": \"\",\n          \"name\": \"\",\n          \"organization\": \"\",\n          \"sorting_code\": \"\",\n          \"street_address\": \"\"\n        },\n        \"alternative_phone_numbers\": [\n          {\n            \"phone_number\": \"\"\n          }\n        ],\n        \"contact_emails\": [\n          \"<email>\"\n        ],\n        \"credit_assessment_id\": \"<string,null>\",\n        \"credit_result\": \"<string,null>\",\n        \"credit_risk_bracket\": \"MID\",\n        \"credit_score\": \"<integer,null>\",\n        \"date_of_birth\": \"<string,null-date>\",\n        \"deceased\": \"\",\n        \"details\": {\n          \"description\": \"<p>Generic solution for storing additional customer data that is not covered by the other fields in the payload. This is often in the form of market or territory specific information. For example, in much of Europe it is a requirement to store the user's fiscal code. Namespaces (the keys in the object) need to be registered before import. If a value is provided for a namespace that is not registered then an error will be raised.</p>\",\n          \"deprecated\": true,\n          \"x-use-instead\": \"user_details\",\n          \"x-validators\": [\n            {\n              \"name\": \"Validate user details\",\n              \"description\": \"Validates that the user detail namespace and value are allowed for the customer. The user detail namespace (the key in the JSON object) must already have been set up in Kraken. The value (the value in the JSON object) must be the correct data type.\",\n              \"possible_errors\": [\n                \"customer_detail_failed_validation\",\n                \"customer_detail_incorrect_value_type\",\n                \"customer_detail_not_registered\"\n              ]\n            }\n          ]\n        },\n        \"email\": \"<string,null-email>\",\n        \"family_name\": \"\",\n        \"given_name\": \"\",\n        \"label\": \"<string,null>\",\n        \"landline\": \"\",\n        \"mobile\": \"\",\n        \"salutation\": \"\",\n        \"title\": \"\",\n        \"unable_to_read_meters\": false,\n        \"user_details\": [\n          {\n            \"namespace\": \"external_user_id\",\n            \"value\": {\n              \"description\": \"<p>The value of the customer user detail.</p>\"\n            }\n          }\n        ]\n      }\n    ]\n  },\n  \"external_business_identifier\": \"<string>\",\n  \"import_supplier_code\": \"ORIGIN_BUSINESS_NO_CONTRACT\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/data-import/business/",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "data-import",
+                        "business",
+                        ""
+                      ]
+                    },
+                    "description": "Use this endpoint to import business to Kraken."
+                  },
+                  "response": [
+                    {
+                      "id": "ce24c8b0-0fc9-411e-a8b1-95bdb3535664",
+                      "name": "The business has been successfully imported in Kraken.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"business\": {\n    \"business_contracts\": [\n      {\n        \"identifier\": \"<string>\",\n        \"signed_at_date\": \"<date>\",\n        \"valid_from_date\": \"<date>\",\n        \"sales_record\": {\n          \"affiliate_organisation_name\": \"<string>\",\n          \"sales_channel\": \"FIELD_SALES\"\n        },\n        \"valid_to_date\": \"<string,null-date>\",\n        \"versions\": [\n          {\n            \"applicable_at_date\": \"<date>\",\n            \"terms\": [\n              {\n                \"schedules\": [\n                  {\n                    \"items\": [\n                      {\n                        \"price_per_unit\": \"317431\",\n                        \"rate_specification_code\": \"<string>\",\n                        \"variant_profile\": {\n                          \"characteristic_values\": {},\n                          \"scheme_labels\": {}\n                        },\n                        \"identifier\": \"<string,null>\",\n                        \"rate_specification_type\": \"PRODUCT_RATE\"\n                      }\n                    ],\n                    \"product_code\": \"<string>\",\n                    \"valid_from\": \"<dateTime>\",\n                    \"identifier\": \"<string,null>\",\n                    \"supply_point_identifier\": \"<string,null>\",\n                    \"valid_to\": \"<string,null-date-time>\"\n                  }\n                ],\n                \"term_type\": \"<string>\",\n                \"is_variable\": true\n              }\n            ]\n          }\n        ]\n      }\n    ],\n    \"billing_address\": {\n      \"country\": \"<string>\",\n      \"administrative_area\": \"\",\n      \"delivery_point_identifier\": \"<string>\",\n      \"dependent_locality\": \"\",\n      \"locality\": \"\",\n      \"name\": \"\",\n      \"organization\": \"\",\n      \"postal_code\": \"\",\n      \"sorting_code\": \"\",\n      \"street_address\": \"\",\n      \"structured_street_address\": \"<object,null>\"\n    },\n    \"business_type\": \"GOVERNMENT\",\n    \"company_name\": \"<string>\",\n    \"company_number\": \"<string>\",\n    \"details\": [\n      {\n        \"key\": \"abn\",\n        \"value\": {\n          \"description\": \"<p>The value for the business detail. This must match the type the registered key is expecting.</p>\"\n        }\n      }\n    ],\n    \"legal_address\": {\n      \"country\": \"<string>\",\n      \"administrative_area\": \"\",\n      \"delivery_point_identifier\": \"<string>\",\n      \"dependent_locality\": \"\",\n      \"locality\": \"\",\n      \"name\": \"\",\n      \"organization\": \"\",\n      \"postal_code\": \"\",\n      \"sorting_code\": \"\",\n      \"street_address\": \"\",\n      \"structured_street_address\": \"<object,null>\"\n    },\n    \"partner_file_attachments\": [\n      {\n        \"category\": \"LETTER_OF_AUTHORITY\",\n        \"filename\": \"<string>\",\n        \"partner_number\": \"<string>\",\n        \"s3_key\": \"<string>\"\n      }\n    ],\n    \"partner_organisations\": [\n      {\n        \"organisation_number\": \"<string>\",\n        \"role\": \"G_LOA\",\n        \"valid_from\": \"<dateTime>\",\n        \"valid_to\": \"<dateTime>\",\n        \"source_reference_s3_key\": \"<string>\"\n      }\n    ],\n    \"payment_instructions\": [\n      {\n        \"reference\": \"<string>\",\n        \"type\": \"GMO_REFUND\",\n        \"vendor\": \"WESTPAC\",\n        \"bank_account\": {\n          \"account_holder\": \"<string>\",\n          \"account_number\": \"<string>\",\n          \"iban\": \"<string>\",\n          \"sort_code\": \"<string>\"\n        },\n        \"card\": {\n          \"card_payment_network\": \"DISCOVER\",\n          \"card_type\": \"CREDIT\",\n          \"expiry_month\": \"<integer>\",\n          \"expiry_year\": \"<integer>\",\n          \"last_digits\": \"973\"\n        },\n        \"customer_reference\": \"<string>\",\n        \"instruction_identifier\": \"<string>\",\n        \"ledger_code\": \"<string>\",\n        \"use_for_scheduled_payments\": \"<boolean>\",\n        \"valid_from\": \"<string,null-date>\"\n      }\n    ],\n    \"portfolios\": [\n      {\n        \"portfolio_references\": [\n          {\n            \"namespace\": \"portfolio-label\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"billing_name\": \"<string>\",\n        \"notes\": [\n          {\n            \"body\": \"<string>\",\n            \"created_at\": \"<dateTime>\",\n            \"document_paths\": [\n              {\n                \"document_path\": \"<string>\"\n              }\n            ],\n            \"external_id\": \"<string>\",\n            \"is_archived\": \"<boolean>\",\n            \"is_pinned\": \"<boolean>\",\n            \"unpin_at\": \"<dateTime>\"\n          }\n        ],\n        \"portfolio_settings\": {\n          \"collective_billing\": false,\n          \"collective_payments\": false,\n          \"delegate_billing_schedule_to_children\": false,\n          \"send_collective_bill_constituent_messages\": false\n        }\n      }\n    ],\n    \"segment_name\": {\n      \"x-spec-enum-id\": \"4f53cda18c2baa0c\",\n      \"description\": \"<p>The segment to which the business belongs.</p>\",\n      \"x-comment\": \"Choices for this field are dynamic, once appropriate values have been configured they will be rendered here.\"\n    },\n    \"users\": [\n      {\n        \"business_roles\": [\n          \"EZ_DFPP_RW\"\n        ],\n        \"address\": {\n          \"administrative_area\": \"NSW\",\n          \"country\": \"<string>\",\n          \"locality\": \"<string>\",\n          \"postal_code\": \"<string>\",\n          \"structured_street_address\": {\n            \"building_or_property_name\": \"<string>\",\n            \"flat_or_unit_number\": \"<string>\",\n            \"flat_or_unit_type\": \"F\",\n            \"floor_or_level_number\": \"<string>\",\n            \"floor_or_level_type\": \"LG\",\n            \"house_number_1\": \"<integer>\",\n            \"house_number_2\": \"<integer>\",\n            \"house_number_suffix_1\": \"<string>\",\n            \"house_number_suffix_2\": \"<string>\",\n            \"location_descriptor\": \"<string>\",\n            \"lot_number\": \"<string>\",\n            \"postal_delivery_number_prefix\": \"<string>\",\n            \"postal_delivery_number_suffix\": \"<string>\",\n            \"postal_delivery_number_value\": \"<integer>\",\n            \"postal_delivery_type\": \"CPA\",\n            \"street_name\": \"<string>\",\n            \"street_suffix\": \"E\",\n            \"street_type\": \"MANR\"\n          },\n          \"delivery_point_identifier\": \"<string>\",\n          \"dependent_locality\": \"\",\n          \"name\": \"\",\n          \"organization\": \"\",\n          \"sorting_code\": \"\",\n          \"street_address\": \"\"\n        },\n        \"alternative_phone_numbers\": [\n          {\n            \"phone_number\": \"\"\n          }\n        ],\n        \"contact_emails\": [\n          \"<email>\"\n        ],\n        \"credit_assessment_id\": \"<string,null>\",\n        \"credit_result\": \"<string,null>\",\n        \"credit_risk_bracket\": \"MID\",\n        \"credit_score\": \"<integer,null>\",\n        \"date_of_birth\": \"<string,null-date>\",\n        \"deceased\": \"\",\n        \"details\": {\n          \"description\": \"<p>Generic solution for storing additional customer data that is not covered by the other fields in the payload. This is often in the form of market or territory specific information. For example, in much of Europe it is a requirement to store the user's fiscal code. Namespaces (the keys in the object) need to be registered before import. If a value is provided for a namespace that is not registered then an error will be raised.</p>\",\n          \"deprecated\": true,\n          \"x-use-instead\": \"user_details\",\n          \"x-validators\": [\n            {\n              \"name\": \"Validate user details\",\n              \"description\": \"Validates that the user detail namespace and value are allowed for the customer. The user detail namespace (the key in the JSON object) must already have been set up in Kraken. The value (the value in the JSON object) must be the correct data type.\",\n              \"possible_errors\": [\n                \"customer_detail_failed_validation\",\n                \"customer_detail_incorrect_value_type\",\n                \"customer_detail_not_registered\"\n              ]\n            }\n          ]\n        },\n        \"email\": \"<string,null-email>\",\n        \"family_name\": \"\",\n        \"given_name\": \"\",\n        \"label\": \"<string,null>\",\n        \"landline\": \"\",\n        \"mobile\": \"\",\n        \"salutation\": \"\",\n        \"title\": \"\",\n        \"unable_to_read_meters\": false,\n        \"user_details\": [\n          {\n            \"namespace\": \"external_user_id\",\n            \"value\": {\n              \"description\": \"<p>The value of the customer user detail.</p>\"\n            }\n          }\n        ]\n      }\n    ]\n  },\n  \"external_business_identifier\": \"<string>\",\n  \"import_supplier_code\": \"ORIGIN_BUSINESS_NO_CONTRACT\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/data-import/business/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "data-import",
+                            "business",
+                            ""
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"external_business_identifier\": \"<string>\",\n  \"kraken_business_id\": \"<integer>\"\n}",
+                      "createdAt": "2026-10-22T02:09:33.000Z",
+                      "updatedAt": "2026-10-22T02:09:33.000Z",
+                      "uid": "35240-ce24c8b0-0fc9-411e-a8b1-95bdb3535664"
+                    },
+                    {
+                      "id": "ca6fb8ff-8dbb-4e6b-a6ce-80356caf810b",
+                      "name": "\nIf there are validation errors, they will be detailed in the body\nof the response. To resolve these errors, refer to the field definitions\nand validation rules.\n\n",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"business\": {\n    \"business_contracts\": [\n      {\n        \"identifier\": \"<string>\",\n        \"signed_at_date\": \"<date>\",\n        \"valid_from_date\": \"<date>\",\n        \"sales_record\": {\n          \"affiliate_organisation_name\": \"<string>\",\n          \"sales_channel\": \"FIELD_SALES\"\n        },\n        \"valid_to_date\": \"<string,null-date>\",\n        \"versions\": [\n          {\n            \"applicable_at_date\": \"<date>\",\n            \"terms\": [\n              {\n                \"schedules\": [\n                  {\n                    \"items\": [\n                      {\n                        \"price_per_unit\": \"317431\",\n                        \"rate_specification_code\": \"<string>\",\n                        \"variant_profile\": {\n                          \"characteristic_values\": {},\n                          \"scheme_labels\": {}\n                        },\n                        \"identifier\": \"<string,null>\",\n                        \"rate_specification_type\": \"PRODUCT_RATE\"\n                      }\n                    ],\n                    \"product_code\": \"<string>\",\n                    \"valid_from\": \"<dateTime>\",\n                    \"identifier\": \"<string,null>\",\n                    \"supply_point_identifier\": \"<string,null>\",\n                    \"valid_to\": \"<string,null-date-time>\"\n                  }\n                ],\n                \"term_type\": \"<string>\",\n                \"is_variable\": true\n              }\n            ]\n          }\n        ]\n      }\n    ],\n    \"billing_address\": {\n      \"country\": \"<string>\",\n      \"administrative_area\": \"\",\n      \"delivery_point_identifier\": \"<string>\",\n      \"dependent_locality\": \"\",\n      \"locality\": \"\",\n      \"name\": \"\",\n      \"organization\": \"\",\n      \"postal_code\": \"\",\n      \"sorting_code\": \"\",\n      \"street_address\": \"\",\n      \"structured_street_address\": \"<object,null>\"\n    },\n    \"business_type\": \"GOVERNMENT\",\n    \"company_name\": \"<string>\",\n    \"company_number\": \"<string>\",\n    \"details\": [\n      {\n        \"key\": \"abn\",\n        \"value\": {\n          \"description\": \"<p>The value for the business detail. This must match the type the registered key is expecting.</p>\"\n        }\n      }\n    ],\n    \"legal_address\": {\n      \"country\": \"<string>\",\n      \"administrative_area\": \"\",\n      \"delivery_point_identifier\": \"<string>\",\n      \"dependent_locality\": \"\",\n      \"locality\": \"\",\n      \"name\": \"\",\n      \"organization\": \"\",\n      \"postal_code\": \"\",\n      \"sorting_code\": \"\",\n      \"street_address\": \"\",\n      \"structured_street_address\": \"<object,null>\"\n    },\n    \"partner_file_attachments\": [\n      {\n        \"category\": \"LETTER_OF_AUTHORITY\",\n        \"filename\": \"<string>\",\n        \"partner_number\": \"<string>\",\n        \"s3_key\": \"<string>\"\n      }\n    ],\n    \"partner_organisations\": [\n      {\n        \"organisation_number\": \"<string>\",\n        \"role\": \"G_LOA\",\n        \"valid_from\": \"<dateTime>\",\n        \"valid_to\": \"<dateTime>\",\n        \"source_reference_s3_key\": \"<string>\"\n      }\n    ],\n    \"payment_instructions\": [\n      {\n        \"reference\": \"<string>\",\n        \"type\": \"GMO_REFUND\",\n        \"vendor\": \"WESTPAC\",\n        \"bank_account\": {\n          \"account_holder\": \"<string>\",\n          \"account_number\": \"<string>\",\n          \"iban\": \"<string>\",\n          \"sort_code\": \"<string>\"\n        },\n        \"card\": {\n          \"card_payment_network\": \"DISCOVER\",\n          \"card_type\": \"CREDIT\",\n          \"expiry_month\": \"<integer>\",\n          \"expiry_year\": \"<integer>\",\n          \"last_digits\": \"973\"\n        },\n        \"customer_reference\": \"<string>\",\n        \"instruction_identifier\": \"<string>\",\n        \"ledger_code\": \"<string>\",\n        \"use_for_scheduled_payments\": \"<boolean>\",\n        \"valid_from\": \"<string,null-date>\"\n      }\n    ],\n    \"portfolios\": [\n      {\n        \"portfolio_references\": [\n          {\n            \"namespace\": \"portfolio-label\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"billing_name\": \"<string>\",\n        \"notes\": [\n          {\n            \"body\": \"<string>\",\n            \"created_at\": \"<dateTime>\",\n            \"document_paths\": [\n              {\n                \"document_path\": \"<string>\"\n              }\n            ],\n            \"external_id\": \"<string>\",\n            \"is_archived\": \"<boolean>\",\n            \"is_pinned\": \"<boolean>\",\n            \"unpin_at\": \"<dateTime>\"\n          }\n        ],\n        \"portfolio_settings\": {\n          \"collective_billing\": false,\n          \"collective_payments\": false,\n          \"delegate_billing_schedule_to_children\": false,\n          \"send_collective_bill_constituent_messages\": false\n        }\n      }\n    ],\n    \"segment_name\": {\n      \"x-spec-enum-id\": \"4f53cda18c2baa0c\",\n      \"description\": \"<p>The segment to which the business belongs.</p>\",\n      \"x-comment\": \"Choices for this field are dynamic, once appropriate values have been configured they will be rendered here.\"\n    },\n    \"users\": [\n      {\n        \"business_roles\": [\n          \"EZ_DFPP_RW\"\n        ],\n        \"address\": {\n          \"administrative_area\": \"NSW\",\n          \"country\": \"<string>\",\n          \"locality\": \"<string>\",\n          \"postal_code\": \"<string>\",\n          \"structured_street_address\": {\n            \"building_or_property_name\": \"<string>\",\n            \"flat_or_unit_number\": \"<string>\",\n            \"flat_or_unit_type\": \"F\",\n            \"floor_or_level_number\": \"<string>\",\n            \"floor_or_level_type\": \"LG\",\n            \"house_number_1\": \"<integer>\",\n            \"house_number_2\": \"<integer>\",\n            \"house_number_suffix_1\": \"<string>\",\n            \"house_number_suffix_2\": \"<string>\",\n            \"location_descriptor\": \"<string>\",\n            \"lot_number\": \"<string>\",\n            \"postal_delivery_number_prefix\": \"<string>\",\n            \"postal_delivery_number_suffix\": \"<string>\",\n            \"postal_delivery_number_value\": \"<integer>\",\n            \"postal_delivery_type\": \"CPA\",\n            \"street_name\": \"<string>\",\n            \"street_suffix\": \"E\",\n            \"street_type\": \"MANR\"\n          },\n          \"delivery_point_identifier\": \"<string>\",\n          \"dependent_locality\": \"\",\n          \"name\": \"\",\n          \"organization\": \"\",\n          \"sorting_code\": \"\",\n          \"street_address\": \"\"\n        },\n        \"alternative_phone_numbers\": [\n          {\n            \"phone_number\": \"\"\n          }\n        ],\n        \"contact_emails\": [\n          \"<email>\"\n        ],\n        \"credit_assessment_id\": \"<string,null>\",\n        \"credit_result\": \"<string,null>\",\n        \"credit_risk_bracket\": \"MID\",\n        \"credit_score\": \"<integer,null>\",\n        \"date_of_birth\": \"<string,null-date>\",\n        \"deceased\": \"\",\n        \"details\": {\n          \"description\": \"<p>Generic solution for storing additional customer data that is not covered by the other fields in the payload. This is often in the form of market or territory specific information. For example, in much of Europe it is a requirement to store the user's fiscal code. Namespaces (the keys in the object) need to be registered before import. If a value is provided for a namespace that is not registered then an error will be raised.</p>\",\n          \"deprecated\": true,\n          \"x-use-instead\": \"user_details\",\n          \"x-validators\": [\n            {\n              \"name\": \"Validate user details\",\n              \"description\": \"Validates that the user detail namespace and value are allowed for the customer. The user detail namespace (the key in the JSON object) must already have been set up in Kraken. The value (the value in the JSON object) must be the correct data type.\",\n              \"possible_errors\": [\n                \"customer_detail_failed_validation\",\n                \"customer_detail_incorrect_value_type\",\n                \"customer_detail_not_registered\"\n              ]\n            }\n          ]\n        },\n        \"email\": \"<string,null-email>\",\n        \"family_name\": \"\",\n        \"given_name\": \"\",\n        \"label\": \"<string,null>\",\n        \"landline\": \"\",\n        \"mobile\": \"\",\n        \"salutation\": \"\",\n        \"title\": \"\",\n        \"unable_to_read_meters\": false,\n        \"user_details\": [\n          {\n            \"namespace\": \"external_user_id\",\n            \"value\": {\n              \"description\": \"<p>The value of the customer user detail.</p>\"\n            }\n          }\n        ]\n      }\n    ]\n  },\n  \"external_business_identifier\": \"<string>\",\n  \"import_supplier_code\": \"ORIGIN_BUSINESS_NO_CONTRACT\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/data-import/business/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "data-import",
+                            "business",
+                            ""
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"field_name\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                      "createdAt": "2026-10-22T02:09:33.000Z",
+                      "updatedAt": "2026-10-22T02:09:33.000Z",
+                      "uid": "35240-ca6fb8ff-8dbb-4e6b-a6ce-80356caf810b"
+                    }
+                  ],
+                  "createdAt": "2026-10-22T02:09:33.000Z",
+                  "updatedAt": "2026-10-22T02:09:33.000Z",
+                  "uid": "35240-3f9a20c6-ad62-48be-9207-a758c9aa5410"
+                }
+              ],
+              "id": "4d0af41b-2a83-4cd0-95d0-9f653853171a",
+              "createdAt": "2026-10-22T02:09:33.000Z",
+              "updatedAt": "2026-10-22T02:09:33.000Z",
+              "uid": "35240-4d0af41b-2a83-4cd0-95d0-9f653853171a"
+            }
+          ],
+          "id": "7f45ae84-621b-4903-946f-6a3e5ea4835e",
+          "createdAt": "2026-10-22T02:09:33.000Z",
+          "updatedAt": "2026-10-22T02:09:33.000Z",
+          "uid": "35240-7f45ae84-621b-4903-946f-6a3e5ea4835e"
+        }
+      ],
+      "id": "fc42be84-0697-485f-9e24-53a9f2ef6a3e",
+      "createdAt": "2026-10-22T02:09:33.000Z",
+      "updatedAt": "2026-10-22T02:09:33.000Z",
+      "uid": "35240-fc42be84-0697-485f-9e24-53a9f2ef6a3e"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.origin-kraken.energy/v1"
+    }
+  ]
+}

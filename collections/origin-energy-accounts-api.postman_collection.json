@@ -1,0 +1,274 @@
+{
+  "info": {
+    "_postman_id": "de95e98c-1142-48ef-9dd3-92fff50059ab",
+    "name": "Kraken Accounts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:11:34.000Z",
+    "updatedAt": "2026-10-22T02:11:35.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-de95e98c-1142-48ef-9dd3-92fff50059ab"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "accounts",
+          "item": [
+            {
+              "name": "{account_number}",
+              "item": [
+                {
+                  "name": "payments",
+                  "item": [
+                    {
+                      "name": "ad-hoc",
+                      "item": [
+                        {
+                          "name": "Ad hoc",
+                          "id": "cf98a6aa-7c3c-47bf-886f-59dcabf88770",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "apikey",
+                              "apikey": [
+                                {
+                                  "key": "key",
+                                  "value": "Authorization",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "value",
+                                  "value": "{{apiKey}}",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "in",
+                                  "value": "header",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"amount\": \"<integer>\",\n  \"captcha_token\": \"<string>\",\n  \"electronic_commerce_indicator\": \"RECURRING\",\n  \"single_use_token\": \"<string>\",\n  \"supplier_business_code\": \"RETAILXFEE\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/accounts/:account_number/payments/ad-hoc/",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "accounts",
+                                ":account_number",
+                                "payments",
+                                "ad-hoc",
+                                ""
+                              ],
+                              "variable": [
+                                {
+                                  "id": "73c9ac57-7698-4e9b-8d94-d514459bbc47",
+                                  "key": "account_number",
+                                  "value": "<string>",
+                                  "description": "(Required) Number of the account"
+                                }
+                              ]
+                            },
+                            "description": "A view to be called by Origin's consumer-site for creating ad hoc card payments.\n\nNote that this is deprecated and should not be used for new integrations."
+                          },
+                          "response": [
+                            {
+                              "id": "c497145f-5e4f-421f-8416-42d05a0368f4",
+                              "name": "Ad Hoc payment successfully created",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "Authorization",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"captcha_token\": \"<string>\",\n  \"electronic_commerce_indicator\": \"RECURRING\",\n  \"single_use_token\": \"<string>\",\n  \"supplier_business_code\": \"RETAILXFEE\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/accounts/:account_number/payments/ad-hoc/",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "accounts",
+                                    ":account_number",
+                                    "payments",
+                                    "ad-hoc",
+                                    ""
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "account_number"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Created",
+                              "code": 201,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"amount\": \"<integer>\",\n  \"payment_date\": \"<date>\",\n  \"reference\": \"<string>\",\n  \"surcharge_amount\": \"<integer>\"\n}",
+                              "createdAt": "2026-10-22T02:11:35.000Z",
+                              "updatedAt": "2026-10-22T02:11:35.000Z",
+                              "uid": "35240-c497145f-5e4f-421f-8416-42d05a0368f4"
+                            },
+                            {
+                              "id": "6b3961b0-d8d2-4c92-acbc-20fc0f72dfb3",
+                              "name": "Fixed response in case of error",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "Authorization",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"captcha_token\": \"<string>\",\n  \"electronic_commerce_indicator\": \"RECURRING\",\n  \"single_use_token\": \"<string>\",\n  \"supplier_business_code\": \"RETAILXFEE\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/accounts/:account_number/payments/ad-hoc/",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "accounts",
+                                    ":account_number",
+                                    "payments",
+                                    "ad-hoc",
+                                    ""
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "account_number"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"detail\": \"<string>\"\n}",
+                              "createdAt": "2026-10-22T02:11:35.000Z",
+                              "updatedAt": "2026-10-22T02:11:35.000Z",
+                              "uid": "35240-6b3961b0-d8d2-4c92-acbc-20fc0f72dfb3"
+                            }
+                          ],
+                          "createdAt": "2026-10-22T02:11:35.000Z",
+                          "updatedAt": "2026-10-22T02:11:35.000Z",
+                          "uid": "35240-cf98a6aa-7c3c-47bf-886f-59dcabf88770"
+                        }
+                      ],
+                      "id": "cc6d41be-4906-4723-95a0-f1cd6f4fac4f",
+                      "createdAt": "2026-10-22T02:11:35.000Z",
+                      "updatedAt": "2026-10-22T02:11:35.000Z",
+                      "uid": "35240-cc6d41be-4906-4723-95a0-f1cd6f4fac4f"
+                    }
+                  ],
+                  "id": "79417426-303c-48da-be51-7b66f37dbfce",
+                  "createdAt": "2026-10-22T02:11:35.000Z",
+                  "updatedAt": "2026-10-22T02:11:35.000Z",
+                  "uid": "35240-79417426-303c-48da-be51-7b66f37dbfce"
+                }
+              ],
+              "id": "79330950-9970-4844-bd40-3368194b4924",
+              "createdAt": "2026-10-22T02:11:35.000Z",
+              "updatedAt": "2026-10-22T02:11:35.000Z",
+              "uid": "35240-79330950-9970-4844-bd40-3368194b4924"
+            }
+          ],
+          "id": "8ef75173-6c7e-4603-96e6-46af8792830f",
+          "createdAt": "2026-10-22T02:11:35.000Z",
+          "updatedAt": "2026-10-22T02:11:35.000Z",
+          "uid": "35240-8ef75173-6c7e-4603-96e6-46af8792830f"
+        }
+      ],
+      "id": "12eb77be-9d92-4bed-86c6-b9147bbaf077",
+      "createdAt": "2026-10-22T02:11:35.000Z",
+      "updatedAt": "2026-10-22T02:11:35.000Z",
+      "uid": "35240-12eb77be-9d92-4bed-86c6-b9147bbaf077"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.origin-kraken.energy/v1"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/origin-energy/main/json-schema/origin-energy-import-status-response-schema.json",
+  "title": "ImportStatusResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/ImportStatusResponse",
+  "type": "object",
+  "properties": {
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "<p>The date and time when the import process was created.</p>"
+    },
+    "kraken_identifier": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "<p>The unique identifier assigned to this import within Kraken.</p>"
+    },
+    "latest_error": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/LatestError"
+        }
+      ],
+      "description": "<p>The most recent error that occurred during the import process, if any.</p>"
+    },
+    "latest_event": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/ImportEvent"
+        }
+      ],
+      "description": "<p>The most recent import event associated with the import process, if any.</p>"
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "<p>The date and time when the import process was last modified.</p>"
+    },
+    "status": {
+      "type": "string",
+      "description": "<p>The current status of the import process.</p>"
+    }
+  },
+  "required": [
+    "created_at",
+    "latest_event",
+    "modified_at",
+    "status"
+  ],
+  "$defs": {
+    "ImportEvent": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "<p>Additional data associated with the import event, such as error codes and details.</p>"
+        },
+        "event": {
+          "type": "string",
+          "description": "<p>The type of import event.</p>"
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "<p>The date and time when the import event was recorded.</p>"
+        }
+      },
+      "required": [
+        "event",
+        "occurred_at"
+      ]
+    },
+    "LatestError": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "<p>The error code identifying the type of error that occurred.</p>"
+        },
+        "detail": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "<p>A detailed description of the error that occurred.</p>"
+        },
+        "domain": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "<p>The domain or context in which the error occurred.</p>"
+        }
+      }
+    }
+  }
+}

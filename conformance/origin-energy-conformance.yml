@@ -1,16 +1,14 @@
 generated: '2026-07-27'
 method: searched
-source: openapi/*, graphql/origin-energy-kraken.graphql, well-known/origin-energy-kraken-openid-configuration.json,
-  live probes 2026-07-27
+source: openapi/*, graphql/origin-energy-kraken.graphql, well-known/origin-energy-kraken-openid-configuration.json, live probes 2026-07-27
 standards:
 - id: cds-au-energy
   name: Consumer Data Standards Australia — Energy APIs
   version: 1.36.0
   conforms: true
   evidence: Origin is listed on the CDR Register as an energy data holder brand with publicBaseUri https://public.mydata.cdr.originenergy.com.au;
-    GET /cds-au/v1/discovery/status and /discovery/outages returned HTTP 200 anonymously with Consumer
-    Data Standards conformant payloads on 2026-07-27; the resource host presents a certificate issued
-    by the ACCC's CDR Intermediate CA 2025.
+    GET /cds-au/v1/discovery/status and /discovery/outages returned HTTP 200 anonymously with Consumer Data Standards conformant payloads on 2026-07-27;
+    the resource host presents a certificate issued by the ACCC's CDR Intermediate CA 2025.
   publisher: Data Standards Body, Australian Treasury
   spec: openapi/consumer-data-standards-energy-api-openapi.json
 - id: cds-au-common
@@ -22,28 +20,26 @@ standards:
 - id: cdr-register
   name: CDR Register participation
   conforms: true
-  evidence: https://api.cdr.gov.au/cdr-register/v1/energy/data-holders/brands/summary returned Origin
-    Energy with dataHolderBrandId 244d8a80-3828-ed11-a832-000d3a8830d6, abn 30000051696.
+  evidence: https://api.cdr.gov.au/cdr-register/v1/energy/data-holders/brands/summary returned Origin Energy with dataHolderBrandId 244d8a80-3828-ed11-a832-000d3a8830d6,
+    abn 30000051696.
 - id: mutual-tls
   name: Mutual TLS client authentication (RFC 8705 pattern)
   conforms: true
-  evidence: api.mydata.cdr.originenergy.com.au completes the TLS handshake and resets the connection when
-    no client certificate is presented.
+  evidence: api.mydata.cdr.originenergy.com.au completes the TLS handshake and resets the connection when no client certificate is presented.
 - id: oauth2
   name: OAuth 2.0
   conforms: true
-  evidence: well-known/origin-energy-kraken-openid-configuration.json advertises authorization, token
-    and revocation endpoints and 7 response types.
+  evidence: well-known/origin-energy-kraken-openid-configuration.json advertises authorization, token and revocation endpoints and 7 response
+    types.
 - id: oidc-discovery
   name: OpenID Connect Discovery 1.0
   conforms: true
-  evidence: https://auth.origin-kraken.energy/.well-known/openid-configuration returned HTTP 200 anonymously
-    and parses as a conformant discovery document.
+  evidence: https://auth.origin-kraken.energy/.well-known/openid-configuration returned HTTP 200 anonymously and parses as a conformant discovery
+    document.
 - id: rfc8414-oauth-authorization-server-metadata
   name: RFC 8414 OAuth 2.0 Authorization Server Metadata
   conforms: false
-  evidence: /.well-known/oauth-authorization-server returned 404 on every host probed; only the OIDC discovery
-    path is served.
+  evidence: /.well-known/oauth-authorization-server returned 404 on every host probed; only the OIDC discovery path is served.
 - id: rfc7636-pkce
   name: PKCE
   conforms: false
@@ -51,24 +47,22 @@ standards:
 - id: rfc7591-dynamic-client-registration
   name: OAuth 2.0 Dynamic Client Registration
   conforms: false
-  evidence: No registration_endpoint in the discovery document; clients are provisioned by Origin out
-    of band.
+  evidence: No registration_endpoint in the discovery document; clients are provisioned by Origin out of band.
 - id: fapi
   name: FAPI (Financial-grade API)
   conforms: null
-  evidence: The CDR InfoSec profile is FAPI-based and Origin's CDR endpoints are accreditation-gated,
-    but no anonymously reachable Origin artifact asserts a FAPI conformance level. Deliberately recorded
-    as unknown rather than claimed.
+  evidence: The CDR InfoSec profile is FAPI-based and Origin's CDR endpoints are accreditation-gated, but no anonymously reachable Origin artifact
+    asserts a FAPI conformance level. Deliberately recorded as unknown rather than claimed.
 - id: rfc9116-security-txt
   name: RFC 9116 security.txt
   conforms: true
-  evidence: https://www.originenergy.com.au/.well-known/security.txt returned HTTP 200 with Contact, Policy,
-    Hiring, Preferred-Languages and Expires fields.
+  evidence: https://www.originenergy.com.au/.well-known/security.txt returned HTTP 200 with Contact, Policy, Hiring, Preferred-Languages and Expires
+    fields.
 - id: graphql-june-2018
   name: GraphQL specification
   conforms: true
-  evidence: Anonymous introspection of https://api.origin-kraken.energy/v1/graphql/ returned a full __schema
-    on 2026-07-27; 2,407 types, 187 queries, 374 mutations. Saved to graphql/origin-energy-kraken.graphql.
+  evidence: Anonymous introspection of https://api.origin-kraken.energy/v1/graphql/ returned a full __schema on 2026-07-27; 2,407 types, 187 queries,
+    374 mutations. Saved to graphql/origin-energy-kraken.graphql.
 - id: graphql-cursor-connections
   name: GraphQL Cursor Connections (Relay)
   conforms: true
@@ -76,23 +70,20 @@ standards:
 - id: openapi-3.0.3
   name: OpenAPI 3.0.3
   conforms: true
-  evidence: Three Kraken schema endpoints served OpenAPI 3.0.3 documents anonymously (api.origin-kraken.energy/v1/schema,
-    /data-import/schema/, /v2/orders/schema/).
+  evidence: Three Kraken schema endpoints served OpenAPI 3.0.3 documents anonymously (api.origin-kraken.energy/v1/schema, /data-import/schema/,
+    /v2/orders/schema/).
 - id: asyncapi
   name: AsyncAPI
   conforms: false
-  evidence: An external-events catalogue is published but no AsyncAPI document exists; the schema endpoint
-    returns HTTP 403 anonymously.
+  evidence: An external-events catalogue is published but no AsyncAPI document exists; the schema endpoint returns HTTP 403 anonymously.
 - id: rfc9457-problem-details
   name: RFC 9457 Problem Details
   conforms: false
-  evidence: No application/problem+json response is declared on any surface; three bespoke error envelopes
-    are used instead.
+  evidence: No application/problem+json response is declared on any surface; three bespoke error envelopes are used instead.
 - id: rfc8594-sunset-header
   name: RFC 8594 Sunset header
   conforms: false
-  evidence: No Sunset or Deprecation response header observed; deprecation is documentary (GraphQL @deprecated
-    plus dated announcements).
+  evidence: No Sunset or Deprecation response header observed; deprecation is documentary (GraphQL @deprecated plus dated announcements).
 - id: iso8601
   name: ISO 8601 date/time
   conforms: true
@@ -117,10 +108,21 @@ standards:
   name: OCPP / OCPI
   conforms: false
   evidence: No reference found, despite Origin selling EV charging products.
+- id: openapi-3.2
+  conforms: true
+  evidence: the document declares 3.2.0
+- id: rfc9457
+  conforms: false
+  evidence: no response declares application/problem+json
+- id: idempotency
+  conforms: false
+  evidence: no idempotency key parameter on mutating operations
+- id: pagination
+  conforms: true
+  evidence: list operations take page
 compliance_program:
   published: false
-  note: No trust centre, certification page or compliance program (SOC 2, ISO 27001, PCI DSS) was found
-    on any Origin or Kraken host; trust.originenergy.com.au and security.originenergy.com.au do not resolve,
-    and /about/security, /about/compliance and /about/who-we-are/governance all returned 404. Origin's
-    published security posture is the Bugcrowd vulnerability disclosure program in security.txt. No Compliance
-    pointer is emitted because none is published.
+  note: No trust centre, certification page or compliance program (SOC 2, ISO 27001, PCI DSS) was found on any Origin or Kraken host; trust.originenergy.com.au
+    and security.originenergy.com.au do not resolve, and /about/security, /about/compliance and /about/who-we-are/governance all returned 404.
+    Origin's published security posture is the Bugcrowd vulnerability disclosure program in security.txt. No Compliance pointer is emitted because
+    none is published.

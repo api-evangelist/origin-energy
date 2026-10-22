@@ -1,0 +1,2123 @@
+{
+  "@context": {
+    "@vocab": "https://originenergy.com.au/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "origin": "https://originenergy.com.au/schema#",
+    "SupplyPointTaxAdjustment": "origin:SupplyPointTaxAdjustment",
+    "adjustment_type": {
+      "@id": "origin:adjustment_type",
+      "@type": "xsd:string"
+    },
+    "effective_from_date": {
+      "@id": "origin:effective_from_date",
+      "@type": "xsd:date"
+    },
+    "effective_to_date": {
+      "@id": "origin:effective_to_date",
+      "@type": "xsd:date"
+    },
+    "qualifying_usage": {
+      "@id": "origin:qualifying_usage",
+      "@type": "xsd:string"
+    },
+    "supply_point_external_identifier": {
+      "@id": "origin:supply_point_external_identifier",
+      "@type": "xsd:string"
+    },
+    "tax_category": {
+      "@id": "origin:tax_category",
+      "@type": "xsd:string"
+    },
+    "tax_subcategory": {
+      "@id": "origin:tax_subcategory",
+      "@type": "xsd:string"
+    },
+    "AusBillingAddress": "origin:AusBillingAddress",
+    "administrative_area": {
+      "@id": "origin:administrative_area",
+      "@type": "xsd:string"
+    },
+    "country": {
+      "@id": "origin:country",
+      "@type": "xsd:string"
+    },
+    "delivery_point_identifier": {
+      "@id": "origin:delivery_point_identifier",
+      "@type": "xsd:string"
+    },
+    "dependent_locality": {
+      "@id": "origin:dependent_locality",
+      "@type": "xsd:string"
+    },
+    "locality": {
+      "@id": "origin:locality",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "origin:name",
+      "@type": "xsd:string"
+    },
+    "organization": {
+      "@id": "origin:organization",
+      "@type": "xsd:string"
+    },
+    "postal_code": {
+      "@id": "origin:postal_code",
+      "@type": "xsd:string"
+    },
+    "sorting_code": {
+      "@id": "origin:sorting_code",
+      "@type": "xsd:string"
+    },
+    "street_address": {
+      "@id": "origin:street_address",
+      "@type": "xsd:string"
+    },
+    "structured_street_address": {
+      "@id": "origin:structured_street_address"
+    },
+    "AusEEPAExportContractedVolumePeriod": "origin:AusEEPAExportContractedVolumePeriod",
+    "supply_point_external_identifiers": {
+      "@id": "origin:supply_point_external_identifiers",
+      "@container": "@list"
+    },
+    "unit": {
+      "@id": "origin:unit",
+      "@type": "xsd:string"
+    },
+    "valid_from_date": {
+      "@id": "origin:valid_from_date",
+      "@type": "xsd:date"
+    },
+    "valid_to_date": {
+      "@id": "origin:valid_to_date",
+      "@type": "xsd:date"
+    },
+    "value": {
+      "@id": "origin:value",
+      "@type": "xsd:string"
+    },
+    "BillingDocumentIssuanceFrequencyTerm": "origin:BillingDocumentIssuanceFrequencyTerm",
+    "term_type": {
+      "@id": "origin:term_type",
+      "@type": "xsd:string"
+    },
+    "frequency": {
+      "@id": "origin:frequency",
+      "@type": "xsd:string"
+    },
+    "is_variable": {
+      "@id": "origin:is_variable",
+      "@type": "xsd:boolean"
+    },
+    "multiplier": {
+      "@id": "origin:multiplier",
+      "@type": "xsd:integer"
+    },
+    "period_start_day": {
+      "@id": "origin:period_start_day",
+      "@type": "xsd:integer"
+    },
+    "period_start_month": {
+      "@id": "origin:period_start_month",
+      "@type": "xsd:integer"
+    },
+    "CommonStreet": "origin:CommonStreet",
+    "street_name": {
+      "@id": "origin:street_name",
+      "@type": "xsd:string"
+    },
+    "street_suffix": {
+      "@id": "origin:street_suffix",
+      "@type": "xsd:string"
+    },
+    "street_type": {
+      "@id": "origin:street_type",
+      "@type": "xsd:string"
+    },
+    "EmbeddedElecNMIStatusPeriod": "origin:EmbeddedElecNMIStatusPeriod",
+    "active_from": {
+      "@id": "origin:active_from",
+      "@type": "xsd:dateTime"
+    },
+    "active_to": {
+      "@id": "origin:active_to",
+      "@type": "xsd:dateTime"
+    },
+    "status": {
+      "@id": "origin:status",
+      "@type": "xsd:string"
+    },
+    "ContractSalesRecord": "origin:ContractSalesRecord",
+    "affiliate_organisation_name": {
+      "@id": "origin:affiliate_organisation_name",
+      "@type": "xsd:string"
+    },
+    "sales_channel": {
+      "@id": "origin:sales_channel",
+      "@type": "xsd:string"
+    },
+    "StandardizedError": "origin:StandardizedError",
+    "attr": {
+      "@id": "origin:attr",
+      "@type": "xsd:string"
+    },
+    "code": {
+      "@id": "origin:code",
+      "@type": "xsd:string"
+    },
+    "detail": {
+      "@id": "origin:detail",
+      "@type": "xsd:string"
+    },
+    "PaysByDirectDebitTerm": "origin:PaysByDirectDebitTerm",
+    "pays_by_direct_debit": {
+      "@id": "origin:pays_by_direct_debit",
+      "@type": "xsd:boolean"
+    },
+    "PropertyAdministrator": "origin:PropertyAdministrator",
+    "address1": {
+      "@id": "origin:address1",
+      "@type": "xsd:string"
+    },
+    "address2": {
+      "@id": "origin:address2",
+      "@type": "xsd:string"
+    },
+    "address3": {
+      "@id": "origin:address3",
+      "@type": "xsd:string"
+    },
+    "address4": {
+      "@id": "origin:address4",
+      "@type": "xsd:string"
+    },
+    "address5": {
+      "@id": "origin:address5",
+      "@type": "xsd:string"
+    },
+    "billing_name": {
+      "@id": "origin:billing_name",
+      "@type": "xsd:string"
+    },
+    "date_of_birth": {
+      "@id": "origin:date_of_birth",
+      "@type": "xsd:date"
+    },
+    "deceased": {
+      "@id": "origin:deceased",
+      "@type": "xsd:string"
+    },
+    "effective_from": {
+      "@id": "origin:effective_from",
+      "@type": "xsd:dateTime"
+    },
+    "effective_to": {
+      "@id": "origin:effective_to",
+      "@type": "xsd:dateTime"
+    },
+    "email": {
+      "@id": "origin:email",
+      "@type": "xsd:string"
+    },
+    "family_name": {
+      "@id": "origin:family_name",
+      "@type": "xsd:string"
+    },
+    "given_name": {
+      "@id": "origin:given_name",
+      "@type": "xsd:string"
+    },
+    "landline": {
+      "@id": "origin:landline",
+      "@type": "xsd:string"
+    },
+    "mobile": {
+      "@id": "origin:mobile",
+      "@type": "xsd:string"
+    },
+    "postcode": {
+      "@id": "origin:postcode",
+      "@type": "xsd:string"
+    },
+    "role": {
+      "@id": "origin:role",
+      "@type": "xsd:string"
+    },
+    "salutation": {
+      "@id": "origin:salutation",
+      "@type": "xsd:string"
+    },
+    "title": {
+      "@id": "origin:title",
+      "@type": "xsd:string"
+    },
+    "AccountTransferStatus": "origin:AccountTransferStatus",
+    "account_number": {
+      "@id": "origin:account_number",
+      "@type": "xsd:string"
+    },
+    "kraken_account_number": {
+      "@id": "origin:kraken_account_number",
+      "@type": "xsd:string"
+    },
+    "AusCustomer": "origin:AusCustomer",
+    "account_roles": {
+      "@id": "origin:account_roles",
+      "@container": "@list"
+    },
+    "address": {
+      "@id": "origin:address"
+    },
+    "alternative_phone_numbers": {
+      "@id": "origin:alternative_phone_numbers",
+      "@container": "@list"
+    },
+    "concession_cards": {
+      "@id": "origin:concession_cards",
+      "@container": "@list"
+    },
+    "concession_credits_paid_current_year": {
+      "@id": "origin:concession_credits_paid_current_year",
+      "@type": "xsd:string"
+    },
+    "consents": {
+      "@id": "origin:consents",
+      "@container": "@list"
+    },
+    "contact_emails": {
+      "@id": "origin:contact_emails",
+      "@container": "@list"
+    },
+    "credit_assessment_id": {
+      "@id": "origin:credit_assessment_id",
+      "@type": "xsd:string"
+    },
+    "credit_result": {
+      "@id": "origin:credit_result",
+      "@type": "xsd:string"
+    },
+    "credit_risk_bracket": {
+      "@id": "origin:credit_risk_bracket",
+      "@type": "xsd:string"
+    },
+    "credit_score": {
+      "@id": "origin:credit_score",
+      "@type": "xsd:integer"
+    },
+    "customer_preferences": {
+      "@id": "origin:customer_preferences"
+    },
+    "details": {
+      "@id": "origin:details"
+    },
+    "family_issues_details": {
+      "@id": "origin:family_issues_details",
+      "@type": "xsd:string"
+    },
+    "family_issues_password": {
+      "@id": "origin:family_issues_password",
+      "@type": "xsd:string"
+    },
+    "has_family_issues": {
+      "@id": "origin:has_family_issues",
+      "@type": "xsd:boolean"
+    },
+    "label": {
+      "@id": "origin:label",
+      "@type": "xsd:string"
+    },
+    "loyalty_cards": {
+      "@id": "origin:loyalty_cards",
+      "@container": "@list"
+    },
+    "manually_defined_eligibility_periods": {
+      "@id": "origin:manually_defined_eligibility_periods",
+      "@container": "@list"
+    },
+    "metadata": {
+      "@id": "origin:metadata",
+      "@container": "@list"
+    },
+    "mpxns_for_outage_contact": {
+      "@id": "origin:mpxns_for_outage_contact",
+      "@container": "@list"
+    },
+    "portfolio_roles": {
+      "@id": "origin:portfolio_roles",
+      "@container": "@list"
+    },
+    "pronouns": {
+      "@id": "origin:pronouns",
+      "@type": "xsd:string"
+    },
+    "unable_to_read_meters": {
+      "@id": "origin:unable_to_read_meters",
+      "@type": "xsd:boolean"
+    },
+    "user_details": {
+      "@id": "origin:user_details",
+      "@container": "@list"
+    },
+    "user_identifier": {
+      "@id": "origin:user_identifier",
+      "@type": "xsd:string"
+    },
+    "CreateOrUpdateAccountImportProcess": "origin:CreateOrUpdateAccountImportProcess",
+    "external_account_number": {
+      "@id": "origin:external_account_number",
+      "@type": "xsd:string"
+    },
+    "import_supplier_code": {
+      "@id": "origin:import_supplier_code",
+      "@type": "xsd:string"
+    },
+    "OriginLedgerRecordWithTransactions": "origin:OriginLedgerRecordWithTransactions",
+    "current_statement_transactions": {
+      "@id": "origin:current_statement_transactions",
+      "@container": "@list"
+    },
+    "historical_statement_transactions": {
+      "@id": "origin:historical_statement_transactions",
+      "@container": "@list"
+    },
+    "identifiers": {
+      "@id": "origin:identifiers",
+      "@container": "@list"
+    },
+    "last_statement_balance": {
+      "@id": "origin:last_statement_balance",
+      "@type": "xsd:string"
+    },
+    "last_statement_closing_date": {
+      "@id": "origin:last_statement_closing_date",
+      "@type": "xsd:date"
+    },
+    "last_statement_issue_date": {
+      "@id": "origin:last_statement_issue_date",
+      "@type": "xsd:date"
+    },
+    "ledger_balance": {
+      "@id": "origin:ledger_balance",
+      "@type": "xsd:string"
+    },
+    "ledger_code": {
+      "@id": "origin:ledger_code",
+      "@type": "xsd:string"
+    },
+    "ledger_identifier": {
+      "@id": "origin:ledger_identifier",
+      "@type": "xsd:string"
+    },
+    "BusinessWithExistingContracts": "origin:BusinessWithExistingContracts",
+    "business_contract_identifier": {
+      "@id": "origin:business_contract_identifier",
+      "@type": "xsd:string"
+    },
+    "business_contract_identifiers": {
+      "@id": "origin:business_contract_identifiers",
+      "@container": "@list"
+    },
+    "business_type": {
+      "@id": "origin:business_type",
+      "@type": "xsd:string"
+    },
+    "company_name": {
+      "@id": "origin:company_name",
+      "@type": "xsd:string"
+    },
+    "company_number": {
+      "@id": "origin:company_number",
+      "@type": "xsd:string"
+    },
+    "portfolios": {
+      "@id": "origin:portfolios",
+      "@container": "@list"
+    },
+    "segment_name": {
+      "@id": "origin:segment_name"
+    },
+    "users": {
+      "@id": "origin:users",
+      "@container": "@list"
+    },
+    "AusPaymentInstruction": "origin:AusPaymentInstruction",
+    "bank_account": {
+      "@id": "origin:bank_account"
+    },
+    "card": {
+      "@id": "origin:card"
+    },
+    "customer_reference": {
+      "@id": "origin:customer_reference",
+      "@type": "xsd:string"
+    },
+    "instruction_identifier": {
+      "@id": "origin:instruction_identifier",
+      "@type": "xsd:string"
+    },
+    "reference": {
+      "@id": "origin:reference",
+      "@type": "xsd:string"
+    },
+    "type": {
+      "@id": "origin:type",
+      "@type": "xsd:string"
+    },
+    "use_for_scheduled_payments": {
+      "@id": "origin:use_for_scheduled_payments",
+      "@type": "xsd:boolean"
+    },
+    "valid_from": {
+      "@id": "origin:valid_from",
+      "@type": "xsd:date"
+    },
+    "valid_to": {
+      "@id": "origin:valid_to",
+      "@type": "xsd:date"
+    },
+    "vendor": {
+      "@id": "origin:vendor",
+      "@type": "xsd:string"
+    },
+    "GasHistoricalReading": "origin:GasHistoricalReading",
+    "average_heating_value": {
+      "@id": "origin:average_heating_value",
+      "@type": "xsd:string"
+    },
+    "billed": {
+      "@id": "origin:billed",
+      "@type": "xsd:boolean"
+    },
+    "common_factor": {
+      "@id": "origin:common_factor",
+      "@type": "xsd:string"
+    },
+    "consumed_energy": {
+      "@id": "origin:consumed_energy",
+      "@type": "xsd:string"
+    },
+    "estimation_substitution_reason_code": {
+      "@id": "origin:estimation_substitution_reason_code",
+      "@type": "xsd:string"
+    },
+    "estimation_substitution_type": {
+      "@id": "origin:estimation_substitution_type",
+      "@type": "xsd:string"
+    },
+    "gas_meter_units": {
+      "@id": "origin:gas_meter_units",
+      "@type": "xsd:string"
+    },
+    "pressure_correction_factor": {
+      "@id": "origin:pressure_correction_factor",
+      "@type": "xsd:string"
+    },
+    "prev_reading_date": {
+      "@id": "origin:prev_reading_date",
+      "@type": "xsd:date"
+    },
+    "reading_date": {
+      "@id": "origin:reading_date",
+      "@type": "xsd:date"
+    },
+    "reading_type": {
+      "@id": "origin:reading_type",
+      "@type": "xsd:string"
+    },
+    "reading_value": {
+      "@id": "origin:reading_value",
+      "@type": "xsd:string"
+    },
+    "register_id": {
+      "@id": "origin:register_id",
+      "@type": "xsd:string"
+    },
+    "validation_status": {
+      "@id": "origin:validation_status",
+      "@type": "xsd:string"
+    },
+    "volume_flow": {
+      "@id": "origin:volume_flow",
+      "@type": "xsd:string"
+    },
+    "EmbeddedWaterConnectionPeriod": "origin:EmbeddedWaterConnectionPeriod",
+    "end_at": {
+      "@id": "origin:end_at",
+      "@type": "xsd:dateTime"
+    },
+    "start_at": {
+      "@id": "origin:start_at",
+      "@type": "xsd:dateTime"
+    },
+    "AusSupplyCharge": "origin:AusSupplyCharge",
+    "amount": {
+      "@id": "origin:amount",
+      "@type": "xsd:string"
+    },
+    "billing_document_identifier": {
+      "@id": "origin:billing_document_identifier",
+      "@type": "xsd:string"
+    },
+    "display_note": {
+      "@id": "origin:display_note",
+      "@type": "xsd:string"
+    },
+    "line_items": {
+      "@id": "origin:line_items",
+      "@container": "@list"
+    },
+    "note": {
+      "@id": "origin:note",
+      "@type": "xsd:string"
+    },
+    "product_code": {
+      "@id": "origin:product_code",
+      "@type": "xsd:string"
+    },
+    "supply_point_identifier": {
+      "@id": "origin:supply_point_identifier",
+      "@type": "xsd:string"
+    },
+    "tax_items": {
+      "@id": "origin:tax_items",
+      "@container": "@list"
+    },
+    "transaction_date": {
+      "@id": "origin:transaction_date",
+      "@type": "xsd:date"
+    },
+    "transaction_id": {
+      "@id": "origin:transaction_id",
+      "@type": "xsd:string"
+    },
+    "TaxAdjustmentConfiguration": "origin:TaxAdjustmentConfiguration",
+    "adjustments": {
+      "@id": "origin:adjustments",
+      "@container": "@list"
+    },
+    "LatePaymentFees": "origin:LatePaymentFees",
+    "flat_fee_amount": {
+      "@id": "origin:flat_fee_amount",
+      "@type": "xsd:integer"
+    },
+    "interest_policy_name": {
+      "@id": "origin:interest_policy_name",
+      "@type": "xsd:string"
+    },
+    "percentage_fee": {
+      "@id": "origin:percentage_fee",
+      "@type": "xsd:string"
+    },
+    "percentage_interval_days": {
+      "@id": "origin:percentage_interval_days",
+      "@type": "xsd:integer"
+    },
+    "PartnerOrganisation": "origin:PartnerOrganisation",
+    "organisation_number": {
+      "@id": "origin:organisation_number",
+      "@type": "xsd:string"
+    },
+    "source_reference_s3_key": {
+      "@id": "origin:source_reference_s3_key",
+      "@type": "xsd:string"
+    },
+    "ComplaintContact": "origin:ComplaintContact",
+    "body": {
+      "@id": "origin:body",
+      "@type": "xsd:string"
+    },
+    "communication_method": {
+      "@id": "origin:communication_method",
+      "@type": "xsd:string"
+    },
+    "communication_source": {
+      "@id": "origin:communication_source",
+      "@type": "xsd:string"
+    },
+    "created_at": {
+      "@id": "origin:created_at",
+      "@type": "xsd:dateTime"
+    },
+    "EmbeddedElecHistoricalReading": "origin:EmbeddedElecHistoricalReading",
+    "quality_method": {
+      "@id": "origin:quality_method",
+      "@type": "xsd:string"
+    },
+    "reading_quality": {
+      "@id": "origin:reading_quality",
+      "@type": "xsd:string"
+    },
+    "BusinessUser": "origin:BusinessUser",
+    "business_roles": {
+      "@id": "origin:business_roles",
+      "@container": "@list"
+    },
+    "TerminationFee": "origin:TerminationFee",
+    "fee_type": {
+      "@id": "origin:fee_type",
+      "@type": "xsd:string"
+    },
+    "supply_type": {
+      "@id": "origin:supply_type",
+      "@type": "xsd:string"
+    },
+    "BusinessPortfolio": "origin:BusinessPortfolio",
+    "notes": {
+      "@id": "origin:notes",
+      "@container": "@list"
+    },
+    "portfolio_references": {
+      "@id": "origin:portfolio_references",
+      "@container": "@list"
+    },
+    "portfolio_settings": {
+      "@id": "origin:portfolio_settings"
+    },
+    "Note": "origin:Note",
+    "document_paths": {
+      "@id": "origin:document_paths",
+      "@container": "@list"
+    },
+    "external_id": {
+      "@id": "origin:external_id",
+      "@type": "xsd:string"
+    },
+    "is_archived": {
+      "@id": "origin:is_archived",
+      "@type": "xsd:boolean"
+    },
+    "is_pinned": {
+      "@id": "origin:is_pinned",
+      "@type": "xsd:boolean"
+    },
+    "unpin_at": {
+      "@id": "origin:unpin_at",
+      "@type": "xsd:dateTime"
+    },
+    "PaymentPromise": "origin:PaymentPromise",
+    "payment_date": {
+      "@id": "origin:payment_date",
+      "@type": "xsd:date"
+    },
+    "EmbeddedWaterMeter": "origin:EmbeddedWaterMeter",
+    "access_details": {
+      "@id": "origin:access_details",
+      "@type": "xsd:string"
+    },
+    "connection_periods": {
+      "@id": "origin:connection_periods",
+      "@container": "@list"
+    },
+    "construction_date": {
+      "@id": "origin:construction_date",
+      "@type": "xsd:date"
+    },
+    "installed_on": {
+      "@id": "origin:installed_on",
+      "@type": "xsd:date"
+    },
+    "key_details": {
+      "@id": "origin:key_details",
+      "@type": "xsd:string"
+    },
+    "last_billed_to_date": {
+      "@id": "origin:last_billed_to_date",
+      "@type": "xsd:date"
+    },
+    "location": {
+      "@id": "origin:location",
+      "@type": "xsd:string"
+    },
+    "make_and_model": {
+      "@id": "origin:make_and_model",
+      "@type": "xsd:string"
+    },
+    "meter_measurement_unit": {
+      "@id": "origin:meter_measurement_unit",
+      "@type": "xsd:string"
+    },
+    "meter_serial_number": {
+      "@id": "origin:meter_serial_number",
+      "@type": "xsd:string"
+    },
+    "number_of_dials_on_device": {
+      "@id": "origin:number_of_dials_on_device",
+      "@type": "xsd:integer"
+    },
+    "read_method": {
+      "@id": "origin:read_method",
+      "@type": "xsd:string"
+    },
+    "reading_history": {
+      "@id": "origin:reading_history",
+      "@container": "@list"
+    },
+    "reading_route_sequence": {
+      "@id": "origin:reading_route_sequence",
+      "@type": "xsd:integer"
+    },
+    "removed_on": {
+      "@id": "origin:removed_on",
+      "@type": "xsd:date"
+    },
+    "transfer_readings": {
+      "@id": "origin:transfer_readings",
+      "@container": "@list"
+    },
+    "UnmeteredElectricitySupplyPoint": "origin:UnmeteredElectricitySupplyPoint",
+    "agreements": {
+      "@id": "origin:agreements",
+      "@container": "@list"
+    },
+    "appliance_type": {
+      "@id": "origin:appliance_type",
+      "@type": "xsd:string"
+    },
+    "dog_code": {
+      "@id": "origin:dog_code",
+      "@type": "xsd:string"
+    },
+    "hazard_details": {
+      "@id": "origin:hazard_details",
+      "@container": "@list"
+    },
+    "identifier": {
+      "@id": "origin:identifier",
+      "@type": "xsd:string"
+    },
+    "meter_position": {
+      "@id": "origin:meter_position",
+      "@type": "xsd:string"
+    },
+    "mpxn": {
+      "@id": "origin:mpxn",
+      "@type": "xsd:string"
+    },
+    "parent_nmi": {
+      "@id": "origin:parent_nmi",
+      "@type": "xsd:string"
+    },
+    "sensitive_load": {
+      "@id": "origin:sensitive_load",
+      "@type": "xsd:boolean"
+    },
+    "supply_end_date": {
+      "@id": "origin:supply_end_date",
+      "@type": "xsd:date"
+    },
+    "supply_start_date": {
+      "@id": "origin:supply_start_date",
+      "@type": "xsd:date"
+    },
+    "AusPropertyRichAddress": "origin:AusPropertyRichAddress",
+    "PaymentPreferencesWithNewInstructionReferences": "origin:PaymentPreferencesWithNewInstructionReferences",
+    "instruction_reference_params": {
+      "@id": "origin:instruction_reference_params"
+    },
+    "EmbeddedGasMeter": "origin:EmbeddedGasMeter",
+    "kpa_value": {
+      "@id": "origin:kpa_value",
+      "@type": "xsd:string"
+    },
+    "measurement_type": {
+      "@id": "origin:measurement_type",
+      "@type": "xsd:string"
+    },
+    "model_number": {
+      "@id": "origin:model_number",
+      "@type": "xsd:string"
+    },
+    "number_of_dials": {
+      "@id": "origin:number_of_dials",
+      "@type": "xsd:integer"
+    },
+    "reading_route": {
+      "@id": "origin:reading_route",
+      "@type": "xsd:string"
+    },
+    "ContributionSchemePeriod": "origin:ContributionSchemePeriod",
+    "end_date": {
+      "@id": "origin:end_date",
+      "@type": "xsd:date"
+    },
+    "fulfilled_at": {
+      "@id": "origin:fulfilled_at",
+      "@type": "xsd:dateTime"
+    },
+    "start_date": {
+      "@id": "origin:start_date",
+      "@type": "xsd:date"
+    },
+    "BillDueDate": "origin:BillDueDate",
+    "number_of_days": {
+      "@id": "origin:number_of_days",
+      "@type": "xsd:integer"
+    },
+    "type_of_days": {
+      "@id": "origin:type_of_days",
+      "@type": "xsd:string"
+    },
+    "CommonStructuredAddress": "origin:CommonStructuredAddress",
+    "building_or_property_name": {
+      "@id": "origin:building_or_property_name",
+      "@type": "xsd:string"
+    },
+    "flat_or_unit_number": {
+      "@id": "origin:flat_or_unit_number",
+      "@type": "xsd:string"
+    },
+    "flat_or_unit_type": {
+      "@id": "origin:flat_or_unit_type",
+      "@type": "xsd:string"
+    },
+    "floor_or_level_number": {
+      "@id": "origin:floor_or_level_number",
+      "@type": "xsd:string"
+    },
+    "floor_or_level_type": {
+      "@id": "origin:floor_or_level_type",
+      "@type": "xsd:string"
+    },
+    "house": {
+      "@id": "origin:house",
+      "@container": "@list"
+    },
+    "location_descriptor": {
+      "@id": "origin:location_descriptor",
+      "@type": "xsd:string"
+    },
+    "lot_number": {
+      "@id": "origin:lot_number",
+      "@type": "xsd:string"
+    },
+    "melway_grid_reference": {
+      "@id": "origin:melway_grid_reference",
+      "@type": "xsd:string"
+    },
+    "state_or_territory": {
+      "@id": "origin:state_or_territory",
+      "@type": "xsd:string"
+    },
+    "street": {
+      "@id": "origin:street",
+      "@container": "@list"
+    },
+    "suburb_or_place_or_locality": {
+      "@id": "origin:suburb_or_place_or_locality",
+      "@type": "xsd:string"
+    },
+    "ContractVersion": "origin:ContractVersion",
+    "applicable_at_date": {
+      "@id": "origin:applicable_at_date",
+      "@type": "xsd:date"
+    },
+    "terms": {
+      "@id": "origin:terms",
+      "@container": "@list"
+    },
+    "EmbeddedElecDistributor": "origin:EmbeddedElecDistributor",
+    "from_date": {
+      "@id": "origin:from_date",
+      "@type": "xsd:dateTime"
+    },
+    "lnsp_id": {
+      "@id": "origin:lnsp_id",
+      "@type": "xsd:string"
+    },
+    "to_date": {
+      "@id": "origin:to_date",
+      "@type": "xsd:dateTime"
+    },
+    "ElectricityMeter": "origin:ElectricityMeter",
+    "installation_type": {
+      "@id": "origin:installation_type",
+      "@type": "xsd:string"
+    },
+    "market_type": {
+      "@id": "origin:market_type",
+      "@type": "xsd:string"
+    },
+    "meter_read_type": {
+      "@id": "origin:meter_read_type",
+      "@type": "xsd:string"
+    },
+    "registers": {
+      "@id": "origin:registers",
+      "@container": "@list"
+    },
+    "AusLineItem": "origin:AusLineItem",
+    "external_rate_identifier": {
+      "@id": "origin:external_rate_identifier",
+      "@type": "xsd:string"
+    },
+    "net_amount": {
+      "@id": "origin:net_amount",
+      "@type": "xsd:string"
+    },
+    "number_of_units": {
+      "@id": "origin:number_of_units",
+      "@type": "xsd:string"
+    },
+    "params": {
+      "@id": "origin:params"
+    },
+    "price_per_unit": {
+      "@id": "origin:price_per_unit",
+      "@type": "xsd:string"
+    },
+    "rate_band": {
+      "@id": "origin:rate_band",
+      "@type": "xsd:string"
+    },
+    "rate_specification_code": {
+      "@id": "origin:rate_specification_code",
+      "@type": "xsd:string"
+    },
+    "time_series_specification_code": {
+      "@id": "origin:time_series_specification_code",
+      "@type": "xsd:string"
+    },
+    "units": {
+      "@id": "origin:units",
+      "@container": "@list"
+    },
+    "OriginAccount": "origin:OriginAccount",
+    "account_billing_options": {
+      "@id": "origin:account_billing_options"
+    },
+    "account_campaigns": {
+      "@id": "origin:account_campaigns",
+      "@container": "@list"
+    },
+    "account_contracts": {
+      "@id": "origin:account_contracts",
+      "@container": "@list"
+    },
+    "account_type": {
+      "@id": "origin:account_type",
+      "@type": "xsd:string"
+    },
+    "affiliate_subdomain": {
+      "@id": "origin:affiliate_subdomain",
+      "@type": "xsd:string"
+    },
+    "billing_address": {
+      "@id": "origin:billing_address"
+    },
+    "billing_address1": {
+      "@id": "origin:billing_address1",
+      "@type": "xsd:string"
+    },
+    "billing_address2": {
+      "@id": "origin:billing_address2",
+      "@type": "xsd:string"
+    },
+    "billing_address3": {
+      "@id": "origin:billing_address3",
+      "@type": "xsd:string"
+    },
+    "billing_address4": {
+      "@id": "origin:billing_address4",
+      "@type": "xsd:string"
+    },
+    "billing_address5": {
+      "@id": "origin:billing_address5",
+      "@type": "xsd:string"
+    },
+    "billing_attention_of": {
+      "@id": "origin:billing_attention_of",
+      "@type": "xsd:string"
+    },
+    "billing_customer_reference": {
+      "@id": "origin:billing_customer_reference",
+      "@type": "xsd:string"
+    },
+    "billing_delivery_point_identifier": {
+      "@id": "origin:billing_delivery_point_identifier",
+      "@type": "xsd:string"
+    },
+    "billing_email": {
+      "@id": "origin:billing_email",
+      "@type": "xsd:string"
+    },
+    "billing_postcode": {
+      "@id": "origin:billing_postcode",
+      "@type": "xsd:string"
+    },
+    "billing_sub_name": {
+      "@id": "origin:billing_sub_name",
+      "@type": "xsd:string"
+    },
+    "business": {
+      "@id": "origin:business"
+    },
+    "communication_preference": {
+      "@id": "origin:communication_preference",
+      "@type": "xsd:string"
+    },
+    "complaints": {
+      "@id": "origin:complaints",
+      "@container": "@list"
+    },
+    "contribution_agreements": {
+      "@id": "origin:contribution_agreements",
+      "@container": "@list"
+    },
+    "customers": {
+      "@id": "origin:customers",
+      "@container": "@list"
+    },
+    "date_of_sale": {
+      "@id": "origin:date_of_sale",
+      "@type": "xsd:date"
+    },
+    "debt": {
+      "@id": "origin:debt"
+    },
+    "debts": {
+      "@id": "origin:debts",
+      "@container": "@list"
+    },
+    "deposit_agreements": {
+      "@id": "origin:deposit_agreements",
+      "@container": "@list"
+    },
+    "document_accessibility": {
+      "@id": "origin:document_accessibility",
+      "@type": "xsd:string"
+    },
+    "dunning_path": {
+      "@id": "origin:dunning_path"
+    },
+    "events": {
+      "@id": "origin:events",
+      "@container": "@list"
+    },
+    "hardship_agreements": {
+      "@id": "origin:hardship_agreements",
+      "@container": "@list"
+    },
+    "import_supplier": {
+      "@id": "origin:import_supplier",
+      "@type": "xsd:string"
+    },
+    "is_managed": {
+      "@id": "origin:is_managed",
+      "@type": "xsd:boolean"
+    },
+    "is_portfolio_lead": {
+      "@id": "origin:is_portfolio_lead",
+      "@type": "xsd:boolean"
+    },
+    "language_preference": {
+      "@id": "origin:language_preference",
+      "@type": "xsd:string"
+    },
+    "last_payment_review_date": {
+      "@id": "origin:last_payment_review_date",
+      "@type": "xsd:date"
+    },
+    "ledgers": {
+      "@id": "origin:ledgers",
+      "@container": "@list"
+    },
+    "next_bill_due_date": {
+      "@id": "origin:next_bill_due_date",
+      "@type": "xsd:date"
+    },
+    "operations_team_name": {
+      "@id": "origin:operations_team_name",
+      "@type": "xsd:string"
+    },
+    "partner_file_attachments": {
+      "@id": "origin:partner_file_attachments",
+      "@container": "@list"
+    },
+    "partner_organisations": {
+      "@id": "origin:partner_organisations",
+      "@container": "@list"
+    },
+    "payment_adequacy_changes": {
+      "@id": "origin:payment_adequacy_changes",
+      "@container": "@list"
+    },
+    "payment_instructions": {
+      "@id": "origin:payment_instructions",
+      "@container": "@list"
+    },
+    "payment_plans": {
+      "@id": "origin:payment_plans",
+      "@container": "@list"
+    },
+    "payment_preferences": {
+      "@id": "origin:payment_preferences",
+      "@container": "@list"
+    },
+    "payment_promises": {
+      "@id": "origin:payment_promises",
+      "@container": "@list"
+    },
+    "payment_schedules": {
+      "@id": "origin:payment_schedules",
+      "@container": "@list"
+    },
+    "payment_terms": {
+      "@id": "origin:payment_terms"
+    },
+    "portfolio": {
+      "@id": "origin:portfolio"
+    },
+    "references": {
+      "@id": "origin:references",
+      "@container": "@list"
+    },
+    "remotely_communicating_meter_opt_out_reason": {
+      "@id": "origin:remotely_communicating_meter_opt_out_reason"
+    },
+    "sales_subchannel": {
+      "@id": "origin:sales_subchannel",
+      "@type": "xsd:string"
+    },
+    "statements": {
+      "@id": "origin:statements",
+      "@container": "@list"
+    },
+    "supply_addresses": {
+      "@id": "origin:supply_addresses",
+      "@container": "@list"
+    },
+    "transfer_balance": {
+      "@id": "origin:transfer_balance",
+      "@type": "xsd:string"
+    },
+    "unknown_occupier": {
+      "@id": "origin:unknown_occupier",
+      "@type": "xsd:boolean"
+    },
+    "GasTransferReading": "origin:GasTransferReading",
+    "NewPaymentInstructionReference": "origin:NewPaymentInstructionReference",
+    "TaxItem": "origin:TaxItem",
+    "rate": {
+      "@id": "origin:rate",
+      "@type": "xsd:string"
+    },
+    "tax_type": {
+      "@id": "origin:tax_type",
+      "@type": "xsd:string"
+    },
+    "unit_type": {
+      "@id": "origin:unit_type",
+      "@type": "xsd:string"
+    },
+    "value_taxed": {
+      "@id": "origin:value_taxed",
+      "@type": "xsd:string"
+    },
+    "Metadata": "origin:Metadata",
+    "key": {
+      "@id": "origin:key",
+      "@type": "xsd:string"
+    },
+    "AusPaymentPlan": "origin:AusPaymentPlan",
+    "additional_information": {
+      "@id": "origin:additional_information"
+    },
+    "debt_amount": {
+      "@id": "origin:debt_amount",
+      "@type": "xsd:string"
+    },
+    "initial_schedule_type": {
+      "@id": "origin:initial_schedule_type",
+      "@type": "xsd:string"
+    },
+    "is_hardship": {
+      "@id": "origin:is_hardship",
+      "@type": "xsd:boolean"
+    },
+    "last_payment_date": {
+      "@id": "origin:last_payment_date",
+      "@type": "xsd:date"
+    },
+    "next_payment_date": {
+      "@id": "origin:next_payment_date",
+      "@type": "xsd:date"
+    },
+    "number_of_remaining_instalments": {
+      "@id": "origin:number_of_remaining_instalments",
+      "@type": "xsd:integer"
+    },
+    "ongoing_amount": {
+      "@id": "origin:ongoing_amount",
+      "@type": "xsd:string"
+    },
+    "payment_frequency": {
+      "@id": "origin:payment_frequency",
+      "@type": "xsd:string"
+    },
+    "payment_frequency_multiplier": {
+      "@id": "origin:payment_frequency_multiplier",
+      "@type": "xsd:integer"
+    },
+    "plan_type": {
+      "@id": "origin:plan_type",
+      "@type": "xsd:string"
+    },
+    "BaseBusiness": "origin:BaseBusiness",
+    "PaymentSchedule": "origin:PaymentSchedule",
+    "balance_threshold": {
+      "@id": "origin:balance_threshold",
+      "@type": "xsd:string"
+    },
+    "day_of_month": {
+      "@id": "origin:day_of_month",
+      "@type": "xsd:integer"
+    },
+    "debt_repayment_element": {
+      "@id": "origin:debt_repayment_element",
+      "@type": "xsd:string"
+    },
+    "debt_repayment_end_date": {
+      "@id": "origin:debt_repayment_end_date",
+      "@type": "xsd:date"
+    },
+    "delay_days": {
+      "@id": "origin:delay_days",
+      "@type": "xsd:integer"
+    },
+    "delay_strategy": {
+      "@id": "origin:delay_strategy",
+      "@type": "xsd:string"
+    },
+    "exempt_from_payment_adequacy": {
+      "@id": "origin:exempt_from_payment_adequacy",
+      "@type": "xsd:boolean"
+    },
+    "instalments": {
+      "@id": "origin:instalments",
+      "@container": "@list"
+    },
+    "is_debt_repayment_plan": {
+      "@id": "origin:is_debt_repayment_plan",
+      "@type": "xsd:boolean"
+    },
+    "means": {
+      "@id": "origin:means",
+      "@type": "xsd:string"
+    },
+    "paid_by": {
+      "@id": "origin:paid_by",
+      "@type": "xsd:string"
+    },
+    "trigger": {
+      "@id": "origin:trigger",
+      "@type": "xsd:string"
+    },
+    "GasMasterData": "origin:GasMasterData",
+    "baseload": {
+      "@id": "origin:baseload",
+      "@type": "xsd:string"
+    },
+    "customer_characterisation": {
+      "@id": "origin:customer_characterisation",
+      "@type": "xsd:string"
+    },
+    "customer_classification_code": {
+      "@id": "origin:customer_classification_code",
+      "@type": "xsd:string"
+    },
+    "customer_classification_threshold": {
+      "@id": "origin:customer_classification_threshold",
+      "@type": "xsd:string"
+    },
+    "distribution_tariff": {
+      "@id": "origin:distribution_tariff",
+      "@type": "xsd:string"
+    },
+    "heating_value_zone": {
+      "@id": "origin:heating_value_zone",
+      "@type": "xsd:string"
+    },
+    "market": {
+      "@id": "origin:market",
+      "@type": "xsd:string"
+    },
+    "mirn_status": {
+      "@id": "origin:mirn_status",
+      "@type": "xsd:string"
+    },
+    "network_id": {
+      "@id": "origin:network_id",
+      "@type": "xsd:string"
+    },
+    "temperature_sensitivity_factor": {
+      "@id": "origin:temperature_sensitivity_factor",
+      "@type": "xsd:string"
+    },
+    "transmission_zone": {
+      "@id": "origin:transmission_zone",
+      "@type": "xsd:integer"
+    },
+    "BespokeRateConfiguration": "origin:BespokeRateConfiguration",
+    "schedules": {
+      "@id": "origin:schedules",
+      "@container": "@list"
+    },
+    "ElectricityReading": "origin:ElectricityReading",
+    "estimated_reason_code": {
+      "@id": "origin:estimated_reason_code",
+      "@type": "xsd:string"
+    },
+    "HardshipAgreement": "origin:HardshipAgreement",
+    "exit_reason": {
+      "@id": "origin:exit_reason",
+      "@type": "xsd:string"
+    },
+    "exit_reason_details": {
+      "@id": "origin:exit_reason_details",
+      "@type": "xsd:string"
+    },
+    "hardship_details": {
+      "@id": "origin:hardship_details",
+      "@type": "xsd:string"
+    },
+    "hardship_entry_reason": {
+      "@id": "origin:hardship_entry_reason",
+      "@type": "xsd:string"
+    },
+    "hardship_type": {
+      "@id": "origin:hardship_type",
+      "@type": "xsd:string"
+    },
+    "payment_plan_details": {
+      "@id": "origin:payment_plan_details",
+      "@type": "xsd:string"
+    },
+    "Ledger": "origin:Ledger",
+    "PartnerFileAttachment": "origin:PartnerFileAttachment",
+    "category": {
+      "@id": "origin:category",
+      "@type": "xsd:string"
+    },
+    "filename": {
+      "@id": "origin:filename",
+      "@type": "xsd:string"
+    },
+    "partner_number": {
+      "@id": "origin:partner_number",
+      "@type": "xsd:string"
+    },
+    "s3_key": {
+      "@id": "origin:s3_key",
+      "@type": "xsd:string"
+    },
+    "AusAgreement": "origin:AusAgreement",
+    "agreed_at": {
+      "@id": "origin:agreed_at",
+      "@type": "xsd:dateTime"
+    },
+    "characteristics": {
+      "@id": "origin:characteristics",
+      "@container": "@list"
+    },
+    "intermediary": {
+      "@id": "origin:intermediary"
+    },
+    "product_addons": {
+      "@id": "origin:product_addons",
+      "@container": "@list"
+    },
+    "rate_overrides": {
+      "@id": "origin:rate_overrides"
+    },
+    "rates_agreed_at": {
+      "@id": "origin:rates_agreed_at",
+      "@type": "xsd:dateTime"
+    },
+    "tariff_code": {
+      "@id": "origin:tariff_code",
+      "@type": "xsd:string"
+    },
+    "AusAccountBillingOptions": "origin:AusAccountBillingOptions",
+    "period_length": {
+      "@id": "origin:period_length",
+      "@type": "xsd:string"
+    },
+    "period_length_multiplier": {
+      "@id": "origin:period_length_multiplier",
+      "@type": "xsd:integer"
+    },
+    "use_industry_billing": {
+      "@id": "origin:use_industry_billing",
+      "@type": "xsd:boolean"
+    },
+    "OriginSupplyCharge": "origin:OriginSupplyCharge",
+    "RateGroupEligibilityConfiguration": "origin:RateGroupEligibilityConfiguration",
+    "time_series_specification_schedules": {
+      "@id": "origin:time_series_specification_schedules",
+      "@container": "@list"
+    },
+    "AusCharge": "origin:AusCharge",
+    "reason": {
+      "@id": "origin:reason",
+      "@type": "xsd:string"
+    },
+    "AusEEPAExportContractedVolumeConfiguration": "origin:AusEEPAExportContractedVolumeConfiguration",
+    "periods": {
+      "@id": "origin:periods",
+      "@container": "@list"
+    },
+    "PromotionAssignmentTerm": "origin:PromotionAssignmentTerm",
+    "AusNetEmissions": "origin:AusNetEmissions",
+    "from_time": {
+      "@id": "origin:from_time",
+      "@type": "xsd:dateTime"
+    },
+    "kg_co2_net_emissions": {
+      "@id": "origin:kg_co2_net_emissions",
+      "@type": "xsd:string"
+    },
+    "to_time": {
+      "@id": "origin:to_time",
+      "@type": "xsd:dateTime"
+    },
+    "ElectricityHistoricalReading": "origin:ElectricityHistoricalReading",
+    "EmbeddedElecMeterDataProvider": "origin:EmbeddedElecMeterDataProvider",
+    "mdp_id": {
+      "@id": "origin:mdp_id",
+      "@type": "xsd:string"
+    },
+    "LatestError": "origin:LatestError",
+    "domain": {
+      "@id": "origin:domain",
+      "@type": "xsd:string"
+    },
+    "ImportEvent": "origin:ImportEvent",
+    "data": {
+      "@id": "origin:data"
+    },
+    "event": {
+      "@id": "origin:event",
+      "@type": "xsd:string"
+    },
+    "occurred_at": {
+      "@id": "origin:occurred_at",
+      "@type": "xsd:dateTime"
+    },
+    "Complaint": "origin:Complaint",
+    "complainant_email": {
+      "@id": "origin:complainant_email",
+      "@type": "xsd:string"
+    },
+    "complainant_name": {
+      "@id": "origin:complainant_name",
+      "@type": "xsd:string"
+    },
+    "complaint_contacts": {
+      "@id": "origin:complaint_contacts",
+      "@container": "@list"
+    },
+    "has_chsr_letter_been_sent": {
+      "@id": "origin:has_chsr_letter_been_sent",
+      "@type": "xsd:boolean"
+    },
+    "has_eight_week_letter_been_sent": {
+      "@id": "origin:has_eight_week_letter_been_sent",
+      "@type": "xsd:boolean"
+    },
+    "official_entity": {
+      "@id": "origin:official_entity",
+      "@type": "xsd:string"
+    },
+    "official_reference_number": {
+      "@id": "origin:official_reference_number",
+      "@type": "xsd:string"
+    },
+    "official_status": {
+      "@id": "origin:official_status",
+      "@type": "xsd:string"
+    },
+    "subtype_of_complaint": {
+      "@id": "origin:subtype_of_complaint",
+      "@type": "xsd:string"
+    },
+    "type_of_complaint": {
+      "@id": "origin:type_of_complaint",
+      "@type": "xsd:string"
+    },
+    "GuaranteeOfOriginConfiguration": "origin:GuaranteeOfOriginConfiguration",
+    "guarantee_of_origin_percentage": {
+      "@id": "origin:guarantee_of_origin_percentage",
+      "@type": "xsd:integer"
+    },
+    "PaymentPreferencesWithExistingInstructionReferences": "origin:PaymentPreferencesWithExistingInstructionReferences",
+    "CustomerConsent": "origin:CustomerConsent",
+    "description": {
+      "@id": "origin:description",
+      "@type": "xsd:string"
+    },
+    "signed_at": {
+      "@id": "origin:signed_at",
+      "@type": "xsd:dateTime"
+    },
+    "SalesChannelCharacteristic": "origin:SalesChannelCharacteristic",
+    "GasMeter": "origin:GasMeter",
+    "billing_method": {
+      "@id": "origin:billing_method",
+      "@type": "xsd:string"
+    },
+    "meter_installation_type": {
+      "@id": "origin:meter_installation_type",
+      "@type": "xsd:string"
+    },
+    "meter_multiplier": {
+      "@id": "origin:meter_multiplier",
+      "@type": "xsd:string"
+    },
+    "meter_read_frequency": {
+      "@id": "origin:meter_read_frequency",
+      "@type": "xsd:string"
+    },
+    "meter_status": {
+      "@id": "origin:meter_status",
+      "@type": "xsd:string"
+    },
+    "meter_type": {
+      "@id": "origin:meter_type",
+      "@type": "xsd:string"
+    },
+    "meter_type_size_code": {
+      "@id": "origin:meter_type_size_code",
+      "@type": "xsd:string"
+    },
+    "next_scheduled_read_date": {
+      "@id": "origin:next_scheduled_read_date",
+      "@type": "xsd:date"
+    },
+    "supply_point_code": {
+      "@id": "origin:supply_point_code",
+      "@type": "xsd:string"
+    },
+    "supply_point_id": {
+      "@id": "origin:supply_point_id",
+      "@type": "xsd:string"
+    },
+    "ProductRateOverrideConfiguration": "origin:ProductRateOverrideConfiguration",
+    "indexation_options": {
+      "@id": "origin:indexation_options"
+    },
+    "MinimumContractLength": "origin:MinimumContractLength",
+    "contract_identifier": {
+      "@id": "origin:contract_identifier",
+      "@type": "xsd:string"
+    },
+    "length": {
+      "@id": "origin:length",
+      "@type": "xsd:integer"
+    },
+    "unit_of_time": {
+      "@id": "origin:unit_of_time",
+      "@type": "xsd:string"
+    },
+    "CustomerUserDetail": "origin:CustomerUserDetail",
+    "namespace": {
+      "@id": "origin:namespace",
+      "@type": "xsd:string"
+    },
+    "PromotionAssignmentTarget": "origin:PromotionAssignmentTarget",
+    "displayed_on_bill": {
+      "@id": "origin:displayed_on_bill",
+      "@type": "xsd:boolean"
+    },
+    "source_data": {
+      "@id": "origin:source_data"
+    },
+    "target_type": {
+      "@id": "origin:target_type",
+      "@type": "xsd:string"
+    },
+    "Repayment": "origin:Repayment",
+    "payment_type": {
+      "@id": "origin:payment_type",
+      "@type": "xsd:string"
+    },
+    "AccountContract": "origin:AccountContract",
+    "sales_record": {
+      "@id": "origin:sales_record"
+    },
+    "signed_at_date": {
+      "@id": "origin:signed_at_date",
+      "@type": "xsd:date"
+    },
+    "versions": {
+      "@id": "origin:versions",
+      "@container": "@list"
+    },
+    "ProcessAccountImportProcess": "origin:ProcessAccountImportProcess",
+    "dry_run": {
+      "@id": "origin:dry_run",
+      "@type": "xsd:boolean"
+    },
+    "ElectricitySupplyDetail": "origin:ElectricitySupplyDetail",
+    "agreed_capacity_kva": {
+      "@id": "origin:agreed_capacity_kva",
+      "@type": "xsd:string"
+    },
+    "asset_tariff_category": {
+      "@id": "origin:asset_tariff_category",
+      "@type": "xsd:string"
+    },
+    "equipment_capacity_kw": {
+      "@id": "origin:equipment_capacity_kw",
+      "@type": "xsd:string"
+    },
+    "estimated_annual_consumption_kwh": {
+      "@id": "origin:estimated_annual_consumption_kwh",
+      "@type": "xsd:string"
+    },
+    "number_of_connections": {
+      "@id": "origin:number_of_connections",
+      "@type": "xsd:integer"
+    },
+    "EmbeddedGasMeterPoint": "origin:EmbeddedGasMeterPoint",
+    "customer_classification": {
+      "@id": "origin:customer_classification",
+      "@type": "xsd:string"
+    },
+    "heating_value": {
+      "@id": "origin:heating_value",
+      "@type": "xsd:string"
+    },
+    "meters": {
+      "@id": "origin:meters",
+      "@container": "@list"
+    },
+    "parent_installation_id": {
+      "@id": "origin:parent_installation_id",
+      "@type": "xsd:string"
+    },
+    "parent_mirn": {
+      "@id": "origin:parent_mirn",
+      "@type": "xsd:string"
+    },
+    "pricing_zone": {
+      "@id": "origin:pricing_zone",
+      "@type": "xsd:string"
+    },
+    "TrancheTargetResidualFeeMarket": "origin:TrancheTargetResidualFeeMarket",
+    "market_name": {
+      "@id": "origin:market_name",
+      "@type": "xsd:string"
+    },
+    "CollateralRequired": "origin:CollateralRequired",
+    "interest_policy": {
+      "@id": "origin:interest_policy",
+      "@type": "xsd:string"
+    },
+    "IndexationOption": "origin:IndexationOption",
+    "escalation_start_date": {
+      "@id": "origin:escalation_start_date",
+      "@type": "xsd:date"
+    },
+    "index_code": {
+      "@id": "origin:index_code",
+      "@type": "xsd:string"
+    },
+    "AccountConsent": "origin:AccountConsent",
+    "PaymentInstructionCard": "origin:PaymentInstructionCard",
+    "card_payment_network": {
+      "@id": "origin:card_payment_network",
+      "@type": "xsd:string"
+    },
+    "card_type": {
+      "@id": "origin:card_type",
+      "@type": "xsd:string"
+    },
+    "expiry_month": {
+      "@id": "origin:expiry_month",
+      "@type": "xsd:integer"
+    },
+    "expiry_year": {
+      "@id": "origin:expiry_year",
+      "@type": "xsd:integer"
+    },
+    "last_digits": {
+      "@id": "origin:last_digits",
+      "@type": "xsd:string"
+    },
+    "Credit": "origin:Credit",
+    "AusManuallyDefinedEligibilityPeriods": "origin:AusManuallyDefinedEligibilityPeriods",
+    "eligibility_type": {
+      "@id": "origin:eligibility_type",
+      "@type": "xsd:string"
+    },
+    "AusAccountEvent": "origin:AusAccountEvent",
+    "event_type": {
+      "@id": "origin:event_type",
+      "@type": "xsd:string"
+    },
+    "subcategory": {
+      "@id": "origin:subcategory",
+      "@type": "xsd:string"
+    },
+    "OriginStrictAccountBillingOptions": "origin:OriginStrictAccountBillingOptions",
+    "AccountReference": "origin:AccountReference",
+    "EmbeddedWaterTransferReading": "origin:EmbeddedWaterTransferReading",
+    "AgreementIntermediaryDetails": "origin:AgreementIntermediaryDetails",
+    "portfolio_number": {
+      "@id": "origin:portfolio_number",
+      "@type": "xsd:string"
+    },
+    "UnmeteredGasSupplyPoint": "origin:UnmeteredGasSupplyPoint",
+    "PromotionAssignmentSchedule": "origin:PromotionAssignmentSchedule",
+    "discount_targets": {
+      "@id": "origin:discount_targets"
+    },
+    "promotion_code": {
+      "@id": "origin:promotion_code",
+      "@type": "xsd:string"
+    },
+    "DelayerDays": "origin:DelayerDays",
+    "days": {
+      "@id": "origin:days",
+      "@type": "xsd:integer"
+    },
+    "strategy": {
+      "@id": "origin:strategy",
+      "@type": "xsd:string"
+    },
+    "CharacteristicOverride": "origin:CharacteristicOverride",
+    "characteristic_code": {
+      "@id": "origin:characteristic_code",
+      "@type": "xsd:string"
+    },
+    "override_value": {
+      "@id": "origin:override_value"
+    },
+    "ContributionSchemeAgreement": "origin:ContributionSchemeAgreement",
+    "active_period_end_date": {
+      "@id": "origin:active_period_end_date",
+      "@type": "xsd:date"
+    },
+    "active_period_start_date": {
+      "@id": "origin:active_period_start_date",
+      "@type": "xsd:date"
+    },
+    "interval": {
+      "@id": "origin:interval",
+      "@type": "xsd:string"
+    },
+    "scheme": {
+      "@id": "origin:scheme",
+      "@type": "xsd:string"
+    },
+    "BespokeRateSchedule": "origin:BespokeRateSchedule",
+    "items": {
+      "@id": "origin:items",
+      "@container": "@list"
+    },
+    "CustomerAlternativeNumber": "origin:CustomerAlternativeNumber",
+    "phone_number": {
+      "@id": "origin:phone_number",
+      "@type": "xsd:string"
+    },
+    "ImportStatusResponse": "origin:ImportStatusResponse",
+    "kraken_identifier": {
+      "@id": "origin:kraken_identifier",
+      "@type": "xsd:string"
+    },
+    "latest_error": {
+      "@id": "origin:latest_error"
+    },
+    "latest_event": {
+      "@id": "origin:latest_event"
+    },
+    "modified_at": {
+      "@id": "origin:modified_at",
+      "@type": "xsd:dateTime"
+    },
+    "StandardizedValidationErrorResponse": "origin:StandardizedValidationErrorResponse",
+    "errors": {
+      "@id": "origin:errors",
+      "@container": "@list"
+    },
+    "PartnerCommission": "origin:PartnerCommission",
+    "configurations": {
+      "@id": "origin:configurations",
+      "@container": "@list"
+    },
+    "AusPaymentPlanAdditionalInformation": "origin:AusPaymentPlanAdditionalInformation",
+    "first_payment_date": {
+      "@id": "origin:first_payment_date",
+      "@type": "xsd:date"
+    },
+    "hardship_circumstance": {
+      "@id": "origin:hardship_circumstance",
+      "@type": "xsd:string"
+    },
+    "next_assessment_date": {
+      "@id": "origin:next_assessment_date",
+      "@type": "xsd:date"
+    },
+    "plan_category": {
+      "@id": "origin:plan_category",
+      "@type": "xsd:string"
+    },
+    "plan_number": {
+      "@id": "origin:plan_number",
+      "@type": "xsd:string"
+    },
+    "plan_requested_by": {
+      "@id": "origin:plan_requested_by",
+      "@type": "xsd:string"
+    },
+    "plan_start_date": {
+      "@id": "origin:plan_start_date",
+      "@type": "xsd:date"
+    },
+    "total_debt_amount": {
+      "@id": "origin:total_debt_amount",
+      "@type": "xsd:string"
+    },
+    "total_ongoing_amount": {
+      "@id": "origin:total_ongoing_amount",
+      "@type": "xsd:string"
+    },
+    "ElectricityRegister": "origin:ElectricityRegister",
+    "effective_ntc": {
+      "@id": "origin:effective_ntc",
+      "@type": "xsd:string"
+    },
+    "effective_ntc_from": {
+      "@id": "origin:effective_ntc_from",
+      "@type": "xsd:dateTime"
+    },
+    "effective_ntc_to": {
+      "@id": "origin:effective_ntc_to",
+      "@type": "xsd:dateTime"
+    },
+    "has_readings": {
+      "@id": "origin:has_readings",
+      "@type": "xsd:boolean"
+    },
+    "network_tariff_code": {
+      "@id": "origin:network_tariff_code",
+      "@type": "xsd:string"
+    },
+    "unit_of_measure": {
+      "@id": "origin:unit_of_measure",
+      "@type": "xsd:string"
+    },
+    "AusLifeSupport": "origin:AusLifeSupport",
+    "contact_user_email": {
+      "@id": "origin:contact_user_email",
+      "@type": "xsd:string"
+    },
+    "life_support_date": {
+      "@id": "origin:life_support_date",
+      "@type": "xsd:date"
+    },
+    "life_support_equipment": {
+      "@id": "origin:life_support_equipment",
+      "@type": "xsd:string"
+    },
+    "life_support_status": {
+      "@id": "origin:life_support_status",
+      "@type": "xsd:string"
+    },
+    "preferred_contact_method": {
+      "@id": "origin:preferred_contact_method",
+      "@type": "xsd:string"
+    },
+    "registration_owner": {
+      "@id": "origin:registration_owner",
+      "@type": "xsd:string"
+    },
+    "registration_state": {
+      "@id": "origin:registration_state",
+      "@type": "xsd:string"
+    },
+    "EmbeddedElecMeterPoint": "origin:EmbeddedElecMeterPoint",
+    "customer_threshold": {
+      "@id": "origin:customer_threshold",
+      "@type": "xsd:string"
+    },
+    "distribution_loss_factor_code": {
+      "@id": "origin:distribution_loss_factor_code",
+      "@type": "xsd:string"
+    },
+    "distributors": {
+      "@id": "origin:distributors",
+      "@container": "@list"
+    },
+    "jurisdiction": {
+      "@id": "origin:jurisdiction",
+      "@type": "xsd:string"
+    },
+    "meter_data_providers": {
+      "@id": "origin:meter_data_providers",
+      "@container": "@list"
+    },
+    "nmi_classification": {
+      "@id": "origin:nmi_classification",
+      "@type": "xsd:string"
+    },
+    "nmi_status_periods": {
+      "@id": "origin:nmi_status_periods",
+      "@container": "@list"
+    },
+    "outage_contact_email": {
+      "@id": "origin:outage_contact_email",
+      "@type": "xsd:string"
+    },
+    "outage_contact_phone": {
+      "@id": "origin:outage_contact_phone",
+      "@type": "xsd:string"
+    },
+    "shared_isolation_flag": {
+      "@id": "origin:shared_isolation_flag",
+      "@type": "xsd:string"
+    },
+    "AgedDebt": "origin:AgedDebt",
+    "due_date": {
+      "@id": "origin:due_date",
+      "@type": "xsd:date"
+    },
+    "AusPaymentInstructionBankAccount": "origin:AusPaymentInstructionBankAccount",
+    "account_holder": {
+      "@id": "origin:account_holder",
+      "@type": "xsd:string"
+    },
+    "bsb": {
+      "@id": "origin:bsb",
+      "@type": "xsd:string"
+    },
+    "iban": {
+      "@id": "origin:iban",
+      "@type": "xsd:string"
+    },
+    "sort_code": {
+      "@id": "origin:sort_code",
+      "@type": "xsd:string"
+    },
+    "CustomerPreferences": "origin:CustomerPreferences",
+    "is_user_psr_consent_obtained": {
+      "@id": "origin:is_user_psr_consent_obtained",
+      "@type": "xsd:boolean"
+    },
+    "opted_into_associated_companies": {
+      "@id": "origin:opted_into_associated_companies",
+      "@type": "xsd:boolean"
+    },
+    "opted_into_offers": {
+      "@id": "origin:opted_into_offers",
+      "@type": "xsd:boolean"
+    },
+    "opted_into_recommended": {
+      "@id": "origin:opted_into_recommended",
+      "@type": "xsd:boolean"
+    },
+    "opted_into_sms": {
+      "@id": "origin:opted_into_sms",
+      "@type": "xsd:boolean"
+    },
+    "opted_into_third_parties": {
+      "@id": "origin:opted_into_third_parties",
+      "@type": "xsd:boolean"
+    },
+    "opted_into_updates": {
+      "@id": "origin:opted_into_updates",
+      "@type": "xsd:boolean"
+    },
+    "opted_into_whatsapp": {
+      "@id": "origin:opted_into_whatsapp",
+      "@type": "xsd:boolean"
+    },
+    "partner_password": {
+      "@id": "origin:partner_password",
+      "@type": "xsd:string"
+    },
+    "ContractedVolumeConfiguration": "origin:ContractedVolumeConfiguration",
+    "VariantProfile": "origin:VariantProfile",
+    "characteristic_values": {
+      "@id": "origin:characteristic_values"
+    },
+    "scheme_labels": {
+      "@id": "origin:scheme_labels"
+    },
+    "DepositAgreement": "origin:DepositAgreement",
+    "accepted_at": {
+      "@id": "origin:accepted_at",
+      "@type": "xsd:dateTime"
+    },
+    "deposit_amount": {
+      "@id": "origin:deposit_amount",
+      "@type": "xsd:string"
+    },
+    "last_interest_date": {
+      "@id": "origin:last_interest_date",
+      "@type": "xsd:date"
+    },
+    "AusRichSupplyAddress": "origin:AusRichSupplyAddress",
+    "customer_at_supply_address_from_date": {
+      "@id": "origin:customer_at_supply_address_from_date",
+      "@type": "xsd:date"
+    },
+    "customer_at_supply_address_to_date": {
+      "@id": "origin:customer_at_supply_address_to_date",
+      "@type": "xsd:date"
+    },
+    "embedded_network_code": {
+      "@id": "origin:embedded_network_code",
+      "@type": "xsd:string"
+    },
+    "is_landlord": {
+      "@id": "origin:is_landlord",
+      "@type": "xsd:boolean"
+    },
+    "life_support": {
+      "@id": "origin:life_support"
+    },
+    "meter_points": {
+      "@id": "origin:meter_points",
+      "@container": "@list"
+    },
+    "primary_place_of_residence_since": {
+      "@id": "origin:primary_place_of_residence_since",
+      "@type": "xsd:date"
+    },
+    "property_administrators": {
+      "@id": "origin:property_administrators",
+      "@container": "@list"
+    },
+    "property_external_identifier": {
+      "@id": "origin:property_external_identifier",
+      "@type": "xsd:string"
+    },
+    "supply_address": {
+      "@id": "origin:supply_address"
+    },
+    "ProcessAccountImportProcessCreation": "origin:ProcessAccountImportProcessCreation",
+    "CharacteristicOverrideConfiguration": "origin:CharacteristicOverrideConfiguration",
+    "overrides": {
+      "@id": "origin:overrides",
+      "@container": "@list"
+    },
+    "EmbeddedWaterHistoricalReading": "origin:EmbeddedWaterHistoricalReading",
+    "ProductRateOverrideItemByRateBand": "origin:ProductRateOverrideItemByRateBand",
+    "GasStructuredAddress": "origin:GasStructuredAddress"
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "Origin Energy API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects Origin Energy's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-20) from openapi/origin-energy-account-import-api-openapi.yml, openapi/origin-energy-accounts-api-openapi.yml, openapi/origin-energy-business-import-api-openapi.yml.",
+  "dcterms:created": "2026-10-20",
+  "dcterms:source": [
+    "openapi/origin-energy-account-import-api-openapi.yml",
+    "openapi/origin-energy-accounts-api-openapi.yml",
+    "openapi/origin-energy-business-import-api-openapi.yml",
+    "openapi/origin-energy-data-holder-customers-api-openapi.yml",
+    "openapi/origin-energy-data-holder-operations-api-openapi.yml"
+  ]
+}

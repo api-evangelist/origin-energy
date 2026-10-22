@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/origin-energy/main/json-schema/origin-energy-historical-statements-schema.json",
+  "title": "HistoricalStatements",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/origin-energy-post-account-import-api-openapi.yml#/components/schemas/HistoricalStatements",
+  "type": "object",
+  "properties": {
+    "external_account_number": {
+      "type": "string",
+      "description": "<p>The account number in the source system. This, along with the <code>import_supplier</code>, will be used to find the account in Kraken.</p>"
+    },
+    "import_supplier": {
+      "enum": [
+        "ORIGIN_SOLARFLEX_INACTIVE",
+        "ORIGIN",
+        "WIN_CONNECT_PARENT",
+        "ORIGIN_CNI",
+        "ORIGIN_BUSINESS",
+        "WIN_CONNECT",
+        "ORIGIN_SOLARFLEX",
+        "ORIGIN_BUSINESS_NO_CONTRACT"
+      ],
+      "type": "string",
+      "x-spec-enum-id": "9572ea198e3a9787",
+      "description": "<p>The import supplier code that the account was imported on to. This, along with the <code>external_account_number</code>, will be used to find the account in Kraken.</p>",
+      "x-enum-descriptions": {
+        "ORIGIN_SOLARFLEX_INACTIVE": "Origin SolarFlex Inactive",
+        "ORIGIN": "Origin",
+        "WIN_CONNECT_PARENT": "Win Connect Parent",
+        "ORIGIN_CNI": "Origin CNI",
+        "ORIGIN_BUSINESS": "Origin Zero Business Import Supplier",
+        "WIN_CONNECT": "WinConnect",
+        "ORIGIN_SOLARFLEX": "Origin SolarFlex",
+        "ORIGIN_BUSINESS_NO_CONTRACT": "Origin Business - No Contracts e.g. trustee"
+      }
+    },
+    "statements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/AusStatement"
+      },
+      "description": "<p>List of historical statements for the account.</p>"
+    }
+  },
+  "required": [
+    "external_account_number",
+    "import_supplier",
+    "statements"
+  ],
+  "x-validators": [
+    {
+      "name": "Validate that account data is staged and account created",
+      "description": "Validate that an account exists for the <code>external_account_number</code> and <code>import_supplier</code> code. This means that the import data must already have been staged and processed into an account.",
+      "possible_errors": [
+        "account_not_found",
+        "import_process_does_not_exist"
+      ]
+    },
+    {
+      "name": "Validate that migration is ongoing",
+      "description": "Validate whether or not an import supplier is open for further data migration.",
+      "possible_errors": [
+        "import_supplier_migration_not_ongoing"
+      ]
+    },
+    {
+      "name": "Validate that the account doesn't have historical statements",
+      "description": "Validate the the historical statements that are being imported do not already exist on the account. To check this the <code>statement_id</code>'s in the payload are checked against any historical statement IDs already associated with the account.",
+      "possible_errors": [
+        "account_not_found",
+        "historical_statement_already_exists"
+      ]
+    }
+  ],
+  "$defs": {
+    "AusNetEmissions": {
+      "type": "object",
+      "properties": {
+        "from_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "<p>Net emission from time.</p>"
+        },
+        "kg_co2_net_emissions": {
+          "type": "string",
+          "format": "decimal",
+          "pattern": "^-?\\d{0,10}(?:\\.\\d{0,10})?$",
+          "description": "<p>CO2 net emission in kg.</p>"
+        },
+        "to_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "<p>Net emission to time.</p>"
+        }
+      },
+      "required": [
+        "from_time",
+        "kg_co2_net_emissions",
+        "to_time"
+      ],
+      "x-validators": [
+        {
+          "name": "Validate from time not after to time",
+          "description": "Validate that from time is not after to time.",
+          "possible_errors": [
+            "from_time_not_after_to_time"
+          ]
+        }
+      ]
+    },
+    "AusStatement": {
+      "type": "object",
+      "properties": {
+        "average_daily_usage": {
+          "type": "string",
+          "format": "decimal",
+          "pattern": "^-?\\d{0,10}(?:\\.\\d{0,10})?$",
+          "description": "<p>The average daily usage of the statement.</p>"
+        },
+        "bill_period_from_date": {
+          "type": "string",
+          "format": "date",
+          "description": "<p>The statement start date (inclusive).</p>"
+        },
+        "bill_period_to_date": {
+          "type": "string",
+          "format": "date",
+          "description": "<p>The statement end date (inclusive).</p>"
+        },
+        "gross_amount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "<p>The gross amount of the statement, in the lowest denomination for the currency.</p>"
+        },
+        "is_reversed": {
+          "type": "boolean",
+          "description": "<p>Whether or not is reversed.</p>"
+        },
+        "issued_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date",
+          "description": "<p>The date the statement was issued.</p>"
+        },
+        "net_emissions": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/AusNetEmissions"
+          },
+          "description": "<p>List of net emissions.</p>"
+        },
+        "number": {
+          "type": "string",
+          "description": "<p>The external customer-facing statement number.</p>"
+        },
+        "statement_id": {
+          "type": "string",
+          "description": "<p>The ID of the statement.</p>"
+        },
+        "statement_path": {
+          "type": "string",
+          "description": "<p>The relative path in S3 of the statement PDF file.</p>",
+          "x-validators": [
+            {
+              "name": "Validate path exists in file store",
+              "description": "Validate that the given path corresponds to a file that has previously been uploaded to the migration file store. Note that this validation is disabled by default and can be enabled using the relevant feature flag.",
+              "possible_errors": [
+                "path_does_not_exist_in_file_store"
+              ]
+            }
+          ]
+        },
+        "total_consumption": {
+          "type": "string",
+          "format": "decimal",
+          "pattern": "^-?\\d{0,10}(?:\\.\\d{0,10})?$",
+          "description": "<p>The total consumption of the statement.</p>"
+        },
+        "total_consumption_cost": {
+          "type": "string",
+          "format": "decimal",
+          "pattern": "^-?\\d{0,10}(?:\\.\\d{0,10})?$",
+          "description": "<p>The total consunption cost of the statement.</p>"
+        },
+        "total_feed_in_cost": {
+          "type": "string",
+          "format": "decimal",
+          "pattern": "^-?\\d{0,10}(?:\\.\\d{0,10})?$",
+          "description": "<p>The total feed in cost of the statement.</p>"
+        },
+        "total_feed_in_energy": {
+          "type": "string",
+          "format": "decimal",
+          "pattern": "^-?\\d{0,10}(?:\\.\\d{0,10})?$",
+          "description": "<p>The total feed in energy of the statement.</p>"
+        },
+        "total_supply_cost": {
+          "type": "string",
+          "format": "decimal",
+          "pattern": "^-?\\d{0,10}(?:\\.\\d{0,10})?$",
+          "description": "<p>The total supply cost of the statement.</p>"
+        }
+      },
+      "required": [
+        "bill_period_from_date",
+        "bill_period_to_date",
+        "statement_id"
+      ],
+      "x-validators": [
+        {
+          "name": null,
+          "description": null,
+          "possible_errors": [
+            "missing_statement_path_or_pdf_context",
+            "received_statement_path_and_pdf_context"
+          ]
+        }
+      ]
+    }
+  }
+}

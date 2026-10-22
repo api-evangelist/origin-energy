@@ -1,0 +1,104 @@
+{
+  "info": {
+    "_postman_id": "5851900d-7f9c-4235-b8c0-f07058adf733",
+    "name": "Kraken Unbundled Network Charges API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:11:50.000Z",
+    "updatedAt": "2026-10-22T02:11:50.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-5851900d-7f9c-4235-b8c0-f07058adf733"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "unbundled-network-charges",
+          "item": [
+            {
+              "name": "energetiq-public-key",
+              "item": [
+                {
+                  "name": "Get energetiq public key 2",
+                  "id": "868e7a6a-ecdb-4f3d-bc9f-cb2cc911dd2f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/unbundled-network-charges/energetiq-public-key/",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "unbundled-network-charges",
+                        "energetiq-public-key",
+                        ""
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "66173a87-d699-4c86-a002-469005a9b8f9",
+                      "name": "No response body",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/unbundled-network-charges/energetiq-public-key/",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "unbundled-network-charges",
+                            "energetiq-public-key",
+                            ""
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-10-22T02:11:51.000Z",
+                      "updatedAt": "2026-10-22T02:11:51.000Z",
+                      "uid": "35240-66173a87-d699-4c86-a002-469005a9b8f9"
+                    }
+                  ],
+                  "createdAt": "2026-10-22T02:11:51.000Z",
+                  "updatedAt": "2026-10-22T02:11:51.000Z",
+                  "uid": "35240-868e7a6a-ecdb-4f3d-bc9f-cb2cc911dd2f"
+                }
+              ],
+              "id": "616ead1d-ece8-4835-a889-e24248275da9",
+              "createdAt": "2026-10-22T02:11:50.000Z",
+              "updatedAt": "2026-10-22T02:11:50.000Z",
+              "uid": "35240-616ead1d-ece8-4835-a889-e24248275da9"
+            }
+          ],
+          "id": "7c52d0fb-b2d8-497c-b5a9-702e59bcc19f",
+          "createdAt": "2026-10-22T02:11:50.000Z",
+          "updatedAt": "2026-10-22T02:11:50.000Z",
+          "uid": "35240-7c52d0fb-b2d8-497c-b5a9-702e59bcc19f"
+        }
+      ],
+      "id": "39bc6dde-365d-44ad-93c1-4d85507238a2",
+      "createdAt": "2026-10-22T02:11:50.000Z",
+      "updatedAt": "2026-10-22T02:11:50.000Z",
+      "uid": "35240-39bc6dde-365d-44ad-93c1-4d85507238a2"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.origin-kraken.energy/v1"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/origin-energy/main/json-schema/origin-energy-import-process-schema.json",
+  "title": "ImportProcess",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/origin-energy-query-api-openapi.yml#/components/schemas/ImportProcess",
+  "type": "object",
+  "properties": {
+    "account_created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "<p>The date and time that the account was created at.</p>"
+    },
+    "external_account_number": {
+      "type": "string",
+      "description": "<p>The account number in the source system. This, along with the <code>import_supplier</code>, will be used to find the account in Kraken.</p>",
+      "maxLength": 128
+    },
+    "kraken_account_number": {
+      "type": "string",
+      "description": "Account number",
+      "maxLength": 128
+    }
+  },
+  "required": [
+    "external_account_number"
+  ]
+}

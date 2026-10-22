@@ -1,28 +1,29 @@
 ---
-name: Migrate customer accounts onto the Origin Energy Kraken platform
+name: origin-energy-kraken-customer-migration
 description: Use the Kraken data-import REST API to validate, schedule and track the import of customer
   accounts, businesses, historical statements, transactions, notes and payment instructions onto Origin
   Energy's Kraken tenancy.
 api: openapi/origin-energy-kraken-data-import-openapi.yml
 operations:
-- V2 Validate Account
-- V2 Schedule Account Creation
-- V2 Account Import Status
-- V1 Validate Account
-- V1 Create Or Update Account Import Process
-- V1 Process Account Import Process
-- V1 Get Account Transfer Status
-- V1 Get Pending Account Import Processes
-- V1 Get All Account Import Processes
-- V1 Get Imported Accounts
-- V1 Create Business
-- V1 Create Business Payment Instruction
-- V1 Create Payment Instruction
-- V1 Create Historical Statements
-- V1 Create Transactions
-- V1 Create Account Notes
-generated: '2026-07-27'
+- V2ValidateAccount
+- V2ScheduleAccountCreation
+- V2AccountImportStatus
+- V1ValidateAccount
+- V1CreateOrUpdateAccountImportProcess
+- V1ProcessAccountImportProcess
+- V1GetAccountTransferStatus
+- V1GetPendingAccountImportProcesses
+- V1GetAllAccountImportProcesses
+- V1GetImportedAccounts
+- V1CreateBusiness
+- V1CreateBusinessPaymentInstruction
+- V1CreatePaymentInstruction
+- V1CreateHistoricalStatements
+- V1CreateTransactions
+- V1CreateAccountNotes
+generated: '2026-10-20'
 method: generated
+title: Migrate customer accounts onto the Origin Energy Kraken platform
 ---
 
 # Migrate customer accounts onto Origin Energy's Kraken platform

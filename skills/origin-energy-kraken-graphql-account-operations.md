@@ -1,5 +1,5 @@
 ---
-name: Operate Origin Energy customer accounts through the Kraken GraphQL API
+name: origin-energy-kraken-graphql-account-operations
 description: Query and mutate Origin Energy retail accounts, meter points, readings, payments and quotes
   through the Kraken GraphQL API, respecting its complexity budget, cursor pagination and idempotency-key
   contract.
@@ -32,8 +32,9 @@ graphql_fields:
 - makePaymentWithNewCard
 - makePaymentWithSavedCard
 - setupPaymentDetails
-generated: '2026-07-27'
+generated: '2026-10-20'
 method: generated
+title: Operate Origin Energy customer accounts through the Kraken GraphQL API
 ---
 
 # Operate Origin Energy accounts through Kraken GraphQL

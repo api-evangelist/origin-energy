@@ -12,11 +12,30 @@ authentication:
   detail: authentication/origin-energy-authentication.yml
   scopes: scopes/origin-energy-scopes.yml
 idempotency:
+  coverage: partial
+  scope:
+  - LoyaltyPointLedgerEntryInput
+  - CreateScheduledTransactionsInput
+  - PublishTransactionalMessagingExternalTriggerInput
+  - RequestRepaymentInputType
+  - CollectDepositInput
+  - CompleteStandalonePaymentInput
+  - CollectPaymentInput
+  - CreatePaymentActionIntentInput
+  - CreatePaymentMethodActionIntentInput
+  - TriggerStandalonePaymentRequestInput
+  - RefundPaymentInput
+  - AwardLoyaltyPointsInput
+  - BulkAwardLoyaltyPointsItemInput
+  - DeductLoyaltyPointsInput
+  - LeaveSupplierInput
+  - UpdateLeaveSupplierInput
+  - EnrollmentInput
+  scope_text: per mutation input; a repeated key on a ledger entry is rejected rather than replayed
   supported: true
   surface: Kraken GraphQL mutations
   mechanism: An idempotencyKey field on the mutation input object, not a transport header.
   key_type: UUID or String depending on the mutation
-  scope: per mutation input; a repeated key on a ledger entry is rejected rather than replayed
   conflict_error:
     code: KT-CT-9221
     message: Idempotency key already used on ledger entry.

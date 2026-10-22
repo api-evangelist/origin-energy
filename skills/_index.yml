@@ -1,4 +1,5 @@
-generated: '2026-07-27'
+name: Origin Energy agent skills
+generated: '2026-10-20'
 method: generated
 source: openapi/*, graphql/origin-energy-kraken.graphql, conventions/origin-energy-conventions.yml, errors/*,
   lifecycle/origin-energy-lifecycle.yml
@@ -6,13 +7,13 @@ note: Every operationId and GraphQL field name referenced in these skills was ve
   in the harvested contract before the skill was written.
 skills:
 - file: origin-energy-retail-plan-comparison.md
-  name: Compare Origin Energy retail electricity and gas plans
+  name: origin-energy-retail-plan-comparison
   api: openapi/consumer-data-standards-energy-api-openapi.json
   operations:
   - listEnergyPlans
   - getEnergyPlanDetail
 - file: origin-energy-cdr-consented-energy-data.md
-  name: Retrieve an Origin Energy customer's energy data under Consumer Data Right consent
+  name: origin-energy-cdr-consented-energy-data
   api: openapi/consumer-data-standards-energy-api-openapi.json
   operations:
   - listEnergyAccounts
@@ -32,7 +33,7 @@ skills:
   - getStatus
   - getOutages
 - file: origin-energy-kraken-customer-migration.md
-  name: Migrate customer accounts onto the Origin Energy Kraken platform
+  name: origin-energy-kraken-customer-migration
   api: openapi/origin-energy-kraken-data-import-openapi.yml
   operations:
   - V2 Validate Account
@@ -52,13 +53,13 @@ skills:
   - V1 Create Transactions
   - V1 Create Account Notes
 - file: origin-energy-kraken-order-scheduling.md
-  name: Schedule and track an order on the Origin Energy Kraken platform
+  name: origin-energy-kraken-order-scheduling
   api: openapi/origin-energy-kraken-orders-openapi.yml
   operations:
   - V2 Schedule Order
   - V2 Order Status
 - file: origin-energy-kraken-graphql-account-operations.md
-  name: Operate Origin Energy customer accounts through the Kraken GraphQL API
+  name: origin-energy-kraken-graphql-account-operations
   api: graphql/origin-energy-kraken.graphql
   operations: []
   graphql_fields:

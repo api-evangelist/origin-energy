@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/origin-energy/main/json-schema/origin-energy-process-account-import-process-schema.json",
+  "title": "ProcessAccountImportProcess",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/origin-energy-account-import-api-openapi.yml#/components/schemas/ProcessAccountImportProcess",
+  "type": "object",
+  "properties": {
+    "dry_run": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to run the process in dry-run mode. Running in dry-run mode will not create any accounts."
+    },
+    "external_account_number": {
+      "type": "string",
+      "description": "The account number on the import suppliers system."
+    },
+    "import_supplier_code": {
+      "enum": [
+        "ORIGIN_SOLARFLEX_INACTIVE",
+        "ORIGIN",
+        "WIN_CONNECT_PARENT",
+        "ORIGIN_CNI",
+        "ORIGIN_BUSINESS",
+        "WIN_CONNECT",
+        "ORIGIN_SOLARFLEX",
+        "ORIGIN_BUSINESS_NO_CONTRACT"
+      ],
+      "type": "string",
+      "x-spec-enum-id": "9572ea198e3a9787",
+      "description": "The code of an existing ImportSupplier in the database.",
+      "x-enum-descriptions": {
+        "ORIGIN_SOLARFLEX_INACTIVE": "Origin SolarFlex Inactive",
+        "ORIGIN": "Origin",
+        "WIN_CONNECT_PARENT": "Win Connect Parent",
+        "ORIGIN_CNI": "Origin CNI",
+        "ORIGIN_BUSINESS": "Origin Zero Business Import Supplier",
+        "WIN_CONNECT": "WinConnect",
+        "ORIGIN_SOLARFLEX": "Origin SolarFlex",
+        "ORIGIN_BUSINESS_NO_CONTRACT": "Origin Business - No Contracts e.g. trustee"
+      }
+    },
+    "operations_team_name": {
+      "type": "string",
+      "description": "The operations team the account portfolio should be assigned to.",
+      "x-validators": [
+        {
+          "name": "Validate that an operations team exists",
+          "description": "Validate that an operations team exists with the name provided.",
+          "possible_errors": [
+            "operations_team_name_does_not_exist"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "external_account_number",
+    "import_supplier_code"
+  ],
+  "x-validators": [
+    {
+      "name": "Validate an <code>AccountImportProcess</code> exists",
+      "description": "Validate that for the given <code>external_account_number</code> and <code>import_supplier_code</code> an <code>AccountImportProcess</code> exists.",
+      "possible_errors": [
+        "import_process_does_not_exist"
+      ]
+    },
+    {
+      "name": "Validate auto allocation of operations team",
+      "description": "Validate that operations_team_name is provided if auto allocation is not configured.",
+      "possible_errors": [
+        "operations_team_provided_when_using_auto_allocation",
+        "operations_team_should_be_provided"
+      ]
+    }
+  ]
+}

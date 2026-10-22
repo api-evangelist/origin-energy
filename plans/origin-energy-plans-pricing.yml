@@ -1,0 +1,17 @@
+name: Origin Energy pricing
+generated: '2026-10-20'
+method: none
+source: https://developer.origin-kraken.energy/
+audience: unclear
+pricing_basis: none
+published: false
+plan_count: 0
+plans: []
+delivery:
+  model: managed
+note: Origin Energy publishes no API pricing or developer plans. The Kraken developer portal (developer.origin-kraken.energy,
+  read 2026-10-20 - home, GraphQL guides, REST, announcements) carries no pricing, plans or sign-up tiers;
+  access is for Origin partners and authenticated account users only. Consumer Data Right data-holder
+  APIs are a regulatory obligation and are not priced to accredited data recipients. The retail electricity
+  and gas plans at www.originenergy.com.au/electricity-gas/plans.html are a consumer energy tariff, not
+  API pricing, and are deliberately not recorded here.

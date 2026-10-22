@@ -1,0 +1,72 @@
+generated: '2026-10-20'
+method: searched
+probe: true
+source: https://www.originenergy.com.au/wp-content/uploads/191/privacy-policy.pdf
+pages_read:
+- url: https://www.originenergy.com.au/privacy/
+  http_status: 200
+  note: Privacy hub page; links the full Privacy Policy and Consumer Data Right (CDR) Policy PDFs.
+- url: https://www.originenergy.com.au/wp-content/uploads/191/privacy-policy.pdf
+  http_status: 200
+  note: Full Privacy Policy (PDF). Returns 404 to a non-browser user-agent, 200 with a browser user-agent.
+- url: https://www.originenergy.com.au/wp-content/uploads/166/CDR-Policy-Jun25.pdf
+  http_status: 200
+  note: Consumer Data Right Policy (June 2025), Origin as CDR data holder.
+- url: https://www.originenergy.com.au/terms-of-use/
+  http_status: 200
+  note: Website terms of use; no regulatory-signal language found.
+- url: https://bugcrowd.com/engagements/originenergy-og1
+  http_status: 200
+  note: >-
+    Bug bounty safe-harbor text (CFAA/DMCA exemption for good-faith research). This is a researcher
+    safe harbor, not a content notice-and-action mechanism, so no notice_and_action signal is recorded.
+signals:
+  data_subject_request:
+    url: https://www.originenergy.com.au/wp-content/uploads/191/privacy-policy.pdf
+    section: '9. Accessing and correcting your information'
+    rights_named: [access, correction, notify third party of correction, complaint]
+    escalation: Office of the Australian Information Commissioner; third-party dispute resolution provider for credit information
+    evidence:
+    - source: https://www.originenergy.com.au/wp-content/uploads/191/privacy-policy.pdf
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: >-
+        Providing you with access to your information: When you request information we hold about you, we
+        will try to provide you with a way to access it. We may refuse to give you access to your personal or
+        credit-related information in line with the Privacy Act.
+    - source: https://www.originenergy.com.au/wp-content/uploads/191/privacy-policy.pdf
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: >-
+        Correcting your information: If you believe that any personal or credit related information we hold
+        about you is not correct, out-of-date, incomplete, or misleading, then you may ask us to correct it
+        using the contact details in section 11.
+    - source: https://www.originenergy.com.au/wp-content/uploads/166/CDR-Policy-Jun25.pdf
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: >-
+        This Policy describes your rights as an eligible customer under the CDR laws and explains how you can:
+        • request that we (as a data holder) share your CDR data with ADRs; and • seek access to correct or
+        update your CDR data; and • make a complaint about how we handle your CDR data.
+    note: >-
+      Access and correction rights under the Australian Privacy Act, with refusal permitted "in line with the
+      Privacy Act", plus Consumer Data Right sharing/correction rights for eligible energy customers. No
+      deletion or portability right is named in the Privacy Policy (CDR sharing to Accredited Data Recipients
+      is the portability-like mechanism). No response SLA is stated.
+  data_residency:
+    url: https://www.originenergy.com.au/wp-content/uploads/191/privacy-policy.pdf
+    section: '7. How we hold and keep secure your information'
+    evidence:
+    - source: https://www.originenergy.com.au/wp-content/uploads/191/privacy-policy.pdf
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: >-
+        Information held overseas: We may hold overseas or disclose to third parties overseas your personal and
+        credit related information. Your personal and credit related information will most likely be held in
+        those countries listed in our Collection Statements.
+    note: >-
+      Origin does NOT commit to Australian-only residency: data may be held or disclosed overseas, with the
+      countries listed in separate Collection Statements (not read here). Overseas providers may disclose data
+      when required by Australian or foreign law.
+not_found:
+  data_retention: Section 7 describes security safeguards but states no retention period or destruction practice.

@@ -1,53 +1,71 @@
-generated: '2026-07-27'
+name: Origin Energy rate limits
+generated: '2026-10-20'
 method: searched
 source: https://developer.origin-kraken.energy/graphql/guides/basics/
-note: Published usage constraints for the Origin Energy Kraken GraphQL API. The REST API (api.origin-kraken.energy/v1/)
-  shares the same bearer token but publishes no separate numeric limits. The Consumer Data Right surfaces
-  are governed by the Consumer Data Standards traffic thresholds set by the Data Standards Body, not by
-  Origin.
-rate_limits:
+docs: https://developer.origin-kraken.energy/graphql/guides/basics/
+limit_count: 7
+note: Published usage constraints for the Origin Energy Kraken GraphQL API (re-read 2026-10-20, "Pagination"
+  and "Usage constraints" sections of API basics). Limits are signalled in the GraphQL errors[] envelope
+  by Kraken error codes (KT-CT-1188, KT-CT-1189, KT-CT-1199), not by X-RateLimit-* / Retry-After headers;
+  the docs name no rate-limit response headers. The current allowance and remaining balance are readable
+  via the rateLimitInfo query. The REST API (api.origin-kraken.energy/v1/) publishes no separate numeric
+  limits. Consumer Data Right surfaces are governed by the Consumer Data Standards non-functional requirements,
+  not by Origin.
+signaling:
+  headers: []
+  error_codes:
+  - {code: KT-CT-1188, meaning: total complexity of a request exceeds the limit}
+  - {code: KT-CT-1189, meaning: Query exceeds maximum allowed node count}
+  - {code: KT-CT-1199, meaning: too many requests (request-specific rate limit)}
+  introspection: rateLimitInfo query
+limits:
 - name: Query complexity per request
-  limit_count: 550
+  max: 550
   unit: complexity points
   window: per request
+  scope: per-request
   error_code: KT-CT-1188
-  description: A single GraphQL request may not exceed a complexity score of 550.
+  limit_text: The complexity limit for a single request is 550
 - name: Nodes per request
-  limit_count: 100000
+  max: 100000
   unit: nodes
   window: per request
+  scope: per-request
   error_code: KT-CT-1189
-  description: A single GraphQL request may not resolve more than 100,000 nodes.
-- name: Account user points allowance
-  limit_count: 50000
+  limit_text: 100,000 nodes per request
+- name: Account user hourly points allowance (default)
+  max: 50000
   unit: points
-  window: hour
-  audience: account user
-  description: Hourly points allowance for a token issued to an individual account user.
-- name: Organisation points allowance
-  limit_count: 100000
+  window: 1 hour
+  scope: per-account-user
+  limit_text: 'Account users : 50,000 points'
+  note: Default value; configurable via the Kraken Hub and scaled with the number of supply points managed.
+- name: Organisation hourly points allowance (default)
+  max: 100000
   unit: points
-  window: hour
-  audience: organisation
-  description: Hourly points allowance for a token issued to an organisation.
-- name: OAuth application points allowance
-  limit_count: 300000
+  window: 1 hour
+  scope: per-organisation
+  limit_text: 'Organisations : 100,000 points'
+  note: Default value; configurable via the Kraken Hub.
+- name: OAuth application hourly points allowance (default)
+  max: 300000
   unit: points
-  window: hour
-  audience: oauth application
-  description: Hourly points allowance for a token issued to a registered OAuth application.
-- name: Per-IP / per-user request throttle
-  limit_count: null
-  unit: requests
-  window: unpublished
+  window: 1 hour
+  scope: per-oauth-application
+  limit_text: 'OAuth applications : 300,000 points'
+- name: Request-specific rate limiting (static / dynamic)
+  scope: per-ip-or-viewer
   error_code: KT-CT-1199
-  description: Static and dynamic request-rate limits are applied per IP and per user; the numeric thresholds
-    are not published.
-- name: Cursor page size
-  limit_count: 100
+  limit_text: Request-specific rate limits restrict the number of calls which can be made from the same
+    IP address, user or other identifying factor within a specific period of time.
+  note: Per-field thresholds are not published; the docs' "100 requests per minute" and "5 times within
+    a minute" figures are illustrative examples, not stated limits. Dynamic limits do not reset automatically.
+- name: Paginated field page size
+  max: 100
   unit: records
-  window: per page
-  description: The `first` argument on a Relay connection must be less than 100.
+  window: per request
+  scope: per-request
+  limit_text: the first argument is set to a value less than 100
 cdr:
   note: Consumer Data Right traffic thresholds are set in the Consumer Data Standards (non-functional
     requirements), not by Origin Energy.

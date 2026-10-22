@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/origin-energy/main/json-schema/origin-energy-account-note-schema.json",
+  "title": "AccountNote",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/origin-energy-post-account-import-api-openapi.yml#/components/schemas/AccountNote",
+  "type": "object",
+  "properties": {
+    "account_number": {
+      "type": "string",
+      "description": "<p>The account number in the source system. This, along with the <code>import_supplier</code>, will be used to find the account in Kraken.</p>",
+      "deprecated": true,
+      "x-use-instead": "external_account_number"
+    },
+    "external_account_number": {
+      "type": "string",
+      "description": "<p>The account number in the source system. This, along with the <code>import_supplier</code>, will be used to find the account in Kraken.</p>"
+    },
+    "import_supplier": {
+      "enum": [
+        "ORIGIN_SOLARFLEX_INACTIVE",
+        "ORIGIN",
+        "WIN_CONNECT_PARENT",
+        "ORIGIN_CNI",
+        "ORIGIN_BUSINESS",
+        "WIN_CONNECT",
+        "ORIGIN_SOLARFLEX",
+        "ORIGIN_BUSINESS_NO_CONTRACT"
+      ],
+      "type": "string",
+      "x-spec-enum-id": "9572ea198e3a9787",
+      "description": "<p>The import supplier code that the account was imported on to. This, along with the <code>external_account_number</code>, will be used to find the account in Kraken.</p>",
+      "x-enum-descriptions": {
+        "ORIGIN_SOLARFLEX_INACTIVE": "Origin SolarFlex Inactive",
+        "ORIGIN": "Origin",
+        "WIN_CONNECT_PARENT": "Win Connect Parent",
+        "ORIGIN_CNI": "Origin CNI",
+        "ORIGIN_BUSINESS": "Origin Zero Business Import Supplier",
+        "WIN_CONNECT": "WinConnect",
+        "ORIGIN_SOLARFLEX": "Origin SolarFlex",
+        "ORIGIN_BUSINESS_NO_CONTRACT": "Origin Business - No Contracts e.g. trustee"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Note"
+      },
+      "description": "<p>List of notes linked to the account. A note <code>body</code> or <code>document_paths</code> must be provided.</p>"
+    }
+  },
+  "required": [
+    "import_supplier",
+    "notes"
+  ],
+  "x-validators": [
+    {
+      "name": "Validate that account data is staged and account created",
+      "description": "Validate that an account exists for the <code>external_account_number</code> and <code>import_supplier</code> code. This means that the import data must already have been staged and processed into an account.",
+      "possible_errors": [
+        "account_not_found",
+        "import_process_does_not_exist"
+      ]
+    },
+    {
+      "name": "Validate that migration is ongoing",
+      "description": "Validate whether or not an import supplier is open for further data migration.",
+      "possible_errors": [
+        "import_supplier_migration_not_ongoing"
+      ]
+    }
+  ],
+  "$defs": {
+    "Note": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "string",
+          "description": "<p>The body of the note. Should include who/what created the note if this is required.</p>"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "<p>The date and time the note was created.</p>"
+        },
+        "document_paths": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteDocument"
+          },
+          "description": "<p>A list of relative paths in S3 for documents to be attached to the note.</p><p>More details on document path parameters can be found <a href=\"/rest/guides/data-import/basics#document-paths\">here</a>.</p>"
+        },
+        "external_id": {
+          "type": "string",
+          "description": "<p>Unique identifier for this note to avoid duplicate entries.</p>"
+        },
+        "is_archived": {
+          "type": "boolean",
+          "description": "<p>If set to true, this will archive the note in the Kraken account support site page.</p>"
+        },
+        "is_pinned": {
+          "type": "boolean",
+          "description": "<p>If set to true, this will pin the note to the top of the Kraken account support site page.</p>"
+        },
+        "unpin_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "<p>When the pinned note should be unpinned. Has to be later than <code>created_at</code> if this is provided. Has no effect if the note is not pinned.</p>"
+        }
+      },
+      "x-validators": [
+        {
+          "name": "Validate note body or document paths provided",
+          "description": "Validate that at least a note body or document paths are provided.",
+          "possible_errors": [
+            "note_body_or_document_path_not_found"
+          ]
+        },
+        {
+          "name": "Validate note created at is equal to or before unpin at",
+          "description": "Validate that the note's created at date is equal to or before the unpin at date if both are provided.",
+          "possible_errors": [
+            "note_unpin_at_earlier_than_creation_date"
+          ]
+        }
+      ]
+    },
+    "NoteDocument": {
+      "type": "object",
+      "properties": {
+        "document_path": {
+          "type": "string",
+          "description": "<p>The S3 relative path to the document to be attached to the note.</p>",
+          "x-validators": [
+            {
+              "name": "Validate path exists in file store",
+              "description": "Validate that the given path corresponds to a file that has previously been uploaded to the migration file store. Note that this validation is disabled by default and can be enabled using the relevant feature flag.",
+              "possible_errors": [
+                "path_does_not_exist_in_file_store"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "document_path"
+      ]
+    }
+  }
+}

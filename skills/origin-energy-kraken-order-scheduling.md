@@ -1,13 +1,14 @@
 ---
-name: Schedule and track an order on the Origin Energy Kraken platform
+name: origin-energy-kraken-order-scheduling
 description: Submit an order to Origin Energy's Kraken order-management API and poll it to completion,
   handling the asynchronous validation and error model correctly.
 api: openapi/origin-energy-kraken-orders-openapi.yml
 operations:
-- V2 Schedule Order
-- V2 Order Status
-generated: '2026-07-27'
+- V2ScheduleOrder
+- V2OrderStatus
+generated: '2026-10-20'
 method: generated
+title: Schedule and track an order on the Origin Energy Kraken platform
 ---
 
 # Schedule and track a Kraken order
