@@ -30,6 +30,54 @@ artifacts:
   collections/consumer-data-standards-energy-api.postman_collection.json:
     method: unknown
     evidence: no authorship recorded
+  collections/origin-energy-account-import-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-account-import-api
+  collections/origin-energy-accounts-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-accounts-api
+  collections/origin-energy-business-import-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-business-import-api
+  collections/origin-energy-data-holder-customers-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-data-holder-customers-api
+  collections/origin-energy-data-holder-operations-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-data-holder-operations-api
+  collections/origin-energy-data-import-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-data-import-api
+  collections/origin-energy-distributed-energy-resources-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-distributed-energy-resources-api
+  collections/origin-energy-electricity-service-points-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-electricity-service-points-api
+  collections/origin-energy-electricity-usage-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-electricity-usage-api
+  collections/origin-energy-energetiq-public-key-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-energetiq-public-key-api
+  collections/origin-energy-energy-account-balances-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-energy-account-balances-api
+  collections/origin-energy-energy-account-billing-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-energy-account-billing-api
+  collections/origin-energy-energy-accounts-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-energy-accounts-api
+  collections/origin-energy-energy-plans-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-energy-plans-api
+  collections/origin-energy-external-client-healthcheck-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-external-client-healthcheck-api
+  collections/origin-energy-external-events-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-external-events-api
   collections/origin-energy-kraken-data-import.opencollection.json:
     method: unknown
     evidence: no authorship recorded
@@ -48,6 +96,24 @@ artifacts:
   collections/origin-energy-kraken-orders.postman_collection.json:
     method: unknown
     evidence: no authorship recorded
+  collections/origin-energy-orders-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-orders-api
+  collections/origin-energy-post-account-import-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-post-account-import-api
+  collections/origin-energy-post-business-import-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-post-business-import-api
+  collections/origin-energy-query-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-query-api
+  collections/origin-energy-unbundled-network-charges-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-unbundled-network-charges-api
+  collections/origin-energy-voice-api.postman_collection.json:
+    method: derived
+    evidence: openapi/origin-energy-voice-api
   conformance/origin-energy-conformance.yml:
     method: searched
     evidence: declared in the artifact
@@ -69,127 +135,136 @@ artifacts:
   graphql/origin-energy-kraken.graphql:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
+  hosts/origin-energy-hosts.yml:
+    method: derived
+    evidence: declared in the artifact
+  integrations/_index.yml:
     method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T125852.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T133943.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T143147.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T154045.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-26T215308.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T094438.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T103455.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T123021.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T132314.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T140727.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-28T221322.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T213958.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T230545.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T203505.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T220315.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-31T223420.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T063623.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T210448.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T222808.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T224043.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T161828.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T174231.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T062714.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T212454.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T224856.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T055819.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T144739.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T195450.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T211839.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T011047.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T224210.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T200636.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T213054.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T214843.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T232836.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T204815.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T222408.yml:
+    evidence: carries an API Evangelist house phrase
+  integrations/origin-energy-integration-edges.yml:
+    method: searched
+    evidence: declared in the artifact
+  json-ld/origin-energy-context.jsonld:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-account-note-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-account-transfer-status-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-ad-hoc-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-ad-hoc-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-business-import-process-creation-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-business-import-process-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-business-payment-instruction-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-create-account-notes-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-create-business-payment-instruction-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-create-or-update-account-import-process-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-create-payment-instruction-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-account-detail-response-v4-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-account-list-response-v2-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-balance-list-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-balance-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-billing-list-response-v3-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-concessions-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-der-detail-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-der-list-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-invoice-list-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-payment-schedule-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-plan-list-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-plan-response-v3-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-service-point-detail-response-v2-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-service-point-list-response-v2-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-energy-usage-list-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-historical-statements-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-import-process-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-import-status-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-legacy-payment-instruction-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-origin-account-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-process-account-import-process-creation-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-process-account-import-process-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-response-common-customer-detail-v2-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-response-common-customer-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-response-common-discovery-status-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-response-discovery-outages-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-schedule-order-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/origin-energy-transactions-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-12T062655.yml:
@@ -273,19 +348,34 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/origin-energy-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
   llms/origin-energy-api-llms.txt:
     method: generated
     evidence: carries an API Evangelist house phrase
+  llms/origin-energy-llms-provenance.yml:
+    method: searched
+    evidence: 'derive-llms-provenance.py: harvested'
   llms/origin-energy-llms.txt:
     method: searched
     evidence: 'derive-llms-provenance.py: harvested'
   mcp/origin-energy-mcp.yml:
-    method: derived
-    evidence: declared in the artifact
-  mcp/origin-energy-tool-crosswalk.yml:
     method: derived
     evidence: declared in the artifact
   openapi/_original/consumer-data-standards-common-api-openapi.json:
@@ -311,6 +401,9 @@ artifacts:
   openapi/origin-energy-account-import-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/origin-energy-accounts-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/origin-energy-business-import-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
@@ -330,6 +423,9 @@ artifacts:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/origin-energy-electricity-usage-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/origin-energy-energetiq-public-key-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/origin-energy-energy-account-balances-api-openapi.yml:
@@ -362,32 +458,107 @@ artifacts:
   openapi/origin-energy-query-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/origin-energy-v1-api-openapi.yml:
+  openapi/origin-energy-unbundled-network-charges-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/origin-energy-v2-api-openapi.yml:
+  openapi/origin-energy-voice-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  overlays/origin-energy-account-import-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-accounts-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-business-import-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
   overlays/origin-energy-cds-common-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
   overlays/origin-energy-cds-energy-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-data-holder-customers-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-data-holder-operations-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-data-import-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-distributed-energy-resources-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-electricity-service-points-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-electricity-usage-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-energetiq-public-key-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-energy-account-balances-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-energy-account-billing-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-energy-accounts-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-energy-plans-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-external-client-healthcheck-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-external-events-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
   overlays/origin-energy-kraken-data-import-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
   overlays/origin-energy-kraken-default-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
   overlays/origin-energy-kraken-orders-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-orders-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-post-account-import-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-post-business-import-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-query-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-unbundled-network-charges-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/origin-energy-voice-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
   packages/origin-energy-packages.yml:
-    method: searched
-    evidence: declared in the artifact
+    method: unknown
+    evidence: no authorship recorded
+  plans/origin-energy-plans-pricing.yml:
+    method: unknown
+    evidence: no authorship recorded
   rate-limits/origin-energy-rate-limits.yml:
     method: searched
+    evidence: declared in the artifact
+  regulatory/origin-energy-regulatory-posture.yml:
+    method: searched
+    evidence: declared in the artifact
+  rules/origin-energy-rules.yml:
+    method: generated
     evidence: declared in the artifact
   scopes/origin-energy-scopes.yml:
     method: searched
@@ -415,6 +586,12 @@ artifacts:
     evidence: declared in the artifact
   skills/origin-energy-retail-plan-comparison.md:
     method: generated
+    evidence: declared in the artifact
+  vendors/origin-energy-vendors.yml:
+    method: unknown
+    evidence: no authorship recorded
+  vocabulary/origin-energy-vocabulary.yml:
+    method: derived
     evidence: declared in the artifact
   well-known/origin-energy-kraken-openid-configuration.json:
     method: unknown
