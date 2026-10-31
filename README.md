@@ -1,4 +1,4 @@
-# Origin Energy (origin-energy)
+# Origin Energy
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,133 +66,236 @@
 
 Origin Energy Limited is Australia's largest energy retailer, an ASX-listed integrated gas and electricity company headquartered in Sydney that supplies roughly 4.5 million electricity, natural gas, LPG and broadband customer accounts, operates the Eraring Power Station and a large gas-fired and renewable generation portfolio, holds a stake in the Australia Pacific LNG project, and runs the Origin Loop virtual power plant. It sits at the retail end of the National Electricity Market value chain, buying and generating wholesale energy and selling it to households and businesses. Its API posture is defined almost entirely by regulation rather than by a developer strategy: Origin is a designated energy data holder under Australia's Consumer Data Right and that obligation is genuinely implemented — it appears on the CDR Register with its own public base URI, serves the Consumer Data Standards discovery endpoints anonymously, and presents an mTLS resource endpoint whose TLS certificate is issued by the ACCC's own CDR Certificate Authority — but every byte of actual customer usage, billing and DER data behind that surface is reachable only by an accredited data recipient acting on a consumer's consent. Alongside the mandate, Origin runs its retail business on Octopus Energy's Kraken platform (Origin holds an equity stake in Octopus and Kraken Technologies), which exposes a publicly readable partner developer portal with downloadable OpenAPI definitions, a GraphQL API, an external events catalogue and an OpenID Connect authorisation server — none of it self-serve. Origin publishes no open grid, market or system data of its own; the only anonymously retrievable data is its retail plan reference data, and that is served from the Australian Energy Regulator's Energy Made Easy CDR gateway, not from an Origin host.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/origin-energy/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/origin-energy/refs/heads/main/apis.yml)
+**Areas:** Energy · Australia · Utilities · Electricity · Gas · Energy Retail · Consumer Data Right · Smart Metering · Solar · DER · Demand Response · Energy Markets
 
-**URL:** [https://www.originenergy.com.au/](https://www.originenergy.com.au/)
+## Origin Energy on APIs.io
 
-## Tags
+Everything profiled for Origin Energy is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/origin-energy/](https://apis.io/providers/origin-energy/)** — or go straight to one of the APIs or properties below.
 
-- Energy
-- Australia
-- Utilities
-- Electricity
-- Gas
-- Energy Retail
-- Consumer Data Right
-- Smart Metering
-- Solar
-- DER
-- Demand Response
-- Energy Markets
+### APIs (25)
 
-## Timestamps
+- [Origin Energy Kraken GraphQL API](https://apis.io/apis/origin-energy/origin-energy-kraken-graphql-api/) — The primary Kraken platform API for Origin Energy accounts, agreements, meter points, readings, payments, quotes and devices. Served at…
+- [Origin Energy Kraken External Events](https://apis.io/apis/origin-energy/origin-energy-kraken-events/) — Origin's publicly readable Kraken External Events reference, cataloguing several hundred versioned event types emitted by the platform. Confirmed HTTP 200…
+- [Origin Energy Kraken Authorization Server](https://apis.io/apis/origin-energy/origin-energy-kraken-auth-api/) — The OpenID Connect authorisation server issuing the bearer tokens used by both the Kraken REST and GraphQL APIs. Its discovery document at…
+- [Origin Energy Account Import API](https://apis.io/apis/origin-energy/origin-energy-account-import-api/) — APIs for importing accounts.
+- [Origin Energy Business Import API](https://apis.io/apis/origin-energy/origin-energy-business-import-api/) — APIs for importing businesses with business contracts
+- [Origin Energy Data Holder Customers API](https://apis.io/apis/origin-energy/origin-energy-data-holder-customers-api/) — Data Holder Customer endpoints
+- [Origin Energy Data Holder Operations API](https://apis.io/apis/origin-energy/origin-energy-data-holder-operations-api/) — Data Holder Operations endpoints
+- [Origin Energy Data Import API](https://apis.io/apis/origin-energy/origin-energy-data-import-api/) — The data-import API from Origin Energy — 1 operation(s) for data-import.
+- [Origin Energy Distributed Energy Resources API](https://apis.io/apis/origin-energy/origin-energy-distributed-energy-resources-api/) — Distributed Energy Resource endpoints
+- [Origin Energy Electricity Service Points API](https://apis.io/apis/origin-energy/origin-energy-electricity-service-points-api/) — Electricity Service Point endpoints
+- [Origin Energy Electricity Usage API](https://apis.io/apis/origin-energy/origin-energy-electricity-usage-api/) — Electricity Usage endpoints
+- [Origin Energy Account Balances API](https://apis.io/apis/origin-energy/origin-energy-energy-account-balances-api/) — Energy Account Balance endpoints
+- [Origin Energy Account Billing API](https://apis.io/apis/origin-energy/origin-energy-energy-account-billing-api/) — Energy Account Billing endpoints
+- [Origin Energy Accounts API](https://apis.io/apis/origin-energy/origin-energy-energy-accounts-api/) — Energy Account endpoints
+- [Origin Energy Plans API](https://apis.io/apis/origin-energy/origin-energy-energy-plans-api/) — Energy Plan endpoints
+- [Origin Energy External Client Healthcheck API](https://apis.io/apis/origin-energy/origin-energy-external-client-healthcheck-api/) — The external-client-healthcheck API from Origin Energy — 1 operation(s) for external-client-healthcheck.
+- [Origin Energy External Events API](https://apis.io/apis/origin-energy/origin-energy-external-events-api/) — The external-events API from Origin Energy — 1 operation(s) for external-events.
+- [Origin Energy Orders API](https://apis.io/apis/origin-energy/origin-energy-orders-api/) — APIs for placing and managing orders.
+- [Origin Energy Post Account Import API](https://apis.io/apis/origin-energy/origin-energy-post-account-import-api/) — APIs for importing additional data after an account has been imported.
+- [Origin Energy Post Business Import API](https://apis.io/apis/origin-energy/origin-energy-post-business-import-api/) — APIs for importing additional data after a business has been imported.
+- [Origin Energy Query API](https://apis.io/apis/origin-energy/origin-energy-query-api/) — APIs for querying import status and retrieving data
+- [Origin Energy Accounts API](https://apis.io/apis/origin-energy/origin-energy-accounts-api/) — The Accounts API from Origin Energy — 1 operation(s) for accounts.
+- [Origin Energy Energetiq Public Key API](https://apis.io/apis/origin-energy/origin-energy-energetiq-public-key-api/) — The Energetiq Public Key API from Origin Energy — 1 operation(s) for energetiq public key.
+- [Origin Energy Unbundled Network Charges API](https://apis.io/apis/origin-energy/origin-energy-unbundled-network-charges-api/) — The Unbundled Network Charges API from Origin Energy — 1 operation(s) for unbundled network charges.
+- [Origin Energy Voice API](https://apis.io/apis/origin-energy/origin-energy-voice-api/) — The Voice API from Origin Energy — 2 operation(s) for voice.
 
-- **Created:** 2026-07-27
-- **Modified:** 2026-07-27
+### Published properties
 
-## Mandate
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-| Field | Value |
-|-------|-------|
-| Regime | Consumer Data Right, energy sector (`cdr-energy`) |
-| Status | `live-implemented` — verified, not claimed |
-| Data standard | Consumer Data Standards Australia, CDR Energy API 1.36.0 |
-| Consumer data API | Yes — accredited data recipients only, on consumer consent |
-| Open market data | No — Origin publishes none; AEMO publishes NEM data |
-| Access gate | `accredited-only` (CDR) / `customer-account-required` (Kraken) |
+#### AsyncAPI (1)
 
-Verified on 2026-07-27 by three independent technical checks rather than by any Origin claim: a CDR Register entry (`https://api.cdr.gov.au/cdr-register/v1/energy/data-holders/brands/summary`, HTTP 200) naming Origin Energy with `publicBaseUri` `https://public.mydata.cdr.originenergy.com.au`; anonymous HTTP 200 responses from the Consumer Data Standards discovery endpoints on that base URI; and a TLS certificate on `api.mydata.cdr.originenergy.com.au` issued by *CDR Intermediate CA 2025* under the Australian Competition and Consumer Commission's CDR Root CA, with the connection reset when no client certificate is presented.
+Event-driven and webhook contracts.
 
-## APIs
+- [Origin Energy Kraken External Events](https://apis.io/asyncapis/origin-energy/origin-energy-kraken-external-events/)
 
-### Origin Energy CDR Energy API
+#### MCP servers (1)
 
-Origin's Consumer Data Right resource endpoint, serving the Consumer Data Standards energy APIs to accredited data recipients over mutual TLS.
+Model Context Protocol servers that expose the API to agents.
 
-- **Human URL:** [https://consumerdatastandardsaustralia.github.io/standards/#energy-apis](https://consumerdatastandardsaustralia.github.io/standards/#energy-apis)
-- **Base URL:** `https://api.mydata.cdr.originenergy.com.au`
+- [origin-energy](https://apis.io/servers/origin-energy/origin-energy/)
 
-#### Properties
+#### Agentic access (1)
 
-- [OpenAPI](openapi/consumer-data-standards-energy-api-openapi.json) — CDR Energy API 1.36.0, published by the Data Standards Body
-- [OpenAPI](openapi/consumer-data-standards-common-api-openapi.json) — CDR Common API 1.36.0
-- [Documentation](https://consumerdatastandardsaustralia.github.io/standards/#energy-apis)
-- [Registration](https://www.cdr.gov.au/for-providers/accreditation)
+Which operations an agent can call, which act, and which need a human in the loop.
 
-### Origin Energy CDR Public Discovery API
+- [Origin Energy Agentic Access](https://apis.io/agentic-access/origin-energy/origin-energy-agentic-access/)
 
-The only Origin-hosted surface reachable without credentials. Operational metadata only.
+#### JSON Schema (39)
 
-- **Human URL:** [https://consumerdatastandardsaustralia.github.io/standards/#discovery-apis](https://consumerdatastandardsaustralia.github.io/standards/#discovery-apis)
-- **Base URL:** `https://public.mydata.cdr.originenergy.com.au/cds-au/v1`
+The data models the API reads and writes.
 
-### Origin Energy Plan Reference Data API (AER Energy Made Easy)
+- [AccountNote](https://apis.io/schemas/origin-energy/origin-energy-account-note/)
+- [AccountTransferStatus](https://apis.io/schemas/origin-energy/origin-energy-account-transfer-status/)
+- [AdHoc](https://apis.io/schemas/origin-energy/origin-energy-ad-hoc/)
+- [AdHocResponse](https://apis.io/schemas/origin-energy/origin-energy-ad-hoc-response/)
+- [BusinessImportProcess](https://apis.io/schemas/origin-energy/origin-energy-business-import-process/)
+- [BusinessImportProcessCreation](https://apis.io/schemas/origin-energy/origin-energy-business-import-process-creation/)
+- [BusinessPaymentInstruction](https://apis.io/schemas/origin-energy/origin-energy-business-payment-instruction/)
+- [CreateAccountNotesResponse](https://apis.io/schemas/origin-energy/origin-energy-create-account-notes-response/)
+- [CreateBusinessPaymentInstructionResponse](https://apis.io/schemas/origin-energy/origin-energy-create-business-payment-instruction-response/)
+- [CreateOrUpdateAccountImportProcess](https://apis.io/schemas/origin-energy/origin-energy-create-or-update-account-import-process/)
+- [CreatePaymentInstructionResponse](https://apis.io/schemas/origin-energy/origin-energy-create-payment-instruction-response/)
+- [EnergyAccountDetailResponseV4](https://apis.io/schemas/origin-energy/origin-energy-energy-account-detail-response-v4/)
+- [EnergyAccountListResponseV2](https://apis.io/schemas/origin-energy/origin-energy-energy-account-list-response-v2/)
+- [EnergyBalanceListResponse](https://apis.io/schemas/origin-energy/origin-energy-energy-balance-list-response/)
+- [EnergyBalanceResponse](https://apis.io/schemas/origin-energy/origin-energy-energy-balance-response/)
+- [EnergyBillingListResponseV3](https://apis.io/schemas/origin-energy/origin-energy-energy-billing-list-response-v3/)
+- [EnergyConcessionsResponse](https://apis.io/schemas/origin-energy/origin-energy-energy-concessions-response/)
+- [EnergyDerDetailResponse](https://apis.io/schemas/origin-energy/origin-energy-energy-der-detail-response/)
+- [EnergyDerListResponse](https://apis.io/schemas/origin-energy/origin-energy-energy-der-list-response/)
+- [EnergyInvoiceListResponse](https://apis.io/schemas/origin-energy/origin-energy-energy-invoice-list-response/)
+- [EnergyPaymentScheduleResponse](https://apis.io/schemas/origin-energy/origin-energy-energy-payment-schedule-response/)
+- [EnergyPlanListResponse](https://apis.io/schemas/origin-energy/origin-energy-energy-plan-list-response/)
+- [EnergyPlanResponseV3](https://apis.io/schemas/origin-energy/origin-energy-energy-plan-response-v3/)
+- [EnergyServicePointDetailResponseV2](https://apis.io/schemas/origin-energy/origin-energy-energy-service-point-detail-response-v2/)
+- [EnergyServicePointListResponseV2](https://apis.io/schemas/origin-energy/origin-energy-energy-service-point-list-response-v2/)
+- …and 14 more published on APIs.io
 
-3,595 Origin electricity and gas plans, anonymously retrievable — from a `.gov.au` host, not an Origin one.
+#### JSON-LD (1)
 
-- **Human URL:** [https://www.energymadeeasy.gov.au/](https://www.energymadeeasy.gov.au/)
-- **Base URL:** `https://cdr.energymadeeasy.gov.au/origin/cds-au/v1`
+Linked-data contexts for the provider's vocabulary.
 
-### Origin Energy Kraken REST API
+- [Origin Energy Context](https://apis.io/jsonld/origin-energy/origin-energy-context/)
 
-- **Human URL:** [https://developer.origin-kraken.energy/rest/](https://developer.origin-kraken.energy/rest/)
-- **Base URL:** `https://api.origin-kraken.energy/v1`
+#### Collections (5)
 
-#### Properties
+Postman and Open Collection request collections.
 
-- [OpenAPI](openapi/origin-energy-kraken-default-openapi.yml) — 9 paths
-- [OpenAPI](openapi/origin-energy-kraken-data-import-openapi.yml) — 16 paths
-- [OpenAPI](openapi/origin-energy-kraken-orders-openapi.yml) — 2 paths
-- [API Reference](https://developer.origin-kraken.energy/rest/reference/)
-- [Getting Started](https://developer.origin-kraken.energy/rest/guides/api-basics/)
+- [CDR Common API](https://apis.io/collections/origin-energy/open-consumer-data-standards-common-api/)
+- [CDR Energy API](https://apis.io/collections/origin-energy/open-consumer-data-standards-energy-api/)
+- [Kraken](https://apis.io/collections/origin-energy/open-origin-energy-kraken-data-import/)
+- [Kraken](https://apis.io/collections/origin-energy/open-origin-energy-kraken-default/)
+- [Kraken](https://apis.io/collections/origin-energy/open-origin-energy-kraken-orders/)
 
-### Origin Energy Kraken GraphQL API
+#### Overlays (27)
 
-- **Human URL:** [https://developer.origin-kraken.energy/graphql/](https://developer.origin-kraken.energy/graphql/)
-- **Base URL:** `https://api.origin-kraken.energy/v1/graphql/`
+OpenAPI overlays, including conversational phrasing for each operation.
 
-### Origin Energy Kraken External Events
+- [Origin Energy Account Import Overlay](https://apis.io/overlays/origin-energy/origin-energy-account-import-overlay/)
+- [Origin Energy Accounts Overlay](https://apis.io/overlays/origin-energy/origin-energy-accounts-overlay/)
+- [Origin Energy Business Import Overlay](https://apis.io/overlays/origin-energy/origin-energy-business-import-overlay/)
+- [Origin Energy Cds Common Overlay](https://apis.io/overlays/origin-energy/origin-energy-cds-common-overlay/)
+- [Origin Energy Cds Energy Overlay](https://apis.io/overlays/origin-energy/origin-energy-cds-energy-overlay/)
+- [Origin Energy Data Holder Customers Overlay](https://apis.io/overlays/origin-energy/origin-energy-data-holder-customers-overlay/)
+- [Origin Energy Data Holder Operations Overlay](https://apis.io/overlays/origin-energy/origin-energy-data-holder-operations-overlay/)
+- [Origin Energy Data Import Overlay](https://apis.io/overlays/origin-energy/origin-energy-data-import-overlay/)
+- [Origin Energy Distributed Energy Resources Overlay](https://apis.io/overlays/origin-energy/origin-energy-distributed-energy-resources-overlay/)
+- [Origin Energy Electricity Service Points Overlay](https://apis.io/overlays/origin-energy/origin-energy-electricity-service-points-overlay/)
+- [Origin Energy Electricity Usage Overlay](https://apis.io/overlays/origin-energy/origin-energy-electricity-usage-overlay/)
+- [Origin Energy Energetiq Public Key Overlay](https://apis.io/overlays/origin-energy/origin-energy-energetiq-public-key-overlay/)
+- [Origin Energy Energy Account Balances Overlay](https://apis.io/overlays/origin-energy/origin-energy-energy-account-balances-overlay/)
+- [Origin Energy Energy Account Billing Overlay](https://apis.io/overlays/origin-energy/origin-energy-energy-account-billing-overlay/)
+- [Origin Energy Energy Accounts Overlay](https://apis.io/overlays/origin-energy/origin-energy-energy-accounts-overlay/)
+- [Origin Energy Energy Plans Overlay](https://apis.io/overlays/origin-energy/origin-energy-energy-plans-overlay/)
+- [Origin Energy External Client Healthcheck Overlay](https://apis.io/overlays/origin-energy/origin-energy-external-client-healthcheck-overlay/)
+- [Origin Energy External Events Overlay](https://apis.io/overlays/origin-energy/origin-energy-external-events-overlay/)
+- [Origin Energy Kraken Data Import Overlay](https://apis.io/overlays/origin-energy/origin-energy-kraken-data-import-overlay/)
+- [Origin Energy Kraken Default Overlay](https://apis.io/overlays/origin-energy/origin-energy-kraken-default-overlay/)
+- [Origin Energy Kraken Orders Overlay](https://apis.io/overlays/origin-energy/origin-energy-kraken-orders-overlay/)
+- [Origin Energy Orders Overlay](https://apis.io/overlays/origin-energy/origin-energy-orders-overlay/)
+- [Origin Energy Post Account Import Overlay](https://apis.io/overlays/origin-energy/origin-energy-post-account-import-overlay/)
+- [Origin Energy Post Business Import Overlay](https://apis.io/overlays/origin-energy/origin-energy-post-business-import-overlay/)
+- [Origin Energy Query Overlay](https://apis.io/overlays/origin-energy/origin-energy-query-overlay/)
+- …and 2 more published on APIs.io
 
-- **Human URL:** [https://developer.origin-kraken.energy/events/](https://developer.origin-kraken.energy/events/)
+#### Governance rules (1)
 
-### Origin Energy Kraken Authorization Server
+Spectral rulesets for the provider's contracts.
 
-- **Human URL:** [https://developer.origin-kraken.energy/graphql/guides/basics/](https://developer.origin-kraken.energy/graphql/guides/basics/)
-- **Base URL:** `https://auth.origin-kraken.energy`
+- [Origin Energy API Rules](https://apis.io/rules/origin-energy/origin-energy-rules/)
 
-#### Properties
+#### Security (3)
 
-- [OpenID Configuration](well-known/origin-energy-kraken-openid-configuration.json) — 113 scopes, no dynamic client registration
+Authentication, trust centre, and vulnerability disclosure.
 
-## Common Properties
+- [Origin Energy Authentication](https://apis.io/security/origin-energy/origin-energy-authentication/)
+- [Origin Energy Domain Security](https://apis.io/security/origin-energy/origin-energy-domain-security/)
+- [Origin Energy Vulnerability Disclosure](https://apis.io/security/origin-energy/origin-energy-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Origin Energy Scopes](https://apis.io/scopes/origin-energy/origin-energy-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Origin Energy Plans Pricing](https://apis.io/plans/origin-energy/origin-energy-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Origin Energy Rate Limits](https://apis.io/rate-limits/origin-energy/origin-energy-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.originenergy.com.au/)
-- [Developer Portal](https://developer.origin-kraken.energy/)
-- [API Announcements](https://developer.origin-kraken.energy/announcements/)
-- [Blog](https://www.originenergy.com.au/blog/)
-- [GitHub Organization](https://github.com/origin-energy)
-- [LinkedIn](https://www.linkedin.com/company/origin-energy)
-- [Consumer Data Right](https://www.cdr.gov.au/)
+- [Documentation](https://developer.origin-kraken.energy/)
+- [Getting started](https://developer.origin-kraken.energy/graphql/guides/basics/)
+- [API reference](https://developer.origin-kraken.energy/graphql/reference/)
+- [Changelog](https://developer.origin-kraken.energy/announcements/)
+- [Security](https://bugcrowd.com/engagements/originenergy-og1)
+- [GitHub](https://github.com/origin-energy)
+- [Status](https://public.mydata.cdr.originenergy.com.au/cds-au/v1/discovery/status)
 
-## Features
+## API Evangelist rating
 
-| Name | Description |
-|------|-------------|
-| Electricity and Gas Retail | Sells electricity and natural gas to residential and business customers across the National Electricity Market and Western Australian gas market. |
-| Generation and LNG | Operates the Eraring Power Station, gas-fired peaking plant and renewable assets, and holds an interest in Australia Pacific LNG. |
-| Origin Loop Virtual Power Plant | Aggregates customer solar, batteries and connected devices into one of Australia's largest virtual power plants for demand response and grid services. |
-| Kraken Retail Platform | Runs its retail billing, CRM and customer operations on Octopus Energy's Kraken platform, in which Origin holds an equity stake. |
-| Consumer Data Right Data Holding | Designated energy data holder under the Consumer Data Right, sharing customer usage, billing and DER data with accredited data recipients on consumer consent. |
+**Kin Score 59.6** — strong · rubric 0.25.0 · scored 2026-10-23
 
-## Use Cases
+| Facet | Score |
+|---|---|
+| Discoverability | 78.6 |
+| Contract quality | 70.7 |
+| Contract governance | 35.6 |
+| Operational transparency | 84.2 |
+| Developer ergonomics | 53.0 |
+| Access clarity | 0.0 |
 
-| Name | Description |
-|------|-------------|
-| Consented Energy Data Sharing | An accredited CDR data recipient obtains an Origin customer's usage, billing and service point data with that customer's consent. |
-| Retail Plan Comparison | Anyone can pull Origin's 3,595 published plans anonymously from the AER Energy Made Easy CDR gateway. |
-| Partner Platform Integration | Origin partner organisations integrate with the Kraken REST and GraphQL APIs for account, payment, order and meter reading workflows. |
-| Customer Migration | The Kraken data-import REST API ingests accounts, historical statements, transactions and payment instructions during platform migrations. |
+**Agent readiness 40.3** — agent-ready (gated down from agent-native)
 
-## Review
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | documented (partial credit) |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
 
-See [review.yml](review.yml) for the full probe log — every URL requested, every HTTP status observed, the mandate verification chain, the consumer-data versus market-data split, the access gate, and the auth model.
+**Regulatory alignment 39.3** — Energy & Utilities
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/origin-energy/](https://apis.io/providers/origin-energy/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Origin Energy: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/origin-energy/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
